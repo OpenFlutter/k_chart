@@ -1,5 +1,6 @@
 # k_chart
 A Flutter K Chart.
+
 ![vertical](https://github.com/mafanwei/k_chart/blob/master/example/images/demo.gif)
 ## Getting Started
 #### Install
