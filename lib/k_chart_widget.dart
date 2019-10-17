@@ -82,6 +82,7 @@ class _KChartWidgetState extends State<KChartWidget> with TickerProviderStateMix
   @override
   void dispose() {
     mInfoWindowStream?.close();
+    _controller?.dispose();
     super.dispose();
   }
 
@@ -95,6 +96,7 @@ class _KChartWidgetState extends State<KChartWidget> with TickerProviderStateMix
       onPanDown: (details) {
         if (_controller != null && _controller.isAnimating) {
           _controller.stop();
+          _onDragChanged(false);
         }
       },
       onHorizontalDragDown: (details) {
@@ -183,11 +185,13 @@ class _KChartWidgetState extends State<KChartWidget> with TickerProviderStateMix
       if (mScrollX <= 0) {
         mScrollX = 0;
         _controller.stop();
+        _onDragChanged(false);
       } else if (mScrollX >= ChartPainter.maxScrollX) {
         mScrollX = ChartPainter.maxScrollX;
         if (widget.onLoadMore != null) {
           widget.onLoadMore();
           _controller.stop();
+          _onDragChanged(false);
         }
       }
       notifyChanged();
