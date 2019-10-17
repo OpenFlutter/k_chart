@@ -31,6 +31,7 @@ class KChartWidget extends StatefulWidget {
   final int flingTime;
   final double flingRatio;
   final Curve flingCurve;
+  final Function(bool) isOnDrag;
 
   KChartWidget(
     this.datas, {
@@ -43,9 +44,10 @@ class KChartWidget extends StatefulWidget {
     this.bgColor,
     this.fixedLength,
     this.maDayList = const [5, 10, 20],
-    this.flingTime = 1000,
-    this.flingRatio = 0.95,
+    this.flingTime = 600,
+    this.flingRatio = 0.5,
     this.flingCurve = Curves.decelerate,
+    this.isOnDrag,
   }) : assert(maDayList != null);
 
   @override
@@ -96,7 +98,7 @@ class _KChartWidgetState extends State<KChartWidget> with TickerProviderStateMix
         }
       },
       onHorizontalDragDown: (details) {
-        isDrag = true;
+        _onDragChanged(true);
       },
       onHorizontalDragUpdate: (details) {
         if (isScale || isLongPress) return;
@@ -105,15 +107,12 @@ class _KChartWidgetState extends State<KChartWidget> with TickerProviderStateMix
       },
       onHorizontalDragEnd: (DragEndDetails details) {
         var velocity = details.velocity.pixelsPerSecond.dx;
-        if (velocity.abs() > 100) {
-          _onFling(velocity);
-        }
-        isDrag = false;
+        _onFling(velocity);
         if (mScrollX == ChartPainter.maxScrollX && widget.onLoadMore != null) {
           widget.onLoadMore();
         }
       },
-      onHorizontalDragCancel: () => isDrag = false,
+      onHorizontalDragCancel: () => _onDragChanged(false),
       onScaleStart: (_) {
         isScale = true;
       },
@@ -168,6 +167,13 @@ class _KChartWidgetState extends State<KChartWidget> with TickerProviderStateMix
     );
   }
 
+  void _onDragChanged(bool isOnDrag) {
+    isDrag = isOnDrag;
+    if (widget.isOnDrag != null) {
+      widget.isOnDrag(isDrag);
+    }
+  }
+
   void _onFling(double x) {
     _controller = AnimationController(duration: Duration(milliseconds: widget.flingTime), vsync: this);
     Animation<double> aniX =
@@ -185,6 +191,13 @@ class _KChartWidgetState extends State<KChartWidget> with TickerProviderStateMix
         }
       }
       notifyChanged();
+    });
+    aniX.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        _onDragChanged(false);
+      } else if (status == AnimationStatus.dismissed) {
+        _onDragChanged(false);
+      }
     });
     _controller.forward();
   }
