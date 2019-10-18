@@ -1,7 +1,7 @@
 name: k_chart
 description: A Flutter K Chart.
 version: 0.1.1
-author: mafanwei
+author: Mafanwei <eraofma@qq.com>
 homepage: https://github.com/mafanwei/k_chart
 
 environment:
@@ -10,7 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  decimal:
+  decimal: ^0.3.5
 
 dev_dependencies:
   flutter_test:
