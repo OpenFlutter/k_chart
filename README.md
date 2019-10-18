@@ -35,7 +35,7 @@ Container(
                 timeFormat: TimeFormat.YEAR_MONTH_DAY,
                 onLoadMore: () {},// Called when the list is swiped to the far left,use it load history.
                 maDayList: [5,10,20],// Display of MA,This parameter must be equal to DataUtil.calculate‘s maDayList
-                bgColor: [Colors.black],// The background color of the chart is gradient
+                bgColor: [Colors.black, Colors.black],// The background color of the chart is gradient
                 isChinese: true,// Graphic language
                 isOnDrag: (isDrag){},// true is on Drag.Don't load data while Draging.
               ),
