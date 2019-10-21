@@ -1,7 +1,7 @@
 # k_chart
 A Flutter K Chart.And easy to use.
 
-![vertical](https://github.com/mafanwei/k_chart/blob/master/example/images/demo.gif)
+![demo](https://github.com/mafanwei/k_chart/blob/master/example/images/demo.gif)
 ## Getting Started
 #### Install
 ```
@@ -16,7 +16,7 @@ k_chart:
 ```
 #### Usage
 
-**When you change the data, you have to call this:**
+**When you change the data, you must call this:**
 ```dart
 DataUtil.calculate(datas); //This function has some optional parameters: n is BOLL N-day closing price. k is BOLL param.
 ```
