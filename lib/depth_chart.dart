@@ -91,8 +91,8 @@ class DepthChartPainter extends CustomPainter {
 
   void init() {
     if (mBuyData == null || mSellData == null || mBuyData.isEmpty || mSellData.isEmpty) return;
-    mMaxVolume = mBuyData[0].amount;
-    mMaxVolume = max(mMaxVolume, mSellData.last.amount);
+    mMaxVolume = mBuyData[0].vol;
+    mMaxVolume = max(mMaxVolume, mSellData.last.vol);
     mMaxVolume = mMaxVolume * 1.05;
     mMultiple = mMaxVolume / mLineCount;
   }
@@ -122,15 +122,15 @@ class DepthChartPainter extends CustomPainter {
     double y;
     for (int i = 0; i < mBuyData.length; i++) {
       if (i == 0) {
-        mBuyPath.moveTo(0, getY(mBuyData[0].amount));
+        mBuyPath.moveTo(0, getY(mBuyData[0].vol));
       }
       x = mBuyPointWidth * i;
-      y = getY(mBuyData[i].amount);
+      y = getY(mBuyData[i].vol);
       if (i >= 1) {
-        canvas.drawLine(Offset(mBuyPointWidth * (i - 1), getY(mBuyData[i - 1].amount)), Offset(x, y), mBuyLinePaint);
+        canvas.drawLine(Offset(mBuyPointWidth * (i - 1), getY(mBuyData[i - 1].vol)), Offset(x, y), mBuyLinePaint);
       }
       if (i != mBuyData.length - 1) {
-        mBuyPath.quadraticBezierTo(x, y, mBuyPointWidth * (i + 1), getY(mBuyData[i + 1].amount));
+        mBuyPath.quadraticBezierTo(x, y, mBuyPointWidth * (i + 1), getY(mBuyData[i + 1].vol));
       } else {
         if (i == 0) {
           mBuyPath.lineTo(mDrawWidth, y);
@@ -153,15 +153,15 @@ class DepthChartPainter extends CustomPainter {
     double y;
     for (int i = 0; i < mSellData.length; i++) {
       if (i == 0) {
-        mSellPath.moveTo(mDrawWidth, getY(mSellData[0].amount));
+        mSellPath.moveTo(mDrawWidth, getY(mSellData[0].vol));
       }
       x = (mSellPointWidth * i) + mDrawWidth;
-      y = getY(mSellData[i].amount);
+      y = getY(mSellData[i].vol);
       if (i >= 1) {
-        canvas.drawLine(Offset((mSellPointWidth * (i - 1)) + mDrawWidth, getY(mSellData[i - 1].amount)), Offset(x, y), mSellLinePaint);
+        canvas.drawLine(Offset((mSellPointWidth * (i - 1)) + mDrawWidth, getY(mSellData[i - 1].vol)), Offset(x, y), mSellLinePaint);
       }
       if (i != mSellData.length - 1) {
-        mSellPath.quadraticBezierTo(x, y, (mSellPointWidth * (i + 1)) + mDrawWidth, getY(mSellData[i + 1].amount));
+        mSellPath.quadraticBezierTo(x, y, (mSellPointWidth * (i + 1)) + mDrawWidth, getY(mSellData[i + 1].vol));
       } else {
         if (i == 0) {
           mSellPath.lineTo(mWidth, y);
@@ -230,11 +230,11 @@ class DepthChartPainter extends CustomPainter {
 
     double radius = 8.0;
     if (dx < mDrawWidth) {
-      canvas.drawCircle(Offset(dx, getY(entity.amount)), radius / 3, mBuyLinePaint..style = PaintingStyle.fill);
-      canvas.drawCircle(Offset(dx, getY(entity.amount)), radius, mBuyLinePaint..style = PaintingStyle.stroke);
+      canvas.drawCircle(Offset(dx, getY(entity.vol)), radius / 3, mBuyLinePaint..style = PaintingStyle.fill);
+      canvas.drawCircle(Offset(dx, getY(entity.vol)), radius, mBuyLinePaint..style = PaintingStyle.stroke);
     } else {
-      canvas.drawCircle(Offset(dx, getY(entity.amount)), radius / 3, mSellLinePaint..style = PaintingStyle.fill);
-      canvas.drawCircle(Offset(dx, getY(entity.amount)), radius, mSellLinePaint..style = PaintingStyle.stroke);
+      canvas.drawCircle(Offset(dx, getY(entity.vol)), radius / 3, mSellLinePaint..style = PaintingStyle.fill);
+      canvas.drawCircle(Offset(dx, getY(entity.vol)), radius, mSellLinePaint..style = PaintingStyle.stroke);
     }
 
     //画底部
@@ -253,9 +253,9 @@ class DepthChartPainter extends CustomPainter {
     canvas.drawRect(bottomRect, selectBorderPaint);
     priceTP.paint(canvas, Offset(bottomRect.left + (bottomRect.width - priceTP.width) / 2, bottomRect.top + (bottomRect.height - priceTP.height) / 2));
     //画左边
-    TextPainter amountTP = getTextPainter(entity.amount.toStringAsFixed(fixedLength ?? 2));
+    TextPainter amountTP = getTextPainter(entity.vol.toStringAsFixed(fixedLength ?? 2));
     amountTP.layout();
-    double y = getY(entity.amount);
+    double y = getY(entity.vol);
     double rightRectTop;
     if (y <= amountTP.height / 2) {
       rightRectTop = 0;

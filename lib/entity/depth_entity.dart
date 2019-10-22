@@ -1,11 +1,11 @@
 class DepthEntity {
   double price;
-  double amount;
+  double vol;
 
-  DepthEntity(this.price, this.amount);
+  DepthEntity(this.price, this.vol);
 
   @override
   String toString() {
-    return 'Data{price: $price, amount: $amount}';
+    return 'Data{price: $price, vol: $vol}';
   }
 }

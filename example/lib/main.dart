@@ -59,8 +59,8 @@ class _MyHomePageState extends State<MyHomePage> {
     bids?.sort((left, right) => left.price.compareTo(right.price));
     //倒序循环 //累加买入委托量
     bids.reversed.forEach((item) {
-      amount += item.amount;
-      item.amount = amount;
+      amount += item.vol;
+      item.vol = amount;
       _bids.insert(0, item);
     });
 
@@ -68,8 +68,8 @@ class _MyHomePageState extends State<MyHomePage> {
     asks?.sort((left, right) => left.price.compareTo(right.price));
     //倒序循环 //累加买入委托量
     asks?.forEach((item) {
-      amount += item.amount;
-      item.amount = amount;
+      amount += item.vol;
+      item.vol = amount;
       _asks.add(item);
     });
     setState(() {});
