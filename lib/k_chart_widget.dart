@@ -97,16 +97,13 @@ class _KChartWidgetState extends State<KChartWidget> with TickerProviderStateMix
       onHorizontalDragDown: (details) {
         _stopAnimation();
         _onDragChanged(true);
-        print("onHorizontalDragDown");
       },
       onHorizontalDragUpdate: (details) {
         if (isScale || isLongPress) return;
         mScrollX = (details.primaryDelta / mScaleX + mScrollX).clamp(0.0, ChartPainter.maxScrollX);
-        print("onHorizontalDragUpdate" + mScrollX.toString());
         notifyChanged();
       },
       onHorizontalDragEnd: (DragEndDetails details) {
-        print("onHorizontalDragEnd");
         var velocity = details.velocity.pixelsPerSecond.dx;
         _onFling(velocity);
         if (mScrollX == ChartPainter.maxScrollX && widget.onLoadMore != null) {
@@ -115,11 +112,9 @@ class _KChartWidgetState extends State<KChartWidget> with TickerProviderStateMix
       },
       onHorizontalDragCancel: () => _onDragChanged(false),
       onScaleStart: (_) {
-        print("onScaleStart");
         isScale = true;
       },
       onScaleUpdate: (details) {
-        print("onScaleUpdate" + isDrag.toString() + "  " + isLongPress.toString());
         if (isDrag || isLongPress) return;
         mScaleX = (_lastScale * details.scale).clamp(0.5, 2.2);
         notifyChanged();
@@ -127,7 +122,6 @@ class _KChartWidgetState extends State<KChartWidget> with TickerProviderStateMix
       onScaleEnd: (_) {
         isScale = false;
         _lastScale = mScaleX;
-        print("onScaleEnd");
       },
       onLongPressStart: (details) {
         isLongPress = true;
