@@ -94,11 +94,8 @@ class _KChartWidgetState extends State<KChartWidget> with TickerProviderStateMix
       mScaleX = 1.0;
     }
     return GestureDetector(
-      onPanDown: (details) {
-        _stopAnimation();
-        print("onPanDown");
-      },
       onHorizontalDragDown: (details) {
+        _stopAnimation();
         _onDragChanged(true);
         print("onHorizontalDragDown");
       },
