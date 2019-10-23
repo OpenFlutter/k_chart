@@ -59,6 +59,7 @@ class _KChartWidgetState extends State<KChartWidget> with TickerProviderStateMix
   StreamController<InfoWindowEntity> mInfoWindowStream;
   double mWidth = 0;
   AnimationController _controller;
+  Animation<double> aniX;
 
   double getMinScrollX() {
     return mScaleX;
@@ -94,10 +95,7 @@ class _KChartWidgetState extends State<KChartWidget> with TickerProviderStateMix
     }
     return GestureDetector(
       onPanDown: (details) {
-        if (_controller != null && _controller.isAnimating) {
-          _controller.stop();
-          _onDragChanged(false);
-        }
+        _stopAnimation();
       },
       onHorizontalDragDown: (details) {
         _onDragChanged(true);
@@ -169,6 +167,16 @@ class _KChartWidgetState extends State<KChartWidget> with TickerProviderStateMix
     );
   }
 
+  void _stopAnimation({bool needNotify = true}) {
+    if (_controller != null && _controller.isAnimating) {
+      _controller.stop();
+      _onDragChanged(false);
+      if (needNotify) {
+        notifyChanged();
+      }
+    }
+  }
+
   void _onDragChanged(bool isOnDrag) {
     isDrag = isOnDrag;
     if (widget.isOnDrag != null) {
@@ -178,29 +186,26 @@ class _KChartWidgetState extends State<KChartWidget> with TickerProviderStateMix
 
   void _onFling(double x) {
     _controller = AnimationController(duration: Duration(milliseconds: widget.flingTime), vsync: this);
-    Animation<double> aniX =
-        Tween<double>(begin: mScrollX, end: x * widget.flingRatio + mScrollX).animate(CurvedAnimation(parent: _controller, curve: widget.flingCurve));
+    aniX = null;
+    aniX = Tween<double>(begin: mScrollX, end: x * widget.flingRatio + mScrollX).animate(CurvedAnimation(parent: _controller, curve: widget.flingCurve));
     aniX.addListener(() {
       mScrollX = aniX.value;
       if (mScrollX <= 0) {
         mScrollX = 0;
-        _controller.stop();
-        _onDragChanged(false);
+        _stopAnimation();
       } else if (mScrollX >= ChartPainter.maxScrollX) {
         mScrollX = ChartPainter.maxScrollX;
         if (widget.onLoadMore != null) {
           widget.onLoadMore();
-          _controller.stop();
-          _onDragChanged(false);
+          _stopAnimation();
         }
       }
       notifyChanged();
     });
     aniX.addStatusListener((status) {
-      if (status == AnimationStatus.completed) {
+      if (status == AnimationStatus.completed || status == AnimationStatus.dismissed) {
         _onDragChanged(false);
-      } else if (status == AnimationStatus.dismissed) {
-        _onDragChanged(false);
+        notifyChanged();
       }
     });
     _controller.forward();
