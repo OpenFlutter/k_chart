@@ -61,9 +61,11 @@ class MainRenderer extends BaseChartRenderer<CandleEntity> {
 
   @override
   void drawChart(CandleEntity lastPoint, CandleEntity curPoint, double lastX, double curX, Size size, Canvas canvas) {
-    if (isLine != true) drawCandle(curPoint, canvas, curX);
+    if (isLine != true) {
+      drawCandle(curPoint, canvas, curX);
+    }
     if (isLine == true) {
-      draLine(lastPoint.close, curPoint.close, canvas, lastX, curX);
+      drawPolyline(lastPoint.close, curPoint.close, canvas, lastX, curX);
     } else if (state == MainState.MA) {
       drawMaLine(lastPoint, curPoint, canvas, lastX, curX);
     } else if (state == MainState.BOLL) {
@@ -83,7 +85,7 @@ class MainRenderer extends BaseChartRenderer<CandleEntity> {
     ..isAntiAlias = true;
 
   //画折线图
-  draLine(double lastPrice, double curPrice, Canvas canvas, double lastX, double curX) {
+  drawPolyline(double lastPrice, double curPrice, Canvas canvas, double lastX, double curX) {
 //    drawLine(lastPrice + 100, curPrice + 100, canvas, lastX, curX, ChartColors.kLineColor);
     mLinePath ??= Path();
 
