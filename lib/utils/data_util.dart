@@ -17,27 +17,24 @@ class DataUtil {
   }
 
   static calcMA(List<KLineEntity> dataList, List<int> maDayList) {
-    List<double> ma = [];
-    for (int j = 0; j < maDayList.length; j++) {
-      ma.add(0);
-    }
-    for (int i = 0; dataList != null && i < dataList.length; i++) {
-      KLineEntity entity = dataList[i];
-      final closePrice = entity.close;
-      entity.maValueList = List<double>(maDayList.length);
+    List<double> ma = List<double>.filled(maDayList.length, 0);
 
-      for (int j = 0; j < maDayList.length; j++) {
-        ma[j] = NumberUtil.add(ma[j], closePrice);
-      }
+    if (dataList != null && dataList.isNotEmpty) {
+      for (int i = 0; i < dataList.length; i++) {
+        KLineEntity entity = dataList[i];
+        final closePrice = entity.close;
+        entity.maValueList = List<double>(maDayList.length);
 
-      for (int j = 0; j < maDayList.length; j++) {
-        if (i == maDayList[j] - 1) {
-          entity.maValueList[j] = NumberUtil.divide(ma[j], maDayList[j]);
-        } else if (i >= maDayList[j]) {
-          ma[j] = NumberUtil.subtract(ma[j], dataList[i - maDayList[j]].close);
-          entity.maValueList[j] = NumberUtil.divide(ma[j], maDayList[j]);
-        } else {
-          entity.maValueList[j] = 0;
+        for (int j = 0; j < maDayList.length; j++) {
+          ma[j] += closePrice;
+          if (i == maDayList[j] - 1) {
+            entity.maValueList[j] = ma[j] / maDayList[j];
+          } else if (i >= maDayList[j]) {
+            ma[j] -= dataList[i - maDayList[j]].close;
+            entity.maValueList[j] = ma[j] / maDayList[j];
+          } else {
+            entity.maValueList[j] = 0;
+          }
         }
       }
     }
