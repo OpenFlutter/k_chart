@@ -160,6 +160,12 @@ class MainRenderer extends BaseChartRenderer<CandleEntity> {
       chartPaint.color = ChartColors.dnColor;
       canvas.drawRect(Rect.fromLTRB(curX - r, open, curX + r, close), chartPaint);
       canvas.drawRect(Rect.fromLTRB(curX - lineR, high, curX + lineR, low), chartPaint);
+    } else {
+      chartPaint.color = ChartColors.upColor;
+      canvas.drawLine(Offset(curX - r, open), Offset(curX + r, open), chartPaint);
+      if (high != low) {
+        canvas.drawRect(Rect.fromLTRB(curX - lineR, high, curX + lineR, low), chartPaint);
+      }
     }
   }
 
