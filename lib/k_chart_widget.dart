@@ -24,8 +24,8 @@ class KChartWidget extends StatefulWidget {
   final bool isLine;
   final bool isChinese;
   final List<String> timeFormat;
-  final Function onLoadMore;
-  final Function onLoadHistory;
+  //当屏幕滚动到尽头会调用，真为拉到屏幕右侧尽头，假为拉到屏幕左侧尽头
+  final Function(bool) onLoadMore;
   final List<Color> bgColor;
   final int fixedLength;
   final List<int> maDayList;
@@ -42,7 +42,6 @@ class KChartWidget extends StatefulWidget {
     this.isChinese = true,
     this.timeFormat = TimeFormat.YEAR_MONTH_DAY,
     this.onLoadMore,
-    this.onLoadHistory,
     this.bgColor,
     this.fixedLength,
     this.maDayList = const [5, 10, 20],
@@ -108,11 +107,6 @@ class _KChartWidgetState extends State<KChartWidget> with TickerProviderStateMix
       onHorizontalDragEnd: (DragEndDetails details) {
         var velocity = details.velocity.pixelsPerSecond.dx;
         _onFling(velocity);
-        if (mScrollX >= ChartPainter.maxScrollX && widget.onLoadHistory != null) {
-          widget.onLoadHistory();
-        } else if (mScrollX <= 0 && widget.onLoadMore != null) {
-          widget.onLoadMore();
-        }
       },
       onHorizontalDragCancel: () => _onDragChanged(false),
       onScaleStart: (_) {
@@ -195,16 +189,15 @@ class _KChartWidgetState extends State<KChartWidget> with TickerProviderStateMix
       if (mScrollX <= 0) {
         mScrollX = 0;
         if (widget.onLoadMore != null) {
-          widget.onLoadMore();
+          widget.onLoadMore(true);
         }
-        _stopAnimation();
       } else if (mScrollX >= ChartPainter.maxScrollX) {
         mScrollX = ChartPainter.maxScrollX;
-        if (widget.onLoadHistory != null) {
-          widget.onLoadHistory();
+        if (widget.onLoadMore != null) {
+          widget.onLoadMore(false);
         }
-        _stopAnimation();
       }
+      _stopAnimation();
       notifyChanged();
     });
     aniX.addStatusListener((status) {

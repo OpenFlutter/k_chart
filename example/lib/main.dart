@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.green,
       ),
       home: MyHomePage(title: 'Flutter Demo Home Page'),
     );
@@ -36,6 +36,7 @@ class _MyHomePageState extends State<MyHomePage> {
   MainState _mainState = MainState.MA;
   SecondaryState _secondaryState = SecondaryState.MACD;
   bool isLine = true;
+  bool isChinese = true;
   List<DepthEntity> _bids, _asks;
 
   @override
@@ -93,6 +94,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 secondaryState: _secondaryState,
                 fixedLength: 2,
                 timeFormat: TimeFormat.YEAR_MONTH_DAY,
+                isChinese: isChinese,
               ),
             ),
             if (showLoading) Container(width: double.infinity, height: 450, alignment: Alignment.center, child: CircularProgressIndicator()),
@@ -122,6 +124,7 @@ class _MyHomePageState extends State<MyHomePage> {
         button("RSI", onPressed: () => _secondaryState = SecondaryState.RSI),
         button("WR", onPressed: () => _secondaryState = SecondaryState.WR),
         button("隐藏副视图", onPressed: () => _secondaryState = SecondaryState.NONE),
+        button("切换中英文", onPressed: () => isChinese = !isChinese),
       ],
     );
   }
