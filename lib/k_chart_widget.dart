@@ -171,8 +171,8 @@ class _KChartWidgetState extends State<KChartWidget> with TickerProviderStateMix
 
   void _stopAnimation({bool needNotify = true}) {
     if (_controller != null && _controller.isAnimating) {
-      _controller.stop();
-      _onDragChanged(false);
+      // _controller.stop();
+      // _onDragChanged(false);
       if (needNotify) {
         notifyChanged();
       }
