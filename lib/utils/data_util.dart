@@ -65,12 +65,12 @@ class DataUtil {
     double ma = 0;
     for (int i = 0; dataList != null && i < dataList.length; i++) {
       KLineEntity entity = dataList[i];
-      ma = NumberUtil.add(ma, entity.close);
+      ma += entity.close;
       if (i == day - 1) {
-        entity.BOLLMA = NumberUtil.divide(ma, day);
+        entity.BOLLMA = ma / day;
       } else if (i >= day) {
-        ma = NumberUtil.subtract(ma, dataList[i - day].close);
-        entity.BOLLMA = NumberUtil.divide(ma, day);
+        ma -= dataList[i - day].close;
+        entity.BOLLMA = ma / day;
       } else {
         entity.BOLLMA = null;
       }

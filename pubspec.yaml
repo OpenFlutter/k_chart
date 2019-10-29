@@ -10,7 +10,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  decimal: ^0.3.5
 
 dev_dependencies:
   flutter_test:

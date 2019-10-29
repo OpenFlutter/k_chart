@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:k_chart/utils/number_util.dart';
 export '../chart_style.dart';
 
 abstract class BaseChartRenderer<T> {
@@ -21,8 +20,8 @@ abstract class BaseChartRenderer<T> {
 
   BaseChartRenderer({@required this.chartRect, @required this.maxValue, @required this.minValue, @required this.topPadding, @required this.fixedLength}) {
     if (maxValue == minValue) {
-      maxValue = NumberUtil.multiply(maxValue, 1.5);
-      minValue = NumberUtil.divide(minValue, 2);
+      maxValue *= 1.5;
+      minValue /= 2;
     }
     scaleY = chartRect.height / (maxValue - minValue);
     // print("maxValue=====" + maxValue.toString() + "====minValue===" + minValue.toString() + "==scaleY==" + scaleY.toString());

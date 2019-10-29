@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../entity/candle_entity.dart';
 import '../k_chart_widget.dart' show MainState;
-import '../utils/number_util.dart';
 import 'base_chart_renderer.dart';
 
 class MainRenderer extends BaseChartRenderer<CandleEntity> {
@@ -19,8 +18,8 @@ class MainRenderer extends BaseChartRenderer<CandleEntity> {
       : super(chartRect: mainRect, maxValue: maxValue, minValue: minValue, topPadding: topPadding, fixedLength: fixedLength) {
     _contentRect = Rect.fromLTRB(chartRect.left, chartRect.top + _contentPadding, chartRect.right, chartRect.bottom - _contentPadding);
     if (maxValue == minValue) {
-      maxValue = NumberUtil.multiply(maxValue, 1.5);
-      minValue = NumberUtil.divide(minValue, 2);
+      maxValue *= 1.5;
+      minValue /= 2;
     }
     scaleY = _contentRect.height / (maxValue - minValue);
   }

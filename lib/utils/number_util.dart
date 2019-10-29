@@ -1,7 +1,5 @@
 import 'dart:math';
 
-import 'package:decimal/decimal.dart';
-
 class NumberUtil {
   static String format(double n) {
     if (n >= 10000) {
@@ -27,22 +25,6 @@ class NumberUtil {
     result = max(result, getDecimalLength(c));
     result = max(result, getDecimalLength(d));
     return result;
-  }
-
-  static double add(num a, num b) {
-    return (Decimal.parse(a.toString()) + Decimal.parse(b.toString())).toDouble();
-  }
-
-  static double subtract(num a, num b) {
-    return (Decimal.parse(a.toString()) - Decimal.parse(b.toString())).toDouble();
-  }
-
-  static double multiply(num a, num b) {
-    return (Decimal.parse(a.toString()) * Decimal.parse(b.toString())).toDouble();
-  }
-
-  static double divide(num a, num b) {
-    return (Decimal.parse(a.toString()) / Decimal.parse(b.toString())).toDouble();
   }
 
   static bool checkNotNullOrZero(double a) {
