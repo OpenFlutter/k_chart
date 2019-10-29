@@ -25,6 +25,7 @@ class KChartWidget extends StatefulWidget {
   final bool isChinese;
   final List<String> timeFormat;
   final Function onLoadMore;
+  final Function onLoadHistory;
   final List<Color> bgColor;
   final int fixedLength;
   final List<int> maDayList;
@@ -41,6 +42,7 @@ class KChartWidget extends StatefulWidget {
     this.isChinese = true,
     this.timeFormat = TimeFormat.YEAR_MONTH_DAY,
     this.onLoadMore,
+    this.onLoadHistory,
     this.bgColor,
     this.fixedLength,
     this.maDayList = const [5, 10, 20],
@@ -106,7 +108,9 @@ class _KChartWidgetState extends State<KChartWidget> with TickerProviderStateMix
       onHorizontalDragEnd: (DragEndDetails details) {
         var velocity = details.velocity.pixelsPerSecond.dx;
         _onFling(velocity);
-        if (mScrollX == ChartPainter.maxScrollX && widget.onLoadMore != null) {
+        if (mScrollX >= ChartPainter.maxScrollX && widget.onLoadHistory != null) {
+          widget.onLoadHistory();
+        } else if (mScrollX <= 0 && widget.onLoadMore != null) {
           widget.onLoadMore();
         }
       },
@@ -190,13 +194,16 @@ class _KChartWidgetState extends State<KChartWidget> with TickerProviderStateMix
       mScrollX = aniX.value;
       if (mScrollX <= 0) {
         mScrollX = 0;
+        if (widget.onLoadMore != null) {
+          widget.onLoadMore();
+        }
         _stopAnimation();
       } else if (mScrollX >= ChartPainter.maxScrollX) {
         mScrollX = ChartPainter.maxScrollX;
-        if (widget.onLoadMore != null) {
-          widget.onLoadMore();
-          _stopAnimation();
+        if (widget.onLoadHistory != null) {
+          widget.onLoadHistory();
         }
+        _stopAnimation();
       }
       notifyChanged();
     });
