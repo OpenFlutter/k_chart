@@ -13,7 +13,17 @@ enum SecondaryState { MACD, KDJ, RSI, WR, NONE }
 
 class TimeFormat {
   static const List<String> YEAR_MONTH_DAY = [yyyy, '-', mm, '-', dd];
-  static const List<String> YEAR_MONTH_DAY_WITH_HOUR = [yyyy, '-', mm, '-', dd, ' ', HH, ':', nn];
+  static const List<String> YEAR_MONTH_DAY_WITH_HOUR = [
+    yyyy,
+    '-',
+    mm,
+    '-',
+    dd,
+    ' ',
+    HH,
+    ':',
+    nn
+  ];
 }
 
 class KChartWidget extends StatefulWidget {
@@ -54,7 +64,8 @@ class KChartWidget extends StatefulWidget {
   _KChartWidgetState createState() => _KChartWidgetState();
 }
 
-class _KChartWidgetState extends State<KChartWidget> with TickerProviderStateMixin {
+class _KChartWidgetState extends State<KChartWidget>
+    with TickerProviderStateMixin {
   double mScaleX = 1.0, mScrollX = 0.0, mSelectX = 0.0;
   StreamController<InfoWindowEntity> mInfoWindowStream;
   double mWidth = 0;
@@ -100,7 +111,8 @@ class _KChartWidgetState extends State<KChartWidget> with TickerProviderStateMix
       },
       onHorizontalDragUpdate: (details) {
         if (isScale || isLongPress) return;
-        mScrollX = (details.primaryDelta / mScaleX + mScrollX).clamp(0.0, ChartPainter.maxScrollX);
+        mScrollX = (details.primaryDelta / mScaleX + mScrollX)
+            .clamp(0.0, ChartPainter.maxScrollX);
         notifyChanged();
       },
       onHorizontalDragEnd: (DragEndDetails details) {
@@ -180,9 +192,12 @@ class _KChartWidgetState extends State<KChartWidget> with TickerProviderStateMix
   }
 
   void _onFling(double x) {
-    _controller = AnimationController(duration: Duration(milliseconds: widget.flingTime), vsync: this);
+    _controller = AnimationController(
+        duration: Duration(milliseconds: widget.flingTime), vsync: this);
     aniX = null;
-    aniX = Tween<double>(begin: mScrollX, end: x * widget.flingRatio + mScrollX).animate(CurvedAnimation(parent: _controller, curve: widget.flingCurve));
+    aniX = Tween<double>(begin: mScrollX, end: x * widget.flingRatio + mScrollX)
+        .animate(
+            CurvedAnimation(parent: _controller, curve: widget.flingCurve));
     aniX.addListener(() {
       mScrollX = aniX.value;
       if (mScrollX <= 0) {
@@ -190,17 +205,19 @@ class _KChartWidgetState extends State<KChartWidget> with TickerProviderStateMix
         if (widget.onLoadMore != null) {
           widget.onLoadMore(true);
         }
+        _stopAnimation();
       } else if (mScrollX >= ChartPainter.maxScrollX) {
         mScrollX = ChartPainter.maxScrollX;
         if (widget.onLoadMore != null) {
           widget.onLoadMore(false);
         }
+        _stopAnimation();
       }
-      _stopAnimation();
       notifyChanged();
     });
     aniX.addStatusListener((status) {
-      if (status == AnimationStatus.completed || status == AnimationStatus.dismissed) {
+      if (status == AnimationStatus.completed ||
+          status == AnimationStatus.dismissed) {
         _onDragChanged(false);
         notifyChanged();
       }
@@ -210,15 +227,36 @@ class _KChartWidgetState extends State<KChartWidget> with TickerProviderStateMix
 
   void notifyChanged() => setState(() {});
 
-  final List<String> infoNamesCN = ["时间", "开", "高", "低", "收", "涨跌额", "涨跌幅", "成交额"];
-  final List<String> infoNamesEN = ["Date", "Open", "High", "Low", "Close", "Change", "Change%", "Amount"];
+  final List<String> infoNamesCN = [
+    "时间",
+    "开",
+    "高",
+    "低",
+    "收",
+    "涨跌额",
+    "涨跌幅",
+    "成交额"
+  ];
+  final List<String> infoNamesEN = [
+    "Date",
+    "Open",
+    "High",
+    "Low",
+    "Close",
+    "Change",
+    "Change%",
+    "Amount"
+  ];
   List<String> infos;
 
   Widget _buildInfoDialog() {
     return StreamBuilder<InfoWindowEntity>(
         stream: mInfoWindowStream?.stream,
         builder: (context, snapshot) {
-          if (!isLongPress || widget.isLine == true || !snapshot.hasData || snapshot.data.kLineEntity == null) return Container();
+          if (!isLongPress ||
+              widget.isLine == true ||
+              !snapshot.hasData ||
+              snapshot.data.kLineEntity == null) return Container();
           KLineEntity entity = snapshot.data.kLineEntity;
           double upDown = entity.change ?? entity.close - entity.open;
           double upDownPercent = entity.ratio ?? (upDown / entity.open) * 100;
@@ -233,16 +271,22 @@ class _KChartWidgetState extends State<KChartWidget> with TickerProviderStateMix
             entity.amount.toInt().toString()
           ];
           return Container(
-            margin: EdgeInsets.only(left: snapshot.data.isLeft ? 4 : mWidth - mWidth / 3 - 4, top: 25),
+            margin: EdgeInsets.only(
+                left: snapshot.data.isLeft ? 4 : mWidth - mWidth / 3 - 4,
+                top: 25),
             width: mWidth / 3,
-            decoration: BoxDecoration(color: ChartColors.selectFillColor, border: Border.all(color: ChartColors.selectBorderColor, width: 0.5)),
+            decoration: BoxDecoration(
+                color: ChartColors.selectFillColor,
+                border: Border.all(
+                    color: ChartColors.selectBorderColor, width: 0.5)),
             child: ListView.builder(
               padding: EdgeInsets.all(4),
               itemCount: infoNamesCN.length,
               itemExtent: 14.0,
               shrinkWrap: true,
               itemBuilder: (context, index) {
-                return _buildItem(infos[index], widget.isChinese ? infoNamesCN[index] : infoNamesEN[index]);
+                return _buildItem(infos[index],
+                    widget.isChinese ? infoNamesCN[index] : infoNamesEN[index]);
               },
             ),
           );
@@ -261,11 +305,14 @@ class _KChartWidgetState extends State<KChartWidget> with TickerProviderStateMix
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        Expanded(child: Text("$infoName", style: const TextStyle(color: Colors.white, fontSize: 10.0))),
+        Expanded(
+            child: Text("$infoName",
+                style: const TextStyle(color: Colors.white, fontSize: 10.0))),
         Text(info, style: TextStyle(color: color, fontSize: 10.0)),
       ],
     );
   }
 
-  String getDate(int date) => dateFormat(DateTime.fromMillisecondsSinceEpoch(date), widget.timeFormat);
+  String getDate(int date) =>
+      dateFormat(DateTime.fromMillisecondsSinceEpoch(date), widget.timeFormat);
 }
