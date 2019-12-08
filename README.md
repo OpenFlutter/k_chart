@@ -33,7 +33,8 @@ Container(
                 secondaryState: _secondaryState,// Decide what the sub view shows
                 fixedLength: 2,// Displayed decimal precision
                 timeFormat: TimeFormat.YEAR_MONTH_DAY,
-                onLoadMore: () {},// Called when the list is swiped to the far left,use it load history.
+                onLoadMore: (bool a) {},// Called when the data scrolls to the end. When a is true, it means the user is pulled to the end of the right side of the data. When a
+                // is false, it means the user is pulled to the end of the left side of the data.
                 maDayList: [5,10,20],// Display of MA,This parameter must be equal to DataUtil.calculate‘s maDayList
                 bgColor: [Colors.black, Colors.black],// The background color of the chart is gradient
                 isChinese: true,// Graphic language
@@ -46,6 +47,17 @@ use depth chart:
 ```dart
 DepthChart(_bids, _asks) //Note: Datas must be an ordered list，
 ```
+
+if you want change DepthChart color, you can use just like this:
+```dart
+ Container(
+            height: 230,
+            width: double.infinity,
+            color: Colors.grey, //background color
+            child: DepthChart(_bids, _asks,buyPathColor: Colors.blue, sellPathColor: Colors.green),
+          )
+```
+
 #### Donate
 
 Buy a cup of coffee for the author.
