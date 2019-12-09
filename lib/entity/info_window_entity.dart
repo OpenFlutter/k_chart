@@ -4,5 +4,5 @@ class InfoWindowEntity {
   KLineEntity kLineEntity;
   bool isLeft = false;
 
-  InfoWindowEntity(this.kLineEntity,  this.isLeft);
+  InfoWindowEntity(this.kLineEntity, this.isLeft);
 }

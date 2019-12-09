@@ -18,7 +18,12 @@ abstract class BaseChartRenderer<T> {
     ..strokeWidth = 0.5
     ..color = Color(0xff4c5c74);
 
-  BaseChartRenderer({@required this.chartRect, @required this.maxValue, @required this.minValue, @required this.topPadding, @required this.fixedLength}) {
+  BaseChartRenderer(
+      {@required this.chartRect,
+      @required this.maxValue,
+      @required this.minValue,
+      @required this.topPadding,
+      @required this.fixedLength}) {
     if (maxValue == minValue) {
       maxValue *= 1.5;
       minValue /= 2;
@@ -43,9 +48,11 @@ abstract class BaseChartRenderer<T> {
 
   void drawRightText(canvas, textStyle, int gridRows);
 
-  void drawChart(T lastPoint, T curPoint, double lastX, double curX, Size size, Canvas canvas);
+  void drawChart(T lastPoint, T curPoint, double lastX, double curX, Size size,
+      Canvas canvas);
 
-  void drawLine(double lastPrice, double curPrice, Canvas canvas, double lastX, double curX, Color color) {
+  void drawLine(double lastPrice, double curPrice, Canvas canvas, double lastX,
+      double curX, Color color) {
     if (lastPrice == null || curPrice == null) {
       return;
     }
@@ -53,7 +60,8 @@ abstract class BaseChartRenderer<T> {
     double lastY = getY(lastPrice);
     double curY = getY(curPrice);
     //print("lastX-----==" + lastX.toString() + "==lastY==" + lastY.toString() + "==curX==" + curX.toString() + "==curY==" + curY.toString());
-    canvas.drawLine(Offset(lastX, lastY), Offset(curX, curY), chartPaint..color = color);
+    canvas.drawLine(
+        Offset(lastX, lastY), Offset(curX, curY), chartPaint..color = color);
   }
 
   TextStyle getTextStyle(Color color) {

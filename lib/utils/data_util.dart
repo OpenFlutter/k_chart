@@ -6,7 +6,8 @@ import '../entity/k_line_entity.dart';
 
 // ignore_for_file: non_constant_identifier_names,library_prefixes,unused_import,camel_case_types
 class DataUtil {
-  static calculate(List<KLineEntity> dataList, [List<int> maDayList = const [5, 10, 20], int n = 20, k = 2]) {
+  static calculate(List<KLineEntity> dataList,
+      [List<int> maDayList = const [5, 10, 20], int n = 20, k = 2]) {
     calcMA(dataList, maDayList);
     calcBOLL(dataList, n, k);
     calcVolumeMA(dataList);
