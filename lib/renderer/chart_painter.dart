@@ -79,7 +79,7 @@ class ChartPainter extends BaseChartPainter {
     Gradient mBgGradient = LinearGradient(
       begin: Alignment.bottomCenter,
       end: Alignment.topCenter,
-      colors: bgColor ?? [Color(0xff18191d), Color(0xff18191d)],
+      colors: bgColor ?? [Color(0xffF6D249), Color(0xffF6D249)],
     );
     if (mMainRect != null) {
       Rect mainRect =
@@ -188,7 +188,7 @@ class ChartPainter extends BaseChartPainter {
     var index = calculateSelectedX(selectX);
     KLineEntity point = getItem(index);
 
-    TextPainter tp = getTextPainter(point.close, Colors.white);
+    TextPainter tp = getTextPainter(point.close, Colors.black);
     double textHeight = tp.height;
     double textWidth = tp.width;
 
@@ -226,7 +226,7 @@ class ChartPainter extends BaseChartPainter {
       tp.paint(canvas, Offset(x + w1 + w2, y - textHeight / 2));
     }
 
-    TextPainter dateTp = getTextPainter(getDate(point.time), Colors.white);
+    TextPainter dateTp = getTextPainter(getDate(point.time), Colors.black);
     textWidth = dateTp.width;
     r = textHeight / 2;
     x = translateXtoX(getX(index));
@@ -261,8 +261,8 @@ class ChartPainter extends BaseChartPainter {
     }
     //松开显示最后一条数据
     mMainRenderer?.drawText(canvas, data, x);
-    mVolRenderer?.drawText(canvas, data, x);
-    mSecondaryRenderer?.drawText(canvas, data, x);
+    /*mVolRenderer?.drawText(canvas, data, x);
+    mSecondaryRenderer?.drawText(canvas, data, x);*/
   }
 
   @override
@@ -300,8 +300,8 @@ class ChartPainter extends BaseChartPainter {
     var index = calculateSelectedX(selectX);
     KLineEntity point = getItem(index);
     Paint paintY = Paint()
-      ..color = Colors.white12
-      ..strokeWidth = ChartStyle.vCrossWidth
+      ..color = Color(0xffEFC423)
+      ..strokeWidth = ChartStyle.hCrossWidth
       ..isAntiAlias = true;
     double x = getX(index);
     double y = getMainY(point.close);
@@ -310,7 +310,7 @@ class ChartPainter extends BaseChartPainter {
         Offset(x, size.height - mBottomPadding), paintY);
 
     Paint paintX = Paint()
-      ..color = Colors.white
+      ..color = Color(0xffEFC423)
       ..strokeWidth = ChartStyle.hCrossWidth
       ..isAntiAlias = true;
     // k线图横线

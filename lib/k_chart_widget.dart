@@ -155,18 +155,19 @@ class _KChartWidgetState extends State<KChartWidget>
           CustomPaint(
             size: Size(double.infinity, double.infinity),
             painter: ChartPainter(
-                datas: widget.datas,
-                scaleX: mScaleX,
-                scrollX: mScrollX,
-                selectX: mSelectX,
-                isLongPass: isLongPress,
-                mainState: widget.mainState,
-                secondaryState: widget.secondaryState,
-                isLine: widget.isLine,
-                sink: mInfoWindowStream?.sink,
-                bgColor: widget.bgColor,
-                fixedLength: widget.fixedLength,
-                maDayList: widget.maDayList),
+              datas: widget.datas,
+              scaleX: mScaleX,
+              scrollX: mScrollX,
+              selectX: mSelectX,
+              isLongPass: isLongPress,
+              mainState: widget.mainState,
+              secondaryState: widget.secondaryState,
+              isLine: widget.isLine,
+              sink: mInfoWindowStream?.sink,
+              bgColor: widget.bgColor,
+              fixedLength: widget.fixedLength,
+              maDayList: widget.maDayList,
+            ),
           ),
           _buildInfoDialog()
         ],
@@ -272,7 +273,7 @@ class _KChartWidgetState extends State<KChartWidget>
           ];
           return Container(
             margin: EdgeInsets.only(
-                left: snapshot.data.isLeft ? 4 : mWidth - mWidth / 3 - 4,
+                left: snapshot.data.isLeft ? 4 : mWidth - mWidth / 2.5 - 2.75,
                 top: 25),
             width: mWidth / 3,
             decoration: BoxDecoration(
@@ -294,21 +295,27 @@ class _KChartWidgetState extends State<KChartWidget>
   }
 
   Widget _buildItem(String info, String infoName) {
-    Color color = Colors.white;
+    Color color = Colors.black;
     if (info.startsWith("+"))
-      color = Colors.green;
+      color = Color(0xffFC932A);
     else if (info.startsWith("-"))
-      color = Colors.red;
+      color = Color(0xff7AB708);
     else
-      color = Colors.white;
+      color = Colors.black;
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         Expanded(
-            child: Text("$infoName",
-                style: const TextStyle(color: Colors.white, fontSize: 10.0))),
-        Text(info, style: TextStyle(color: color, fontSize: 10.0)),
+          child: Text(
+            "$infoName",
+            style: const TextStyle(color: Colors.black, fontSize: 12.0),
+          ),
+        ),
+        Text(
+          info,
+          style: TextStyle(color: color, fontSize: 13.0),
+        ),
       ],
     );
   }

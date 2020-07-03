@@ -71,8 +71,9 @@ class MainRenderer extends BaseChartRenderer<CandleEntity> {
     for (int i = 0; i < data.maValueList.length; i++) {
       if (data.maValueList[i] != 0) {
         var item = TextSpan(
-            text: "MA${maDayList[i]}:${format(data.maValueList[i])}    ",
+            text: "移動平均(${maDayList[i]}):${format(data.maValueList[i])}    ",
             style: getTextStyle(ChartColors.getMAColor(i)));
+
         result.add(item);
       }
     }

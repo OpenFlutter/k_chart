@@ -3,14 +3,14 @@ import 'package:flutter/material.dart' show Color;
 class ChartColors {
   ChartColors._();
 
-  static const Color kLineColor = Color(0xff4C86CD);
+  static const Color kLineColor = Color(0xffF6D249);
   static const Color lineFillColor = Color(0x554C86CD);
-  static const Color ma5Color = Color(0xffC9B885);
-  static const Color ma10Color = Color(0xff6CB0A6);
-  static const Color ma30Color = Color(0xff9979C6);
-  static const Color upColor = Color(0xff4DAA90);
-  static const Color dnColor = Color(0xffC15466);
-  static const Color volColor = Color(0xff4729AE);
+  static const Color ma5Color = Color(0xffFFA953);
+  static const Color ma10Color = Color(0xff9BDE1D);
+  static const Color ma30Color = Color(0xffB79DFF);
+  static const Color upColor = Color(0xffFFA953);
+  static const Color dnColor = Color(0xff9BDE1D);
+  static const Color volColor = Color(0xffC6C6C6);
 
   static const Color macdColor = Color(0xff4729AE);
   static const Color difColor = Color(0xffC9B885);
@@ -21,16 +21,16 @@ class ChartColors {
   static const Color jColor = Color(0xff9979C6);
   static const Color rsiColor = Color(0xffC9B885);
 
-  static const Color defaultTextColor = Color(0xff60738E);
+  static const Color defaultTextColor = Color(0xff2b2b2b);
 
   //深度颜色
-  static const Color depthBuyColor = Color(0xff60A893);
-  static const Color depthSellColor = Color(0xffC15866);
+  static const Color depthBuyColor = Color(0xffFFA953);
+  static const Color depthSellColor = Color(0xff9BDE1D);
   //选中后显示值边框颜色
-  static const Color selectBorderColor = Color(0xff6C7A86);
+  static const Color selectBorderColor = Color(0xffF6D249);
 
   //选中后显示值背景的填充颜色
-  static const Color selectFillColor = Color(0xff0D1722);
+  static const Color selectFillColor = Color(0xffFFFBEB);
 
   static Color getMAColor(int index) {
     Color maColor = ma5Color;
@@ -59,7 +59,7 @@ class ChartStyle {
   static const double candleWidth = 8.5;
 
   //蜡烛中间线的宽度
-  static const double candleLineWidth = 1.5;
+  static const double candleLineWidth = 2;
 
   //vol柱子宽度
   static const double volWidth = 8.5;
