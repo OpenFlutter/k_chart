@@ -66,7 +66,7 @@ abstract class BaseChartRenderer<T> {
 
   TextStyle getTextStyle(Color color) {
     return TextStyle(
-      fontSize: 10.0,
+      fontSize: 11.0,
       fontWeight: FontWeight.bold,
       color: color,
     );

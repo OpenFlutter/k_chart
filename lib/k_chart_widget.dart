@@ -239,14 +239,14 @@ class _KChartWidgetState extends State<KChartWidget>
     "成交额"
   ];
   final List<String> infoNamesEN = [
-    "Date",
-    "Open",
-    "High",
-    "Low",
-    "Close",
-    "Change",
-    "Change%",
-    "Amount"
+    "日付",
+    "始値",
+    "高値",
+    "安値",
+    "終値",
+    "変化額",
+    "変化率",
+    "数量"
   ];
   List<String> infos;
 
@@ -273,8 +273,8 @@ class _KChartWidgetState extends State<KChartWidget>
           ];
           return Container(
             margin: EdgeInsets.only(
-                left: snapshot.data.isLeft ? 4 : mWidth - mWidth / 2.5 - 2.75,
-                top: 25),
+                left: snapshot.data.isLeft ? 4 : mWidth - mWidth / 2 - 2.5,
+                top: 15),
             width: mWidth / 3,
             decoration: BoxDecoration(
                 color: ChartColors.selectFillColor,
@@ -283,7 +283,7 @@ class _KChartWidgetState extends State<KChartWidget>
             child: ListView.builder(
               padding: EdgeInsets.all(4),
               itemCount: infoNamesCN.length,
-              itemExtent: 14.0,
+              itemExtent: 18.0,
               shrinkWrap: true,
               itemBuilder: (context, index) {
                 return _buildItem(infos[index],
