@@ -274,11 +274,11 @@ class ChartPainter extends BaseChartPainter {
     if (x < mWidth / 2) {
       //画右边
       TextPainter tp = getTextPainter(
-          "── " + mMainLowMinValue.toStringAsFixed(fixedLength), Colors.white);
+          "── " + mMainLowMinValue.toStringAsFixed(fixedLength), Colors.black);
       tp.paint(canvas, Offset(x, y - tp.height / 2));
     } else {
       TextPainter tp = getTextPainter(
-          mMainLowMinValue.toStringAsFixed(fixedLength) + " ──", Colors.white);
+          mMainLowMinValue.toStringAsFixed(fixedLength) + " ──", Colors.black);
       tp.paint(canvas, Offset(x - tp.width, y - tp.height / 2));
     }
     x = translateXtoX(getX(mMainMaxIndex));
@@ -286,11 +286,11 @@ class ChartPainter extends BaseChartPainter {
     if (x < mWidth / 2) {
       //画右边
       TextPainter tp = getTextPainter(
-          "── " + mMainHighMaxValue.toStringAsFixed(fixedLength), Colors.white);
+          "── " + mMainHighMaxValue.toStringAsFixed(fixedLength), Colors.black);
       tp.paint(canvas, Offset(x, y - tp.height / 2));
     } else {
       TextPainter tp = getTextPainter(
-          mMainHighMaxValue.toStringAsFixed(fixedLength) + " ──", Colors.white);
+          mMainHighMaxValue.toStringAsFixed(fixedLength) + " ──", Colors.black);
       tp.paint(canvas, Offset(x - tp.width, y - tp.height / 2));
     }
   }
