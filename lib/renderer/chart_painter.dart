@@ -31,6 +31,7 @@ class ChartPainter extends BaseChartPainter {
       @required isLongPass,
       @required selectX,
       mainState,
+      volHidden,
       secondaryState,
       this.sink,
       bool isLine,
@@ -45,6 +46,7 @@ class ChartPainter extends BaseChartPainter {
             isLongPress: isLongPass,
             selectX: selectX,
             mainState: mainState,
+            volHidden: volHidden,
             secondaryState: secondaryState,
             isLine: isLine);
 
@@ -61,8 +63,10 @@ class ChartPainter extends BaseChartPainter {
     }
     mMainRenderer ??= MainRenderer(mMainRect, mMainMaxValue, mMainMinValue,
         mTopPadding, mainState, isLine, fixedLength, maDayList);
-    mVolRenderer ??= VolRenderer(
-        mVolRect, mVolMaxValue, mVolMinValue, mChildPadding, fixedLength);
+    if (mVolRect != null) {
+      mVolRenderer ??= VolRenderer(
+          mVolRect, mVolMaxValue, mVolMinValue, mChildPadding, fixedLength);
+    }
     if (mSecondaryRect != null)
       mSecondaryRenderer ??= SecondaryRenderer(
           mSecondaryRect,

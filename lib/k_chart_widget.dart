@@ -29,6 +29,7 @@ class TimeFormat {
 class KChartWidget extends StatefulWidget {
   final List<KLineEntity> datas;
   final MainState mainState;
+  final bool volHidden;
   final SecondaryState secondaryState;
   final bool isLine;
   final bool isChinese;
@@ -47,6 +48,7 @@ class KChartWidget extends StatefulWidget {
     this.datas, {
     this.mainState = MainState.MA,
     this.secondaryState = SecondaryState.MACD,
+    this.volHidden = false,
     this.isLine,
     this.isChinese = true,
     this.timeFormat = TimeFormat.YEAR_MONTH_DAY,
@@ -161,6 +163,7 @@ class _KChartWidgetState extends State<KChartWidget>
                 selectX: mSelectX,
                 isLongPass: isLongPress,
                 mainState: widget.mainState,
+                volHidden: widget.volHidden,
                 secondaryState: widget.secondaryState,
                 isLine: widget.isLine,
                 sink: mInfoWindowStream?.sink,

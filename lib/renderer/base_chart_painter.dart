@@ -13,6 +13,7 @@ abstract class BaseChartPainter extends CustomPainter {
   List<KLineEntity> datas;
   MainState mainState = MainState.MA;
   SecondaryState secondaryState = SecondaryState.MACD;
+  bool volHidden = false;
   double scaleX = 1.0, scrollX = 0.0, selectX;
   bool isLongPress = false;
   bool isLine = false;
@@ -43,6 +44,7 @@ abstract class BaseChartPainter extends CustomPainter {
       @required this.isLongPress,
       @required this.selectX,
       this.mainState,
+      this.volHidden,
       this.secondaryState,
       this.isLine}) {
     mItemCount = datas?.length ?? 0;
@@ -118,18 +120,24 @@ abstract class BaseChartPainter extends CustomPainter {
   void drawCrossLineText(Canvas canvas, Size size);
 
   void initRect(Size size) {
-    double mainHeight = secondaryState != SecondaryState.NONE
-        ? mDisplayHeight * 0.6
-        : mDisplayHeight * 0.8;
-    double volHeight = mDisplayHeight * 0.2;
-    double secondaryHeight = mDisplayHeight * 0.2;
+    double volHeight = volHidden != true ? mDisplayHeight * 0.2 : 0;
+    double secondaryHeight = secondaryState != SecondaryState.NONE ? mDisplayHeight * 0.2 : 0;
+
+    double mainHeight = mDisplayHeight;
+    mainHeight -= volHeight;
+    mainHeight -= secondaryHeight;
+
     mMainRect = Rect.fromLTRB(0, mTopPadding, mWidth, mTopPadding + mainHeight);
-    mVolRect = Rect.fromLTRB(0, mMainRect.bottom + mChildPadding, mWidth,
-        mMainRect.bottom + volHeight);
+
+    if (volHidden != true) {
+      mVolRect = Rect.fromLTRB(0, mMainRect.bottom + mChildPadding, mWidth,
+          mMainRect.bottom + volHeight);
+    }
+
     //secondaryState == SecondaryState.NONE隐藏副视图
-    if (secondaryState != SecondaryState.NONE)
-      mSecondaryRect = Rect.fromLTRB(0, mVolRect.bottom + mChildPadding, mWidth,
-          mVolRect.bottom + secondaryHeight);
+    if (secondaryState != SecondaryState.NONE) {
+      mSecondaryRect = Rect.fromLTRB(0, mMainRect.bottom + volHeight + mChildPadding, mWidth, mMainRect.bottom + volHeight + secondaryHeight);
+    }
   }
 
   calculateValue() {
