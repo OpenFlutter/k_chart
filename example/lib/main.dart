@@ -34,6 +34,7 @@ class _MyHomePageState extends State<MyHomePage> {
   List<KLineEntity> datas;
   bool showLoading = true;
   MainState _mainState = MainState.MA;
+  bool _volHidden = false;
   SecondaryState _secondaryState = SecondaryState.MACD;
   bool isLine = true;
   bool isChinese = true;
@@ -97,6 +98,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 datas,
                 isLine: isLine,
                 mainState: _mainState,
+                volHidden: _volHidden,
                 secondaryState: _secondaryState,
                 fixedLength: 2,
                 timeFormat: TimeFormat.YEAR_MONTH_DAY,
@@ -135,6 +137,7 @@ class _MyHomePageState extends State<MyHomePage> {
         button("RSI", onPressed: () => _secondaryState = SecondaryState.RSI),
         button("WR", onPressed: () => _secondaryState = SecondaryState.WR),
         button("隐藏副视图", onPressed: () => _secondaryState = SecondaryState.NONE),
+        button(_volHidden ? "显示成交量" : "隐藏成交量", onPressed: () => _volHidden = !_volHidden),
         button("切换中英文", onPressed: () => isChinese = !isChinese),
       ],
     );
