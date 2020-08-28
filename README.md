@@ -38,6 +38,7 @@ Container(
                 maDayList: [5,10,20],// Display of MA,This parameter must be equal to DataUtil.calculate‘s maDayList
                 bgColor: [Colors.black, Colors.black],// The background color of the chart is gradient
                 isChinese: true,// Graphic language
+                volHidden: false,// hide volume
                 isOnDrag: (isDrag){},// true is on Drag.Don't load data while Draging.
               ),
             ),
