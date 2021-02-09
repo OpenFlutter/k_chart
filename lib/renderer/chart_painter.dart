@@ -26,6 +26,7 @@ class ChartPainter extends BaseChartPainter {
   Color selectionLineColor;
   Color lineChartColor;
   Color lineChartFillColor;
+  Color maxMinColor;
 
   ChartPainter({
     @required datas,
@@ -44,6 +45,7 @@ class ChartPainter extends BaseChartPainter {
     this.selectionLineColor,
     this.lineChartColor,
     this.lineChartFillColor,
+    this.maxMinColor,
   })  : assert(bgColor == null || bgColor.length >= 2),
         super(
             datas: datas,
@@ -294,11 +296,11 @@ class ChartPainter extends BaseChartPainter {
     if (x < mWidth / 2) {
       //画右边
       TextPainter tp = getTextPainter(
-          "── " + mMainLowMinValue.toStringAsFixed(fixedLength), Colors.white);
+          "── " + mMainLowMinValue.toStringAsFixed(fixedLength), maxMinColor);
       tp.paint(canvas, Offset(x, y - tp.height / 2));
     } else {
       TextPainter tp = getTextPainter(
-          mMainLowMinValue.toStringAsFixed(fixedLength) + " ──", Colors.white);
+          mMainLowMinValue.toStringAsFixed(fixedLength) + " ──", maxMinColor);
       tp.paint(canvas, Offset(x - tp.width, y - tp.height / 2));
     }
     x = translateXtoX(getX(mMainMaxIndex));
@@ -306,11 +308,11 @@ class ChartPainter extends BaseChartPainter {
     if (x < mWidth / 2) {
       //画右边
       TextPainter tp = getTextPainter(
-          "── " + mMainHighMaxValue.toStringAsFixed(fixedLength), Colors.white);
+          "── " + mMainHighMaxValue.toStringAsFixed(fixedLength), maxMinColor);
       tp.paint(canvas, Offset(x, y - tp.height / 2));
     } else {
       TextPainter tp = getTextPainter(
-          mMainHighMaxValue.toStringAsFixed(fixedLength) + " ──", Colors.white);
+          mMainHighMaxValue.toStringAsFixed(fixedLength) + " ──", maxMinColor);
       tp.paint(canvas, Offset(x - tp.width, y - tp.height / 2));
     }
   }

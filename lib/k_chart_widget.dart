@@ -46,6 +46,7 @@ class KChartWidget extends StatefulWidget {
   final Color selectionLineColor;
   Color lineChartColor;
   Color lineChartFillColor;
+  Color maxMinColor;
 
   KChartWidget(
     this.datas, {
@@ -66,6 +67,7 @@ class KChartWidget extends StatefulWidget {
     this.selectionLineColor = Colors.black,
     this.lineChartColor = Colors.black,
     this.lineChartFillColor = Colors.black45,
+    this.maxMinColor = Colors.black87,
   }) : assert(maDayList != null);
 
   @override
@@ -179,6 +181,7 @@ class _KChartWidgetState extends State<KChartWidget>
               selectionLineColor: widget.selectionLineColor,
               lineChartColor: widget.lineChartColor,
               lineChartFillColor: widget.lineChartFillColor,
+              maxMinColor: widget.maxMinColor,
             ),
           ),
           _buildInfoDialog()

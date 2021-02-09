@@ -96,7 +96,7 @@ class _MyHomePageState extends State<MyHomePage> {
               width: double.infinity,
               child: KChartWidget(
                 datas,
-                bgColor: [Colors.white, Colors.white],
+                bgColor: [Colors.grey, Colors.grey],
                 isLine: isLine,
                 mainState: _mainState,
                 volHidden: _volHidden,
@@ -107,6 +107,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 selectionLineColor: Colors.black54,
                 lineChartColor: Colors.black87,
                 lineChartFillColor: Colors.black38,
+                maxMinColor: Colors.black87,
               ),
             ),
             if (showLoading)
