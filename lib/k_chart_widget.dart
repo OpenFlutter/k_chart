@@ -47,6 +47,7 @@ class KChartWidget extends StatefulWidget {
   Color lineChartColor;
   Color lineChartFillColor;
   Color maxMinColor;
+  double topPadding, bottomPadding;
 
   KChartWidget(
     this.datas, {
@@ -68,6 +69,8 @@ class KChartWidget extends StatefulWidget {
     this.lineChartColor = Colors.black,
     this.lineChartFillColor = Colors.black45,
     this.maxMinColor = Colors.black87,
+    this.topPadding = 0.0,
+    this.bottomPadding = 20.0,
   }) : assert(maDayList != null);
 
   @override
@@ -182,6 +185,8 @@ class _KChartWidgetState extends State<KChartWidget>
               lineChartColor: widget.lineChartColor,
               lineChartFillColor: widget.lineChartFillColor,
               maxMinColor: widget.maxMinColor,
+              topPadding: widget.topPadding,
+              bottomPadding: widget.bottomPadding,
             ),
           ),
           _buildInfoDialog()

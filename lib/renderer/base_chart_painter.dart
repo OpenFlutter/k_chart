@@ -21,7 +21,7 @@ abstract class BaseChartPainter extends CustomPainter {
   //3块区域大小与位置
   Rect mMainRect, mVolRect, mSecondaryRect;
   double mDisplayHeight, mWidth;
-  double mTopPadding = 30.0, mBottomPadding = 20.0, mChildPadding = 12.0;
+  double topPadding, bottomPadding, mChildPadding = 12.0;
   final int mGridRows = 4, mGridColumns = 4;
   int mStartIndex = 0, mStopIndex = 0;
   double mMainMaxValue = double.minPositive, mMainMinValue = double.maxFinite;
@@ -43,6 +43,8 @@ abstract class BaseChartPainter extends CustomPainter {
       @required this.scrollX,
       @required this.isLongPress,
       @required this.selectX,
+      @required this.topPadding,
+      @required this.bottomPadding,
       this.mainState,
       this.volHidden,
       this.secondaryState,
@@ -72,7 +74,7 @@ abstract class BaseChartPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    mDisplayHeight = size.height - mTopPadding - mBottomPadding;
+    mDisplayHeight = size.height - topPadding - bottomPadding;
     mWidth = size.width;
     initRect(size);
     calculateValue();
@@ -128,7 +130,7 @@ abstract class BaseChartPainter extends CustomPainter {
     mainHeight -= volHeight;
     mainHeight -= secondaryHeight;
 
-    mMainRect = Rect.fromLTRB(0, mTopPadding, mWidth, mTopPadding + mainHeight);
+    mMainRect = Rect.fromLTRB(0, topPadding, mWidth, topPadding + mainHeight);
 
     if (volHidden != true) {
       mVolRect = Rect.fromLTRB(0, mMainRect.bottom + mChildPadding, mWidth,
