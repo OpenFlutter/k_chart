@@ -23,22 +23,28 @@ class ChartPainter extends BaseChartPainter {
   List<Color> bgColor;
   int fixedLength;
   List<int> maDayList;
+  Color selectionLineColor;
+  Color lineChartColor;
+  Color lineChartFillColor;
 
-  ChartPainter(
-      {@required datas,
-      @required scaleX,
-      @required scrollX,
-      @required isLongPass,
-      @required selectX,
-      mainState,
-      volHidden,
-      secondaryState,
-      this.sink,
-      bool isLine,
-      this.bgColor,
-      this.fixedLength,
-      this.maDayList})
-      : assert(bgColor == null || bgColor.length >= 2),
+  ChartPainter({
+    @required datas,
+    @required scaleX,
+    @required scrollX,
+    @required isLongPass,
+    @required selectX,
+    mainState,
+    volHidden,
+    secondaryState,
+    this.sink,
+    bool isLine,
+    this.bgColor,
+    this.fixedLength,
+    this.maDayList,
+    this.selectionLineColor,
+    this.lineChartColor,
+    this.lineChartFillColor,
+  })  : assert(bgColor == null || bgColor.length >= 2),
         super(
             datas: datas,
             scaleX: scaleX,
@@ -61,8 +67,18 @@ class ChartPainter extends BaseChartPainter {
             NumberUtil.getMaxDecimalLength(t.open, t.close, t.high, t.low);
       }
     }
-    mMainRenderer ??= MainRenderer(mMainRect, mMainMaxValue, mMainMinValue,
-        mTopPadding, mainState, isLine, fixedLength, maDayList);
+    mMainRenderer ??= MainRenderer(
+      mMainRect,
+      mMainMaxValue,
+      mMainMinValue,
+      mTopPadding,
+      mainState,
+      isLine,
+      fixedLength,
+      lineChartColor,
+      lineChartFillColor,
+      maDayList,
+    );
     if (mVolRect != null) {
       mVolRenderer ??= VolRenderer(
           mVolRect, mVolMaxValue, mVolMinValue, mChildPadding, fixedLength);
@@ -304,7 +320,7 @@ class ChartPainter extends BaseChartPainter {
     var index = calculateSelectedX(selectX);
     KLineEntity point = getItem(index);
     Paint paintY = Paint()
-      ..color = Colors.white12
+      ..color = selectionLineColor
       ..strokeWidth = ChartStyle.vCrossWidth
       ..isAntiAlias = true;
     double x = getX(index);
@@ -314,7 +330,7 @@ class ChartPainter extends BaseChartPainter {
         Offset(x, size.height - mBottomPadding), paintY);
 
     Paint paintX = Paint()
-      ..color = Colors.white
+      ..color = selectionLineColor
       ..strokeWidth = ChartStyle.hCrossWidth
       ..isAntiAlias = true;
     // k线图横线

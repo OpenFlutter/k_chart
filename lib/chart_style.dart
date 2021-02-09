@@ -3,8 +3,6 @@ import 'package:flutter/material.dart' show Color;
 class ChartColors {
   ChartColors._();
 
-  static const Color kLineColor = Color(0xff4C86CD);
-  static const Color lineFillColor = Color(0x554C86CD);
   static const Color ma5Color = Color(0xffC9B885);
   static const Color ma10Color = Color(0xff6CB0A6);
   static const Color ma30Color = Color(0xff9979C6);

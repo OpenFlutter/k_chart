@@ -96,6 +96,7 @@ class _MyHomePageState extends State<MyHomePage> {
               width: double.infinity,
               child: KChartWidget(
                 datas,
+                bgColor: [Colors.white, Colors.white],
                 isLine: isLine,
                 mainState: _mainState,
                 volHidden: _volHidden,
@@ -103,6 +104,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 fixedLength: 2,
                 timeFormat: TimeFormat.YEAR_MONTH_DAY,
                 isChinese: isChinese,
+                selectionLineColor: Colors.black54,
+                lineChartColor: Colors.black87,
+                lineChartFillColor: Colors.black38,
               ),
             ),
             if (showLoading)
@@ -137,7 +141,8 @@ class _MyHomePageState extends State<MyHomePage> {
         button("RSI", onPressed: () => _secondaryState = SecondaryState.RSI),
         button("WR", onPressed: () => _secondaryState = SecondaryState.WR),
         button("隐藏副视图", onPressed: () => _secondaryState = SecondaryState.NONE),
-        button(_volHidden ? "显示成交量" : "隐藏成交量", onPressed: () => _volHidden = !_volHidden),
+        button(_volHidden ? "显示成交量" : "隐藏成交量",
+            onPressed: () => _volHidden = !_volHidden),
         button("切换中英文", onPressed: () => isChinese = !isChinese),
       ],
     );

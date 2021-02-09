@@ -43,6 +43,9 @@ class KChartWidget extends StatefulWidget {
   final double flingRatio;
   final Curve flingCurve;
   final Function(bool) isOnDrag;
+  final Color selectionLineColor;
+  Color lineChartColor;
+  Color lineChartFillColor;
 
   KChartWidget(
     this.datas, {
@@ -60,6 +63,9 @@ class KChartWidget extends StatefulWidget {
     this.flingRatio = 0.5,
     this.flingCurve = Curves.decelerate,
     this.isOnDrag,
+    this.selectionLineColor = Colors.black,
+    this.lineChartColor = Colors.black,
+    this.lineChartFillColor = Colors.black45,
   }) : assert(maDayList != null);
 
   @override
@@ -157,19 +163,23 @@ class _KChartWidgetState extends State<KChartWidget>
           CustomPaint(
             size: Size(double.infinity, double.infinity),
             painter: ChartPainter(
-                datas: widget.datas,
-                scaleX: mScaleX,
-                scrollX: mScrollX,
-                selectX: mSelectX,
-                isLongPass: isLongPress,
-                mainState: widget.mainState,
-                volHidden: widget.volHidden,
-                secondaryState: widget.secondaryState,
-                isLine: widget.isLine,
-                sink: mInfoWindowStream?.sink,
-                bgColor: widget.bgColor,
-                fixedLength: widget.fixedLength,
-                maDayList: widget.maDayList),
+              datas: widget.datas,
+              scaleX: mScaleX,
+              scrollX: mScrollX,
+              selectX: mSelectX,
+              isLongPass: isLongPress,
+              mainState: widget.mainState,
+              volHidden: widget.volHidden,
+              secondaryState: widget.secondaryState,
+              isLine: widget.isLine,
+              sink: mInfoWindowStream?.sink,
+              bgColor: widget.bgColor,
+              fixedLength: widget.fixedLength,
+              maDayList: widget.maDayList,
+              selectionLineColor: widget.selectionLineColor,
+              lineChartColor: widget.lineChartColor,
+              lineChartFillColor: widget.lineChartFillColor,
+            ),
           ),
           _buildInfoDialog()
         ],
