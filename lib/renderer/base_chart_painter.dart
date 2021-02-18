@@ -35,39 +35,45 @@ abstract class BaseChartPainter extends CustomPainter {
   int mItemCount = 0;
   double mDataLen = 0.0; //数据占屏幕总长度
   double mPointWidth = ChartStyle.pointWidth;
-  List<String> mFormats = [yyyy, '-', mm, '-', dd, ' ', HH, ':', nn]; //格式化时间
+  List<String> mFormats = [yyyy, '-', mm, '-', dd, ' ', HH, ':', nn];
+  final List<String> dateFormat;
 
-  BaseChartPainter(
-      {@required this.datas,
-      @required this.scaleX,
-      @required this.scrollX,
-      @required this.isLongPress,
-      @required this.selectX,
-      @required this.topPadding,
-      @required this.bottomPadding,
-      this.mainState,
-      this.volHidden,
-      this.secondaryState,
-      this.isLine}) {
+  BaseChartPainter({
+    @required this.datas,
+    @required this.scaleX,
+    @required this.scrollX,
+    @required this.isLongPress,
+    @required this.selectX,
+    @required this.topPadding,
+    @required this.bottomPadding,
+    this.mainState,
+    this.volHidden,
+    this.secondaryState,
+    this.isLine,
+    this.dateFormat,
+  }) {
     mItemCount = datas?.length ?? 0;
     mDataLen = mItemCount * mPointWidth;
     initFormats();
   }
 
   void initFormats() {
-//    [yyyy, '-', mm, '-', dd, ' ', HH, ':', nn]
+    if (dateFormat != null) {
+      mFormats = dateFormat;
+      return;
+    }
+
     if (mItemCount < 2) return;
+
     int firstTime = datas.first?.time ?? 0;
     int secondTime = datas[1]?.time ?? 0;
     int time = secondTime - firstTime;
     time ~/= 1000;
-    //月线
+
     if (time >= 24 * 60 * 60 * 28)
       mFormats = [yy, '-', mm];
-    //日线等
     else if (time >= 24 * 60 * 60)
       mFormats = [yy, '-', mm, '-', dd];
-    //小时线等
     else
       mFormats = [mm, '-', dd, ' ', HH, ':', nn];
   }

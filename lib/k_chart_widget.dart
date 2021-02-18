@@ -26,15 +26,35 @@ class TimeFormat {
   ];
 }
 
+enum KChartLanguage { russian, english }
+
+enum InfoWindowElement {
+  date,
+  open,
+  high,
+  low,
+  close,
+  change,
+  changePercent,
+  amount
+}
+
+const defaultInfoWindowElements = [
+  InfoWindowElement.date,
+  InfoWindowElement.open,
+  InfoWindowElement.high,
+  InfoWindowElement.low,
+  InfoWindowElement.close,
+  InfoWindowElement.changePercent,
+];
+
 class KChartWidget extends StatefulWidget {
   final List<KLineEntity> datas;
   final MainState mainState;
   final bool volHidden;
   final SecondaryState secondaryState;
   final bool isLine;
-  final bool isChinese;
-  final List<String> timeFormat;
-  //当屏幕滚动到尽头会调用，真为拉到屏幕右侧尽头，假为拉到屏幕左侧尽头
+  final KChartLanguage language;
   final Function(bool) onLoadMore;
   final List<Color> bgColor;
   final int fixedLength;
@@ -48,6 +68,8 @@ class KChartWidget extends StatefulWidget {
   Color lineChartFillColor;
   Color maxMinColor;
   double topPadding, bottomPadding;
+  final List<String> dateFormat;
+  final List<InfoWindowElement> infoWindowElements;
 
   KChartWidget(
     this.datas, {
@@ -55,7 +77,7 @@ class KChartWidget extends StatefulWidget {
     this.secondaryState = SecondaryState.MACD,
     this.volHidden = false,
     this.isLine,
-    this.isChinese = true,
+    this.language,
     this.timeFormat = TimeFormat.YEAR_MONTH_DAY,
     this.onLoadMore,
     this.bgColor,
@@ -71,6 +93,8 @@ class KChartWidget extends StatefulWidget {
     this.maxMinColor = Colors.black87,
     this.topPadding = 0.0,
     this.bottomPadding = 20.0,
+    this.dateFormat,
+    this.infoWindowElements = defaultInfoWindowElements,
   }) : assert(maDayList != null);
 
   @override
@@ -117,6 +141,7 @@ class _KChartWidgetState extends State<KChartWidget>
       mScrollX = mSelectX = 0.0;
       mScaleX = 1.0;
     }
+
     return GestureDetector(
       onHorizontalDragDown: (details) {
         _stopAnimation();
@@ -187,6 +212,8 @@ class _KChartWidgetState extends State<KChartWidget>
               maxMinColor: widget.maxMinColor,
               topPadding: widget.topPadding,
               bottomPadding: widget.bottomPadding,
+              datetimeFormat: widget.dateFormat,
+              language: widget.language,
             ),
           ),
           _buildInfoDialog()
@@ -214,11 +241,18 @@ class _KChartWidgetState extends State<KChartWidget>
 
   void _onFling(double x) {
     _controller = AnimationController(
-        duration: Duration(milliseconds: widget.flingTime), vsync: this);
+      duration: Duration(milliseconds: widget.flingTime),
+      vsync: this,
+    );
+
     aniX = null;
-    aniX = Tween<double>(begin: mScrollX, end: x * widget.flingRatio + mScrollX)
-        .animate(
-            CurvedAnimation(parent: _controller, curve: widget.flingCurve));
+    aniX = Tween<double>(
+      begin: mScrollX,
+      end: x * widget.flingRatio + mScrollX,
+    ).animate(
+      CurvedAnimation(parent: _controller, curve: widget.flingCurve),
+    );
+
     aniX.addListener(() {
       mScrollX = aniX.value;
       if (mScrollX <= 0) {
@@ -248,70 +282,86 @@ class _KChartWidgetState extends State<KChartWidget>
 
   void notifyChanged() => setState(() {});
 
-  final List<String> infoNamesCN = [
-    "时间",
-    "开",
-    "高",
-    "低",
-    "收",
-    "涨跌额",
-    "涨跌幅",
-    "成交额"
-  ];
-  final List<String> infoNamesEN = [
-    "Date",
-    "Open",
-    "High",
-    "Low",
-    "Close",
-    "Change",
-    "Change%",
-    "Amount"
-  ];
-  List<String> infos;
+  final infoNamesEN = {
+    InfoWindowElement.date: "Date",
+    InfoWindowElement.open: "Open",
+    InfoWindowElement.high: "High",
+    InfoWindowElement.low: "Low",
+    InfoWindowElement.close: "Close",
+    InfoWindowElement.change: "Change",
+    InfoWindowElement.changePercent: "Change%",
+    InfoWindowElement.amount: "Amount"
+  };
+
+  final infoNamesRU = {
+    InfoWindowElement.date: "Дата",
+    InfoWindowElement.open: "Откр.",
+    InfoWindowElement.high: "Макс.",
+    InfoWindowElement.low: "Мин.",
+    InfoWindowElement.close: "Закр.",
+    InfoWindowElement.change: "Изм.",
+    InfoWindowElement.changePercent: "Изм.",
+    InfoWindowElement.amount: "Колич."
+  };
 
   Widget _buildInfoDialog() {
     return StreamBuilder<InfoWindowEntity>(
-        stream: mInfoWindowStream?.stream,
-        builder: (context, snapshot) {
-          if (!isLongPress ||
-              widget.isLine == true ||
-              !snapshot.hasData ||
-              snapshot.data.kLineEntity == null) return Container();
-          KLineEntity entity = snapshot.data.kLineEntity;
-          double upDown = entity.change ?? entity.close - entity.open;
-          double upDownPercent = entity.ratio ?? (upDown / entity.open) * 100;
-          infos = [
-            getDate(entity.time),
-            entity.open.toStringAsFixed(widget.fixedLength),
-            entity.high.toStringAsFixed(widget.fixedLength),
-            entity.low.toStringAsFixed(widget.fixedLength),
-            entity.close.toStringAsFixed(widget.fixedLength),
-            "${upDown > 0 ? "+" : ""}${upDown.toStringAsFixed(widget.fixedLength)}",
-            "${upDownPercent > 0 ? "+" : ''}${upDownPercent.toStringAsFixed(2)}%",
-            entity.amount.toInt().toString()
-          ];
-          return Container(
-            margin: EdgeInsets.only(
-                left: snapshot.data.isLeft ? 4 : mWidth - mWidth / 3 - 4,
-                top: 25),
-            width: mWidth / 3,
-            decoration: BoxDecoration(
-                color: ChartColors.selectFillColor,
-                border: Border.all(
-                    color: ChartColors.selectBorderColor, width: 0.5)),
-            child: ListView.builder(
-              padding: EdgeInsets.all(4),
-              itemCount: infoNamesCN.length,
-              itemExtent: 14.0,
-              shrinkWrap: true,
-              itemBuilder: (context, index) {
-                return _buildItem(infos[index],
-                    widget.isChinese ? infoNamesCN[index] : infoNamesEN[index]);
-              },
-            ),
-          );
-        });
+      stream: mInfoWindowStream?.stream,
+      builder: _buildInfoWindowContent,
+    );
+  }
+
+  Widget _buildInfoWindowContent(context, snapshot) {
+    if (!isLongPress ||
+        widget.isLine == true ||
+        !snapshot.hasData ||
+        snapshot.data.kLineEntity == null) return Container();
+
+    KLineEntity e = snapshot.data.kLineEntity;
+    double upDown = e.change ?? e.close - e.open;
+    double upDownPercent = e.ratio ?? (upDown / e.open) * 100;
+    final fixedLength = widget.fixedLength;
+
+    final infoGrabbers = {
+      InfoWindowElement.date: () => getDate(e.time),
+      InfoWindowElement.open: () => e.open.toStringAsFixed(fixedLength),
+      InfoWindowElement.high: () => e.high.toStringAsFixed(fixedLength),
+      InfoWindowElement.low: () => e.low.toStringAsFixed(fixedLength),
+      InfoWindowElement.close: () => e.close.toStringAsFixed(fixedLength),
+      InfoWindowElement.change: () =>
+          "${upDown > 0 ? "+" : ""}${upDown.toStringAsFixed(widget.fixedLength)}",
+      InfoWindowElement.changePercent: () =>
+          "${upDownPercent > 0 ? "+" : ''}${upDownPercent.toStringAsFixed(2)}%",
+      InfoWindowElement.amount: () => e.amount.toInt().toString(),
+    };
+
+    final infoNames = {
+      KChartLanguage.english: infoNamesEN,
+      KChartLanguage.russian: infoNamesRU,
+    }[widget.language];
+
+    final infos = widget.infoWindowElements //
+        .map((e) => [infoGrabbers[e](), infoNames[e]])
+        .toList();
+
+    return Container(
+      margin: EdgeInsets.only(
+        left: snapshot.data.isLeft ? 4 : mWidth - mWidth / 3 - 4,
+        top: 25,
+      ),
+      width: mWidth / 3,
+      decoration: BoxDecoration(
+        color: ChartColors.selectFillColor,
+        border: Border.all(color: ChartColors.selectBorderColor, width: 0.5),
+      ),
+      child: ListView.builder(
+        padding: EdgeInsets.all(4),
+        itemCount: infos.length,
+        itemExtent: 14.0,
+        shrinkWrap: true,
+        itemBuilder: (_, i) => _buildItem(infos[i][0], infos[i][1]),
+      ),
+    );
   }
 
   Widget _buildItem(String info, String infoName) {
@@ -327,13 +377,21 @@ class _KChartWidgetState extends State<KChartWidget>
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         Expanded(
-            child: Text("$infoName",
-                style: const TextStyle(color: Colors.white, fontSize: 10.0))),
+          child: Text(
+            "$infoName",
+            style: const TextStyle(color: Colors.white, fontSize: 10.0),
+          ),
+        ),
         Text(info, style: TextStyle(color: color, fontSize: 10.0)),
       ],
     );
   }
 
-  String getDate(int date) =>
-      dateFormat(DateTime.fromMillisecondsSinceEpoch(date), widget.timeFormat);
+  String getDate(int date) {
+    return dateFormat(
+      DateTime.fromMillisecondsSinceEpoch(date),
+      widget.dateFormat,
+      widget.language,
+    );
+  }
 }

@@ -1,3 +1,5 @@
+import 'package:k_chart/k_chart_widget.dart';
+
 /// Outputs year as four digits
 ///
 /// Example:
@@ -219,7 +221,11 @@ const String am = 'am';
 const String z = 'z';
 const String Z = 'Z';
 
-String dateFormat(DateTime date, List<String> formats) {
+String dateFormat(
+  DateTime date,
+  List<String> formats,
+  KChartLanguage language,
+) {
   final sb = StringBuffer();
 
   for (String format in formats) {
@@ -232,8 +238,18 @@ String dateFormat(DateTime date, List<String> formats) {
     } else if (format == m) {
       sb.write(date.month);
     } else if (format == MM) {
+      final monthLong = {
+        KChartLanguage.english: monthLongEN,
+        KChartLanguage.russian: monthLongRU,
+      }[language];
+
       sb.write(monthLong[date.month - 1]);
     } else if (format == M) {
+      final monthShort = {
+        KChartLanguage.english: monthShortEN,
+        KChartLanguage.russian: monthShortRU,
+      }[language];
+
       sb.write(monthShort[date.month - 1]);
     } else if (format == dd) {
       sb.write(_digits(date.day, 2));
@@ -246,8 +262,18 @@ String dateFormat(DateTime date, List<String> formats) {
     } else if (format == WW) {
       sb.write(_digits((dayInYear(date) + 7) ~/ 7, 2));
     } else if (format == DD) {
+      final dayLong = {
+        KChartLanguage.english: dayLongEN,
+        KChartLanguage.russian: dayLongRU,
+      }[language];
+
       sb.write(dayLong[date.weekday - 1]);
     } else if (format == D) {
+      final dayShort = {
+        KChartLanguage.english: dayShortEN,
+        KChartLanguage.russian: dayShortRU,
+      }[language];
+
       sb.write(dayShort[date.weekday - 1]);
     } else if (format == HH) {
       sb.write(_digits(date.hour, 2));
@@ -311,7 +337,7 @@ String _digits(int value, int length) {
   return ret;
 }
 
-const List<String> monthShort = const <String>[
+const monthShortEN = [
   'Jan',
   'Feb',
   'Mar',
@@ -326,7 +352,22 @@ const List<String> monthShort = const <String>[
   'Dec'
 ];
 
-const List<String> monthLong = const <String>[
+const monthShortRU = [
+  'Янв',
+  'Фев',
+  'Март',
+  'Апр',
+  'Май',
+  'Июнь',
+  'Июль',
+  'Авг',
+  'Сент',
+  'Окт',
+  'Нояб',
+  'Дек'
+];
+
+const monthLongEN = [
   'January',
   'February',
   'March',
@@ -341,17 +382,25 @@ const List<String> monthLong = const <String>[
   'December'
 ];
 
-const List<String> dayShort = const [
-  'Mon',
-  'Tue',
-  'Wed',
-  'Thur',
-  'Fri',
-  'Sat',
-  'Sun'
+const monthLongRU = [
+  'Январь',
+  'Февраль',
+  'Март',
+  'Апрель',
+  'Май',
+  'Июнь',
+  'Июль',
+  'Август',
+  'Сентябрь',
+  'Октябрь',
+  'Ноябрь',
+  'Декабрь'
 ];
 
-const List<String> dayLong = const [
+const dayShortEN = ['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'];
+const dayShortRU = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
+
+const dayLongEN = [
   'Monday',
   'Tuesday',
   'Wednesday',
@@ -359,6 +408,16 @@ const List<String> dayLong = const [
   'Friday',
   'Saturday',
   'Sunday'
+];
+
+const dayLongRU = [
+  'Понедельник',
+  'Вторник',
+  'Среда',
+  'Четверг',
+  'Пятница',
+  'Суббота',
+  'Воскресенье'
 ];
 
 int dayInYear(DateTime date) =>

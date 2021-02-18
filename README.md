@@ -1,27 +1,36 @@
 # k_chart
+
 Maybe this is the best k chart in Flutter.Support drag,scale,long press,fling.And easy to use.
 
 ![demo](https://github.com/mafanwei/k_chart/blob/master/example/images/demo.gif)
+
 ## Getting Started
+
 #### Install
+
 ```
 dependencies:
   k_chart: ^0.1.1
 ```
+
 or use latest：
+
 ```
 k_chart:
     git:
       url: https://github.com/mafanwei/k_chart
 ```
+
 #### Usage
 
 **When you change the data, you must call this:**
+
 ```dart
 DataUtil.calculate(datas); //This function has some optional parameters: n is BOLL N-day closing price. k is BOLL param.
 ```
 
 use k line chart:
+
 ```dart
 Container(
               height: 450,
@@ -45,11 +54,13 @@ Container(
 ```
 
 use depth chart:
+
 ```dart
 DepthChart(_bids, _asks) //Note: Datas must be an ordered list，
 ```
 
 if you want change DepthChart color, you can use just like this:
+
 ```dart
  Container(
             height: 230,
@@ -67,4 +78,5 @@ Buy a cup of coffee for the author.
 <img src="https://img-blog.csdnimg.cn/20181205162201519.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3F3ZTI1ODc4,size_16,color_FFFFFF,t_70" width="375" alt="wechat"/>
 
 #### Other
+
 Maybe there are some bugs in this k chart,or you want new indicators,you can create a pull request.I will happy to accept it and I hope we can make it better.
