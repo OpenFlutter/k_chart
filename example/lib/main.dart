@@ -5,26 +5,25 @@ import 'package:flutter/services.dart';
 import 'package:k_chart/flutter_k_chart.dart';
 import 'package:k_chart/k_chart_widget.dart';
 import 'package:http/http.dart' as http;
+import './bogach_chart_app.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(BogachChartApp());
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'KChart Demo',
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  final String title;
+  MyHomePage({Key key}) : super(key: key);
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -44,17 +43,21 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
     getData('1day');
+
     rootBundle.loadString('assets/depth.json').then((result) {
       final parseJson = json.decode(result);
       Map tick = parseJson['tick'];
-      var bids = tick['bids']
+
+      final bids = tick['bids']
           .map((item) => DepthEntity(item[0], item[1]))
           .toList()
           .cast<DepthEntity>();
-      var asks = tick['asks']
+
+      final asks = tick['asks']
           .map((item) => DepthEntity(item[0], item[1]))
           .toList()
           .cast<DepthEntity>();
+
       initDepth(bids, asks);
     });
   }
@@ -65,7 +68,7 @@ class _MyHomePageState extends State<MyHomePage> {
     _asks = List();
     double amount = 0.0;
     bids?.sort((left, right) => left.price.compareTo(right.price));
-    //累加买入委托量
+
     bids.reversed.forEach((item) {
       amount += item.vol;
       item.vol = amount;
@@ -74,12 +77,13 @@ class _MyHomePageState extends State<MyHomePage> {
 
     amount = 0.0;
     asks?.sort((left, right) => left.price.compareTo(right.price));
-    //累加卖出委托量
+
     asks?.forEach((item) {
       amount += item.vol;
       item.vol = amount;
       _asks.add(item);
     });
+
     setState(() {});
   }
 
@@ -87,7 +91,6 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xff17212F),
-//      appBar: AppBar(title: Text(widget.title)),
       body: ListView(
         children: <Widget>[
           Stack(children: <Widget>[
@@ -102,8 +105,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 volHidden: _volHidden,
                 secondaryState: _secondaryState,
                 fixedLength: 2,
-                timeFormat: TimeFormat.YEAR_MONTH_DAY,
-                isChinese: isChinese,
+                language: KChartLanguage.russian,
                 selectionLineColor: Colors.black54,
                 lineChartColor: Colors.black87,
                 lineChartFillColor: Colors.black38,
@@ -132,19 +134,26 @@ class _MyHomePageState extends State<MyHomePage> {
     return Wrap(
       alignment: WrapAlignment.spaceEvenly,
       children: <Widget>[
-        button("分时", onPressed: () => isLine = true),
-        button("k线", onPressed: () => isLine = false),
+        button("Line", onPressed: () => isLine = true),
+        button("Candles", onPressed: () => isLine = false),
         button("MA", onPressed: () => _mainState = MainState.MA),
         button("BOLL", onPressed: () => _mainState = MainState.BOLL),
-        button("隐藏", onPressed: () => _mainState = MainState.NONE),
+        button(
+          "Reset Main state",
+          onPressed: () => _mainState = MainState.NONE,
+        ),
         button("MACD", onPressed: () => _secondaryState = SecondaryState.MACD),
         button("KDJ", onPressed: () => _secondaryState = SecondaryState.KDJ),
         button("RSI", onPressed: () => _secondaryState = SecondaryState.RSI),
         button("WR", onPressed: () => _secondaryState = SecondaryState.WR),
-        button("隐藏副视图", onPressed: () => _secondaryState = SecondaryState.NONE),
-        button(_volHidden ? "显示成交量" : "隐藏成交量",
-            onPressed: () => _volHidden = !_volHidden),
-        button("切换中英文", onPressed: () => isChinese = !isChinese),
+        button(
+          "Reset Secondary State",
+          onPressed: () => _secondaryState = SecondaryState.NONE,
+        ),
+        button(
+          _volHidden ? "Show Volume" : "Hide Volume",
+          onPressed: () => _volHidden = !_volHidden,
+        ),
       ],
     );
   }
@@ -182,17 +191,18 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  //获取火币数据，需要翻墙
   Future<String> getIPAddress(String period) async {
     var url =
         'https://api.huobi.br.com/market/history/kline?period=${period ?? '1day'}&size=300&symbol=btcusdt';
     String result;
+
     var response = await http.get(url);
     if (response.statusCode == 200) {
       result = response.body;
     } else {
       print('Failed getting IP address');
     }
+
     return result;
   }
 }
