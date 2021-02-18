@@ -29,7 +29,7 @@ class ChartPainter extends BaseChartPainter {
   Color lineChartColor;
   Color lineChartFillColor;
   Color maxMinColor;
-  double topPadding, bottomPadding;
+  double topPadding, bottomPadding, chartVerticalPadding;
   final List<String> datetimeFormat;
   final KChartLanguage language;
 
@@ -54,6 +54,7 @@ class ChartPainter extends BaseChartPainter {
     this.maxMinColor,
     this.topPadding,
     this.bottomPadding,
+    this.chartVerticalPadding = 5,
     this.datetimeFormat,
   })  : assert(bgColor == null || bgColor.length >= 2),
         super(

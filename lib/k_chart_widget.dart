@@ -64,10 +64,10 @@ class KChartWidget extends StatefulWidget {
   final Curve flingCurve;
   final Function(bool) isOnDrag;
   final Color selectionLineColor;
-  Color lineChartColor;
-  Color lineChartFillColor;
-  Color maxMinColor;
-  double topPadding, bottomPadding;
+  final Color lineChartColor;
+  final Color lineChartFillColor;
+  final Color maxMinColor;
+  final double topPadding, bottomPadding, chartVerticalPadding;
   final List<String> dateFormat;
   final List<InfoWindowElement> infoWindowElements;
 
@@ -78,7 +78,6 @@ class KChartWidget extends StatefulWidget {
     this.volHidden = false,
     this.isLine,
     this.language,
-    this.timeFormat = TimeFormat.YEAR_MONTH_DAY,
     this.onLoadMore,
     this.bgColor,
     this.fixedLength,
@@ -93,6 +92,7 @@ class KChartWidget extends StatefulWidget {
     this.maxMinColor = Colors.black87,
     this.topPadding = 0.0,
     this.bottomPadding = 20.0,
+    this.chartVerticalPadding = 5,
     this.dateFormat,
     this.infoWindowElements = defaultInfoWindowElements,
   }) : assert(maDayList != null);
@@ -212,6 +212,7 @@ class _KChartWidgetState extends State<KChartWidget>
               maxMinColor: widget.maxMinColor,
               topPadding: widget.topPadding,
               bottomPadding: widget.bottomPadding,
+              chartVerticalPadding: widget.chartVerticalPadding,
               datetimeFormat: widget.dateFormat,
               language: widget.language,
             ),

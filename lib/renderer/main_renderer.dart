@@ -8,45 +8,49 @@ class MainRenderer extends BaseChartRenderer<CandleEntity> {
   double mCandleLineWidth = ChartStyle.candleLineWidth;
   MainState state;
   bool isLine;
-  //绘制的内容区域
   Rect _contentRect;
-  double _contentPadding = 5.0;
+  final double contentPadding;
   List<int> maDayList;
   Color lineChartColor;
   Color lineChartFillColor;
 
-  MainRenderer(
-      Rect mainRect,
-      double maxValue,
-      double minValue,
-      double topPadding,
-      this.state,
-      this.isLine,
-      int fixedLength,
-      this.lineChartColor,
-      this.lineChartFillColor,
-      [this.maDayList = const [5, 10, 20]])
-      : super(
-            chartRect: mainRect,
-            maxValue: maxValue,
-            minValue: minValue,
-            topPadding: topPadding,
-            fixedLength: fixedLength) {
+  MainRenderer({
+    @required Rect mainRect,
+    @required double maxValue,
+    @required double minValue,
+    @required double topPadding,
+    @required this.state,
+    @required this.isLine,
+    @required int fixedLength,
+    @required this.lineChartColor,
+    @required this.lineChartFillColor,
+    @required this.contentPadding,
+    this.maDayList = const [5, 10, 20],
+  }) : super(
+          chartRect: mainRect,
+          maxValue: maxValue,
+          minValue: minValue,
+          topPadding: topPadding,
+          fixedLength: fixedLength,
+        ) {
     mLinePaint = Paint()
       ..isAntiAlias = true
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 1.0
+      ..strokeWidth = 1.5
       ..color = lineChartColor;
 
     _contentRect = Rect.fromLTRB(
-        chartRect.left,
-        chartRect.top + _contentPadding,
-        chartRect.right,
-        chartRect.bottom - _contentPadding);
+      chartRect.left,
+      chartRect.top + contentPadding,
+      chartRect.right,
+      chartRect.bottom - contentPadding,
+    );
+
     if (maxValue == minValue) {
       maxValue *= 1.5;
       minValue /= 2;
     }
+
     scaleY = _contentRect.height / (maxValue - minValue);
   }
 
