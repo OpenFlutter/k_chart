@@ -6,8 +6,8 @@ class ChartColors {
   static const Color ma5Color = Color(0xffC9B885);
   static const Color ma10Color = Color(0xff6CB0A6);
   static const Color ma30Color = Color(0xff9979C6);
-  static const Color upColor = Color(0xff4DAA90);
-  static const Color dnColor = Color(0xffC15466);
+  static const Color upColor = Color(0xff76C42D);
+  static const Color dnColor = Color(0xffFD4762);
   static const Color volColor = Color(0xff4729AE);
 
   static const Color macdColor = Color(0xff4729AE);
