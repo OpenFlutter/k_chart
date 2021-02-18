@@ -70,3 +70,5 @@ build/
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 example/ios/Flutter/flutter_export_environment.sh
 *.lock
+
+example/ios/Flutter/.last_build_id
