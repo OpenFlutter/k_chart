@@ -22,7 +22,7 @@ abstract class BaseChartPainter extends CustomPainter {
   Rect mMainRect, mVolRect, mSecondaryRect;
   double mDisplayHeight, mWidth;
   double topPadding, bottomPadding, mChildPadding = 12.0;
-  final int mGridRows = 4, mGridColumns = 4;
+  final int gridRows, gridColumns;
   int mStartIndex = 0, mStopIndex = 0;
   double mMainMaxValue = double.minPositive, mMainMinValue = double.maxFinite;
   double mVolMaxValue = double.minPositive, mVolMinValue = double.maxFinite;
@@ -51,7 +51,10 @@ abstract class BaseChartPainter extends CustomPainter {
     this.secondaryState,
     this.isLine,
     this.dateFormat,
-  }) {
+    this.gridRows,
+    this.gridColumns,
+  })  : assert(gridRows != null && gridRows >= 0),
+        assert(gridColumns != null && gridColumns >= 0) {
     mItemCount = datas?.length ?? 0;
     mDataLen = mItemCount * mPointWidth;
     initFormats();

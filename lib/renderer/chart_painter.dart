@@ -56,6 +56,8 @@ class ChartPainter extends BaseChartPainter {
     this.bottomPadding,
     this.chartVerticalPadding = 5,
     this.datetimeFormat,
+    int gridRows = 4,
+    int gridColumns = 5,
   })  : assert(bgColor == null || bgColor.length >= 2),
         super(
           datas: datas,
@@ -70,6 +72,8 @@ class ChartPainter extends BaseChartPainter {
           secondaryState: secondaryState,
           isLine: isLine,
           dateFormat: datetimeFormat,
+          gridRows: gridRows,
+          gridColumns: gridColumns,
         );
 
   @override
@@ -167,9 +171,9 @@ class ChartPainter extends BaseChartPainter {
 
   @override
   void drawGrid(canvas) {
-    mMainRenderer?.drawGrid(canvas, mGridRows, mGridColumns);
-    mVolRenderer?.drawGrid(canvas, mGridRows, mGridColumns);
-    mSecondaryRenderer?.drawGrid(canvas, mGridRows, mGridColumns);
+    mMainRenderer?.drawGrid(canvas, gridRows, gridColumns);
+    mVolRenderer?.drawGrid(canvas, gridRows, gridColumns);
+    mSecondaryRenderer?.drawGrid(canvas, gridRows, gridColumns);
   }
 
   @override
@@ -197,19 +201,19 @@ class ChartPainter extends BaseChartPainter {
   @override
   void drawRightText(canvas) {
     var textStyle = getTextStyle(ChartColors.defaultTextColor);
-    mMainRenderer?.drawRightText(canvas, textStyle, mGridRows);
-    mVolRenderer?.drawRightText(canvas, textStyle, mGridRows);
-    mSecondaryRenderer?.drawRightText(canvas, textStyle, mGridRows);
+    mMainRenderer?.drawRightText(canvas, textStyle, gridRows);
+    mVolRenderer?.drawRightText(canvas, textStyle, gridRows);
+    mSecondaryRenderer?.drawRightText(canvas, textStyle, gridRows);
   }
 
   @override
   void drawDate(Canvas canvas, Size size) {
-    double columnSpace = size.width / mGridColumns;
+    double columnSpace = size.width / gridColumns;
     double startX = getX(mStartIndex) - mPointWidth / 2;
     double stopX = getX(mStopIndex) + mPointWidth / 2;
     double y = 0.0;
 
-    for (var i = 1; i <= mGridColumns; ++i) {
+    for (var i = 1; i <= gridColumns; ++i) {
       double translateX = xToTranslateX(columnSpace * i);
       if (translateX >= startX && translateX <= stopX) {
         int index = indexOfTranslateX(translateX);
