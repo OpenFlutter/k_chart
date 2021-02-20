@@ -7,23 +7,26 @@ abstract class BaseChartRenderer<T> {
   double topPadding;
   Rect chartRect;
   int fixedLength;
+
   Paint chartPaint = Paint()
     ..isAntiAlias = true
     ..filterQuality = FilterQuality.high
     ..strokeWidth = 1.0
     ..color = Colors.red;
+
   Paint gridPaint = Paint()
     ..isAntiAlias = true
     ..filterQuality = FilterQuality.high
     ..strokeWidth = 0.5
-    ..color = Color(0xff4c5c74);
+    ..color = Colors.grey.withAlpha(90);
 
-  BaseChartRenderer(
-      {@required this.chartRect,
-      @required this.maxValue,
-      @required this.minValue,
-      @required this.topPadding,
-      @required this.fixedLength}) {
+  BaseChartRenderer({
+    @required this.chartRect,
+    @required this.maxValue,
+    @required this.minValue,
+    @required this.topPadding,
+    @required this.fixedLength,
+  }) {
     if (maxValue == minValue) {
       maxValue *= 1.5;
       minValue /= 2;
