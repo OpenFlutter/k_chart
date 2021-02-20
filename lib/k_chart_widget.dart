@@ -69,6 +69,7 @@ class KChartWidget extends StatefulWidget {
   final Color maxMinColor;
   final double topPadding, bottomPadding, chartVerticalPadding;
   final List<String> dateFormat;
+  final List<String> infoWindowDateFormat;
   final List<InfoWindowElement> infoWindowElements;
 
   KChartWidget(
@@ -94,6 +95,7 @@ class KChartWidget extends StatefulWidget {
     this.bottomPadding = 20.0,
     this.chartVerticalPadding = 5,
     this.dateFormat,
+    this.infoWindowDateFormat,
     this.infoWindowElements = defaultInfoWindowElements,
   }) : assert(maDayList != null);
 
@@ -324,7 +326,7 @@ class _KChartWidgetState extends State<KChartWidget>
     final fixedLength = widget.fixedLength;
 
     final infoGrabbers = {
-      InfoWindowElement.date: () => getDate(e.time),
+      InfoWindowElement.date: () => _getInfoWindowDate(e.time),
       InfoWindowElement.open: () => e.open.toStringAsFixed(fixedLength),
       InfoWindowElement.high: () => e.high.toStringAsFixed(fixedLength),
       InfoWindowElement.low: () => e.low.toStringAsFixed(fixedLength),
@@ -345,20 +347,23 @@ class _KChartWidgetState extends State<KChartWidget>
         .map((e) => [infoGrabbers[e](), infoNames[e]])
         .toList();
 
+    const infoWindowHeight = 130.0;
+
     return Container(
       margin: EdgeInsets.only(
-        left: snapshot.data.isLeft ? 4 : mWidth - mWidth / 3 - 4,
-        top: 25,
+        left: snapshot.data.isLeft ? 4 : mWidth - infoWindowHeight - 40,
+        right: 4,
+        top: 12,
       ),
-      width: mWidth / 3,
+      width: infoWindowHeight,
       decoration: BoxDecoration(
         color: ChartColors.selectFillColor,
         border: Border.all(color: ChartColors.selectBorderColor, width: 0.5),
+        borderRadius: BorderRadius.circular(6),
       ),
       child: ListView.builder(
-        padding: EdgeInsets.all(4),
+        padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         itemCount: infos.length,
-        itemExtent: 14.0,
         shrinkWrap: true,
         itemBuilder: (_, i) => _buildItem(infos[i][0], infos[i][1]),
       ),
@@ -373,18 +378,29 @@ class _KChartWidgetState extends State<KChartWidget>
       color = Colors.red;
     else
       color = Colors.white;
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
-        Expanded(
-          child: Text(
-            "$infoName",
-            style: const TextStyle(color: Colors.white, fontSize: 10.0),
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 2.5),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Expanded(
+            child: Text(
+              "$infoName",
+              style: const TextStyle(color: Color(0xFF9499A2), fontSize: 12.0),
+            ),
           ),
-        ),
-        Text(info, style: TextStyle(color: color, fontSize: 10.0)),
-      ],
+          Text(
+            info,
+            style: TextStyle(
+              color: color,
+              fontSize: 12.0,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -392,6 +408,15 @@ class _KChartWidgetState extends State<KChartWidget>
     return dateFormat(
       DateTime.fromMillisecondsSinceEpoch(date),
       widget.dateFormat,
+      widget.language,
+    );
+  }
+
+  String _getInfoWindowDate(int date) {
+    final format = widget.infoWindowDateFormat ?? widget.dateFormat;
+    return dateFormat(
+      DateTime.fromMillisecondsSinceEpoch(date),
+      format,
       widget.language,
     );
   }
