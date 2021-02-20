@@ -40,16 +40,19 @@ class _BogachChartState extends State<BogachChart> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xff17212F),
       appBar: AppBar(title: Text('Bogach Chart')),
       body: ListView(
         children: <Widget>[
           Stack(
             children: <Widget>[
-              Container(
-                height: 450,
-                width: double.infinity,
-                child: _buildChart(),
+              Center(
+                child: Container(
+                  height: 450,
+                  margin: const EdgeInsets.only(top: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: 0.5),
+                  width: MediaQuery.of(context).size.width - 32,
+                  child: _buildChart(),
+                ),
               ),
               if (showLoading)
                 Container(
@@ -60,6 +63,7 @@ class _BogachChartState extends State<BogachChart> {
                 ),
             ],
           ),
+          const SizedBox(height: 24),
           buildButtons(),
         ],
       ),
@@ -74,11 +78,11 @@ class _BogachChartState extends State<BogachChart> {
       mainState: MainState.NONE,
       volHidden: _volHidden,
       secondaryState: SecondaryState.NONE,
-      fixedLength: 2,
+      fixedLength: 0,
       dateFormat: ['M'],
       infoWindowDateFormat: ['MM'],
       language: KChartLanguage.russian,
-      selectionLineColor: Colors.black54,
+      selectionLineColor: Colors.grey.withAlpha(40),
       lineChartColor: Colors.black87,
       lineChartFillColor: Colors.black38,
       maxMinColor: Colors.black87,

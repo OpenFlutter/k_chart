@@ -144,83 +144,88 @@ class _KChartWidgetState extends State<KChartWidget>
       mScaleX = 1.0;
     }
 
-    return GestureDetector(
-      onHorizontalDragDown: (details) {
-        _stopAnimation();
-        _onDragChanged(true);
-      },
-      onHorizontalDragUpdate: (details) {
-        if (isScale || isLongPress) return;
-        mScrollX = (details.primaryDelta / mScaleX + mScrollX)
-            .clamp(0.0, ChartPainter.maxScrollX);
-        notifyChanged();
-      },
-      onHorizontalDragEnd: (DragEndDetails details) {
-        var velocity = details.velocity.pixelsPerSecond.dx;
-        _onFling(velocity);
-      },
-      onHorizontalDragCancel: () => _onDragChanged(false),
-      onScaleStart: (_) {
-        isScale = true;
-      },
-      onScaleUpdate: (details) {
-        if (isDrag || isLongPress) return;
-        mScaleX = (_lastScale * details.scale).clamp(0.5, 2.2);
-        notifyChanged();
-      },
-      onScaleEnd: (_) {
-        isScale = false;
-        _lastScale = mScaleX;
-      },
-      onLongPressStart: (details) {
-        isLongPress = true;
-        if (mSelectX != details.globalPosition.dx) {
-          mSelectX = details.globalPosition.dx;
-          notifyChanged();
-        }
-      },
-      onLongPressMoveUpdate: (details) {
-        if (mSelectX != details.globalPosition.dx) {
-          mSelectX = details.globalPosition.dx;
-          notifyChanged();
-        }
-      },
-      onLongPressEnd: (details) {
-        isLongPress = false;
-        mInfoWindowStream?.sink?.add(null);
-        notifyChanged();
-      },
-      child: Stack(
-        children: <Widget>[
-          CustomPaint(
-            size: Size(double.infinity, double.infinity),
-            painter: ChartPainter(
-              datas: widget.datas,
-              scaleX: mScaleX,
-              scrollX: mScrollX,
-              selectX: mSelectX,
-              isLongPass: isLongPress,
-              mainState: widget.mainState,
-              volHidden: widget.volHidden,
-              secondaryState: widget.secondaryState,
-              isLine: widget.isLine,
-              sink: mInfoWindowStream?.sink,
-              bgColor: widget.bgColor,
-              fixedLength: widget.fixedLength,
-              maDayList: widget.maDayList,
-              selectionLineColor: widget.selectionLineColor,
-              lineChartColor: widget.lineChartColor,
-              lineChartFillColor: widget.lineChartFillColor,
-              maxMinColor: widget.maxMinColor,
-              topPadding: widget.topPadding,
-              bottomPadding: widget.bottomPadding,
-              chartVerticalPadding: widget.chartVerticalPadding,
-              datetimeFormat: widget.dateFormat,
-              language: widget.language,
-            ),
+    return ClipRRect(
+      child: Padding(
+        padding: const EdgeInsets.all(0.5),
+        child: GestureDetector(
+          onHorizontalDragDown: (details) {
+            _stopAnimation();
+            _onDragChanged(true);
+          },
+          onHorizontalDragUpdate: (details) {
+            if (isScale || isLongPress) return;
+            mScrollX = (details.primaryDelta / mScaleX + mScrollX)
+                .clamp(0.0, ChartPainter.maxScrollX);
+            notifyChanged();
+          },
+          onHorizontalDragEnd: (DragEndDetails details) {
+            var velocity = details.velocity.pixelsPerSecond.dx;
+            _onFling(velocity);
+          },
+          onHorizontalDragCancel: () => _onDragChanged(false),
+          onScaleStart: (_) {
+            isScale = true;
+          },
+          onScaleUpdate: (details) {
+            if (isDrag || isLongPress) return;
+            mScaleX = (_lastScale * details.scale).clamp(0.5, 2.2);
+            notifyChanged();
+          },
+          onScaleEnd: (_) {
+            isScale = false;
+            _lastScale = mScaleX;
+          },
+          onLongPressStart: (details) {
+            isLongPress = true;
+            if (mSelectX != details.globalPosition.dx) {
+              mSelectX = details.globalPosition.dx;
+              notifyChanged();
+            }
+          },
+          onLongPressMoveUpdate: (details) {
+            if (mSelectX != details.globalPosition.dx) {
+              mSelectX = details.globalPosition.dx;
+              notifyChanged();
+            }
+          },
+          onLongPressEnd: (details) {
+            isLongPress = false;
+            mInfoWindowStream?.sink?.add(null);
+            notifyChanged();
+          },
+          child: Stack(
+            children: <Widget>[
+              CustomPaint(
+                size: Size(double.infinity, double.infinity),
+                painter: ChartPainter(
+                  datas: widget.datas,
+                  scaleX: mScaleX,
+                  scrollX: mScrollX,
+                  selectX: mSelectX,
+                  isLongPass: isLongPress,
+                  mainState: widget.mainState,
+                  volHidden: widget.volHidden,
+                  secondaryState: widget.secondaryState,
+                  isLine: widget.isLine,
+                  sink: mInfoWindowStream?.sink,
+                  bgColor: widget.bgColor,
+                  fixedLength: widget.fixedLength,
+                  maDayList: widget.maDayList,
+                  selectionLineColor: widget.selectionLineColor,
+                  lineChartColor: widget.lineChartColor,
+                  lineChartFillColor: widget.lineChartFillColor,
+                  maxMinColor: widget.maxMinColor,
+                  topPadding: widget.topPadding,
+                  bottomPadding: widget.bottomPadding,
+                  chartVerticalPadding: widget.chartVerticalPadding,
+                  datetimeFormat: widget.dateFormat,
+                  language: widget.language,
+                ),
+              ),
+              _buildInfoDialog()
+            ],
           ),
-          _buildInfoDialog()
-        ],
+        ),
       ),
     );
   }
