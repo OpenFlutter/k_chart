@@ -28,7 +28,7 @@ class ChartColors {
   static const Color selectBorderColor = Color(0xff6C7A86);
 
   //选中后显示值背景的填充颜色
-  static const Color selectFillColor = Color(0xff0D1722);
+  static const Color selectFillColor = Color(0xff131D2B);
 
   static Color getMAColor(int index) {
     Color maColor = ma5Color;
