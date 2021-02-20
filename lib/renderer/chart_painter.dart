@@ -208,7 +208,8 @@ class ChartPainter extends BaseChartPainter {
     double startX = getX(mStartIndex) - mPointWidth / 2;
     double stopX = getX(mStopIndex) + mPointWidth / 2;
     double y = 0.0;
-    for (var i = 0; i <= mGridColumns; ++i) {
+
+    for (var i = 1; i <= mGridColumns; ++i) {
       double translateX = xToTranslateX(columnSpace * i);
       if (translateX >= startX && translateX <= stopX) {
         int index = indexOfTranslateX(translateX);
