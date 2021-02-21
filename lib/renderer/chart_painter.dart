@@ -32,6 +32,7 @@ class ChartPainter extends BaseChartPainter {
   double topPadding, bottomPadding, chartVerticalPadding;
   final List<String> datetimeFormat;
   final KChartLanguage language;
+  final String Function(double) priceFormatter;
 
   ChartPainter({
     @required datas,
@@ -58,6 +59,7 @@ class ChartPainter extends BaseChartPainter {
     this.datetimeFormat,
     int gridRows = 4,
     int gridColumns = 5,
+    this.priceFormatter,
   })  : assert(bgColor == null || bgColor.length >= 2),
         super(
           datas: datas,
@@ -104,20 +106,28 @@ class ChartPainter extends BaseChartPainter {
       lineChartColor: lineChartColor,
       lineChartFillColor: lineChartFillColor,
       maDayList: maDayList,
+      priceFormatter: priceFormatter,
+      priceLabelBackgroundColor: Color(0xe1f5f5f5),
     );
 
     if (mVolRect != null) {
       mVolRenderer ??= VolRenderer(
-          mVolRect, mVolMaxValue, mVolMinValue, mChildPadding, fixedLength);
+        mVolRect,
+        mVolMaxValue,
+        mVolMinValue,
+        mChildPadding,
+        fixedLength,
+      );
     }
     if (mSecondaryRect != null)
       mSecondaryRenderer ??= SecondaryRenderer(
-          mSecondaryRect,
-          mSecondaryMaxValue,
-          mSecondaryMinValue,
-          mChildPadding,
-          secondaryState,
-          fixedLength);
+        mSecondaryRect,
+        mSecondaryMaxValue,
+        mSecondaryMinValue,
+        mChildPadding,
+        secondaryState,
+        fixedLength,
+      );
   }
 
   @override
@@ -331,29 +341,31 @@ class ChartPainter extends BaseChartPainter {
   @override
   void drawMaxAndMin(Canvas canvas) {
     if (isLine == true) return;
-    //绘制最大值和最小值
+
     double x = translateXtoX(getX(mMainMinIndex));
     double y = getMainY(mMainLowMinValue);
+
+    final lowMinValue = priceFormatter?.call(mMainLowMinValue) ??
+        mMainLowMinValue.toStringAsFixed(fixedLength);
+    final highMaxValue = priceFormatter?.call(mMainHighMaxValue) ??
+        mMainHighMaxValue.toStringAsFixed(fixedLength);
+
     if (x < mWidth / 2) {
-      //画右边
-      TextPainter tp = getTextPainter(
-          "── " + mMainLowMinValue.toStringAsFixed(fixedLength), maxMinColor);
+      final tp = getTextPainter("── $lowMinValue", maxMinColor);
       tp.paint(canvas, Offset(x, y - tp.height / 2));
     } else {
-      TextPainter tp = getTextPainter(
-          mMainLowMinValue.toStringAsFixed(fixedLength) + " ──", maxMinColor);
+      final tp = getTextPainter("$lowMinValue ──", maxMinColor);
       tp.paint(canvas, Offset(x - tp.width, y - tp.height / 2));
     }
+
     x = translateXtoX(getX(mMainMaxIndex));
     y = getMainY(mMainHighMaxValue);
+
     if (x < mWidth / 2) {
-      //画右边
-      TextPainter tp = getTextPainter(
-          "── " + mMainHighMaxValue.toStringAsFixed(fixedLength), maxMinColor);
+      final tp = getTextPainter("── $highMaxValue", maxMinColor);
       tp.paint(canvas, Offset(x, y - tp.height / 2));
     } else {
-      TextPainter tp = getTextPainter(
-          mMainHighMaxValue.toStringAsFixed(fixedLength) + " ──", maxMinColor);
+      final tp = getTextPainter("$highMaxValue ──", maxMinColor);
       tp.paint(canvas, Offset(x - tp.width, y - tp.height / 2));
     }
   }
@@ -383,8 +395,10 @@ class ChartPainter extends BaseChartPainter {
   }
 
   TextPainter getTextPainter(text, [color = ChartColors.defaultTextColor]) {
-    TextSpan span = TextSpan(text: "$text", style: getTextStyle(color));
-    TextPainter tp = TextPainter(text: span, textDirection: TextDirection.ltr);
+    final style = getTextStyle(color);
+    final span = TextSpan(text: "$text", style: style);
+    final tp = TextPainter(text: span, textDirection: TextDirection.ltr);
+
     tp.layout();
     return tp;
   }

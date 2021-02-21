@@ -9,10 +9,12 @@ class MainRenderer extends BaseChartRenderer<CandleEntity> {
   MainState state;
   bool isLine;
   Rect _contentRect;
-  final double contentPadding;
   List<int> maDayList;
   Color lineChartColor;
   Color lineChartFillColor;
+  final double contentPadding;
+  final String Function(double) priceFormatter;
+  final Color priceLabelBackgroundColor;
 
   MainRenderer({
     @required Rect mainRect,
@@ -25,6 +27,8 @@ class MainRenderer extends BaseChartRenderer<CandleEntity> {
     @required this.lineChartColor,
     @required this.lineChartFillColor,
     @required this.contentPadding,
+    this.priceFormatter,
+    this.priceLabelBackgroundColor,
     this.maDayList = const [5, 10, 20],
   }) : super(
           chartRect: mainRect,
@@ -229,33 +233,50 @@ class MainRenderer extends BaseChartRenderer<CandleEntity> {
     double rowSpace = chartRect.height / gridRows;
     for (var i = 0; i <= gridRows; ++i) {
       double value = (gridRows - i) * rowSpace / scaleY + minValue;
-      TextSpan span = TextSpan(text: "${format(value)}", style: textStyle);
-      TextPainter tp =
-          TextPainter(text: span, textDirection: TextDirection.ltr);
+      TextStyle style = textStyle;
+
+      if (priceLabelBackgroundColor != null) {
+        style = style.copyWith(
+          backgroundColor: priceLabelBackgroundColor,
+        );
+      }
+
+      final span = TextSpan(text: "${format(value)}", style: style);
+      final tp = TextPainter(text: span, textDirection: TextDirection.ltr);
+
       tp.layout();
       if (i == 0) {
         tp.paint(canvas, Offset(chartRect.width - tp.width, topPadding));
       } else {
         tp.paint(
-            canvas,
-            Offset(chartRect.width - tp.width,
-                rowSpace * i - tp.height + topPadding));
+          canvas,
+          Offset(
+            chartRect.width - tp.width,
+            rowSpace * i - tp.height + topPadding,
+          ),
+        );
       }
     }
   }
 
   @override
   void drawGrid(Canvas canvas, int gridRows, int gridColumns) {
-//    final int gridRows = 4, gridColumns = 4;
     double rowSpace = chartRect.height / gridRows;
     for (int i = 0; i <= gridRows; i++) {
-      canvas.drawLine(Offset(0, rowSpace * i + topPadding),
-          Offset(chartRect.width, rowSpace * i + topPadding), gridPaint);
+      canvas.drawLine(
+        Offset(0, rowSpace * i + topPadding),
+        Offset(chartRect.width, rowSpace * i + topPadding),
+        gridPaint,
+      );
     }
+
     double columnSpace = chartRect.width / gridColumns;
     for (int i = 0; i <= columnSpace; i++) {
-      canvas.drawLine(Offset(columnSpace * i, topPadding),
-          Offset(columnSpace * i, chartRect.bottom), gridPaint);
+      canvas.drawLine(
+        Offset(columnSpace * i, topPadding),
+        Offset(columnSpace * i, chartRect.bottom),
+        gridPaint,
+      );
     }
   }
 

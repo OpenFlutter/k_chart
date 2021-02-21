@@ -7,6 +7,7 @@ abstract class BaseChartRenderer<T> {
   double topPadding;
   Rect chartRect;
   int fixedLength;
+  String Function(double) priceFormatter;
 
   Paint chartPaint = Paint()
     ..isAntiAlias = true
@@ -26,6 +27,7 @@ abstract class BaseChartRenderer<T> {
     @required this.minValue,
     @required this.topPadding,
     @required this.fixedLength,
+    this.priceFormatter,
   }) {
     if (maxValue == minValue) {
       maxValue *= 1.5;
@@ -40,6 +42,8 @@ abstract class BaseChartRenderer<T> {
   String format(double n) {
     if (n == null || n.isNaN) {
       return "0.00";
+    } else if (priceFormatter != null) {
+      return priceFormatter(n);
     } else {
       return n.toStringAsFixed(fixedLength);
     }

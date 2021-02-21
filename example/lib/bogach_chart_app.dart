@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:k_chart/flutter_k_chart.dart';
 import 'package:k_chart/k_chart_widget.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
 class BogachChartApp extends StatelessWidget {
   @override
@@ -35,6 +36,8 @@ class _BogachChartState extends State<BogachChart> {
   void initState() {
     super.initState();
     getData('1day');
+
+    Intl.defaultLocale = 'ru';
   }
 
   @override
@@ -87,6 +90,14 @@ class _BogachChartState extends State<BogachChart> {
       lineChartFillColor: Colors.black38,
       maxMinColor: Colors.black87,
       chartVerticalPadding: 24,
+      priceFormatter: (p) {
+        final formatCurrency = NumberFormat.currency(
+          decimalDigits: 0,
+          symbol: '₽',
+        );
+
+        return formatCurrency.format(p);
+      },
     );
   }
 
