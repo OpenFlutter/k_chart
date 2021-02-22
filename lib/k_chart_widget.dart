@@ -365,12 +365,7 @@ class _KChartWidgetState extends State<KChartWidget>
 
     const infoWindowHeight = 130.0;
 
-    return Container(
-      margin: EdgeInsets.only(
-        left: snapshot.data.isLeft ? 4 : mWidth - infoWindowHeight - 40,
-        right: 4,
-        top: 12,
-      ),
+    final infoWindow = Container(
       width: infoWindowHeight,
       decoration: BoxDecoration(
         color: ChartColors.selectFillColor,
@@ -383,6 +378,17 @@ class _KChartWidgetState extends State<KChartWidget>
         shrinkWrap: true,
         itemBuilder: (_, i) => _buildItem(infos[i][0], infos[i][1]),
       ),
+    );
+
+    return Stack(
+      children: [
+        Positioned(
+          top: 4,
+          left: snapshot.data.isLeft ? 4 : null,
+          right: !snapshot.data.isLeft ? 4 : null,
+          child: infoWindow,
+        )
+      ],
     );
   }
 
