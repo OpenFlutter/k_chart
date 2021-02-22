@@ -21,13 +21,10 @@ class ChartColors {
 
   static const Color defaultTextColor = Color(0xff60738E);
 
-  //深度颜色
   static const Color depthBuyColor = Color(0xff60A893);
   static const Color depthSellColor = Color(0xffC15866);
-  //选中后显示值边框颜色
-  static const Color selectBorderColor = Color(0xff6C7A86);
 
-  //选中后显示值背景的填充颜色
+  static const Color selectBorderColor = Color(0xff6C7A86);
   static const Color selectFillColor = Color(0xff131D2B);
 
   static Color getMAColor(int index) {
@@ -48,26 +45,57 @@ class ChartColors {
 }
 
 class ChartStyle {
-  ChartStyle._();
+  const ChartStyle({
+    this.pointWidth,
+    this.candleWidth,
+    this.candleLineWidth,
+    this.volWidth,
+    this.macdWidth,
+    this.vCrossWidth,
+    this.hCrossWidth,
+  })  : assert(pointWidth != null),
+        assert(candleWidth != null),
+        assert(candleLineWidth != null),
+        assert(volWidth != null),
+        assert(macdWidth != null),
+        assert(vCrossWidth != null),
+        assert(hCrossWidth != null);
 
-  //点与点的距离
-  static const double pointWidth = 11.0;
+  final double pointWidth;
+  final double candleWidth;
+  final double candleLineWidth;
+  final double volWidth;
+  final double macdWidth;
+  final double vCrossWidth;
+  final double hCrossWidth;
 
-  //蜡烛宽度
-  static const double candleWidth = 8.5;
+  static const defaultStyle = ChartStyle(
+    pointWidth: 20,
+    candleWidth: 12.5,
+    candleLineWidth: 1.5,
+    volWidth: 8.5,
+    macdWidth: 3,
+    vCrossWidth: 8.5,
+    hCrossWidth: 0.5,
+  );
 
-  //蜡烛中间线的宽度
-  static const double candleLineWidth = 1.5;
-
-  //vol柱子宽度
-  static const double volWidth = 8.5;
-
-  //macd柱子宽度
-  static const double macdWidth = 3.0;
-
-  //垂直交叉线宽度
-  static const double vCrossWidth = 8.5;
-
-  //水平交叉线宽度
-  static const double hCrossWidth = 0.5;
+  ChartStyle copyWith({
+    double pointWidth,
+    double candleWidth,
+    double candleLineWidth,
+    double volWidth,
+    double macdWidth,
+    double vCrossWidth,
+    double hCrossWidth,
+  }) {
+    return ChartStyle(
+      pointWidth: pointWidth ?? this.pointWidth,
+      candleWidth: candleWidth ?? this.candleWidth,
+      candleLineWidth: candleLineWidth ?? this.candleLineWidth,
+      volWidth: volWidth ?? this.volWidth,
+      macdWidth: macdWidth ?? this.macdWidth,
+      vCrossWidth: vCrossWidth ?? this.vCrossWidth,
+      hCrossWidth: hCrossWidth ?? this.hCrossWidth,
+    );
+  }
 }

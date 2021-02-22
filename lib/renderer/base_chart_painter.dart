@@ -33,10 +33,10 @@ abstract class BaseChartPainter extends CustomPainter {
   double mMainHighMaxValue = double.minPositive,
       mMainLowMinValue = double.maxFinite;
   int mItemCount = 0;
-  double mDataLen = 0.0; //数据占屏幕总长度
-  double mPointWidth = ChartStyle.pointWidth;
+  double mDataLen = 0.0;
   List<String> mFormats = [yyyy, '-', mm, '-', dd, ' ', HH, ':', nn];
   final List<String> dateFormat;
+  final ChartStyle style;
 
   BaseChartPainter({
     @required this.datas,
@@ -46,6 +46,7 @@ abstract class BaseChartPainter extends CustomPainter {
     @required this.selectX,
     @required this.topPadding,
     @required this.bottomPadding,
+    @required this.style,
     this.mainState,
     this.volHidden,
     this.secondaryState,
@@ -56,7 +57,7 @@ abstract class BaseChartPainter extends CustomPainter {
   })  : assert(gridRows != null && gridRows >= 0),
         assert(gridColumns != null && gridColumns >= 0) {
     mItemCount = datas?.length ?? 0;
-    mDataLen = mItemCount * mPointWidth;
+    mDataLen = mItemCount * style.pointWidth;
     initFormats();
   }
 
@@ -283,7 +284,7 @@ abstract class BaseChartPainter extends CustomPainter {
   ///@param position 索引值
   double getX(int position) {
     final pos = isLine ? position + 1 : position;
-    return pos * mPointWidth + mPointWidth / 2;
+    return pos * style.pointWidth + style.pointWidth / 2;
   }
 
   Object getItem(int position) {
@@ -300,7 +301,7 @@ abstract class BaseChartPainter extends CustomPainter {
 
   ///获取平移的最小值
   double getMinTranslateX() {
-    var x = -mDataLen + mWidth / scaleX - mPointWidth / 2;
+    var x = -mDataLen + mWidth / scaleX - style.pointWidth / 2;
     return x >= 0 ? 0.0 : x;
   }
 

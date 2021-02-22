@@ -7,17 +7,24 @@ import '../k_chart_widget.dart' show SecondaryState;
 import 'base_chart_renderer.dart';
 
 class SecondaryRenderer extends BaseChartRenderer<MACDEntity> {
-  double mMACDWidth = ChartStyle.macdWidth;
+  final ChartStyle style;
   SecondaryState state;
 
-  SecondaryRenderer(Rect mainRect, double maxValue, double minValue,
-      double topPadding, this.state, int fixedLength)
-      : super(
-            chartRect: mainRect,
-            maxValue: maxValue,
-            minValue: minValue,
-            topPadding: topPadding,
-            fixedLength: fixedLength);
+  SecondaryRenderer(
+    this.style,
+    Rect mainRect,
+    double maxValue,
+    double minValue,
+    double topPadding,
+    this.state,
+    int fixedLength,
+  ) : super(
+          chartRect: mainRect,
+          maxValue: maxValue,
+          minValue: minValue,
+          topPadding: topPadding,
+          fixedLength: fixedLength,
+        );
 
   @override
   void drawChart(MACDEntity lastPoint, MACDEntity curPoint, double lastX,
@@ -47,10 +54,15 @@ class SecondaryRenderer extends BaseChartRenderer<MACDEntity> {
     }
   }
 
-  void drawMACD(MACDEntity curPoint, Canvas canvas, double curX,
-      MACDEntity lastPoint, double lastX) {
+  void drawMACD(
+    MACDEntity curPoint,
+    Canvas canvas,
+    double curX,
+    MACDEntity lastPoint,
+    double lastX,
+  ) {
     double macdY = getY(curPoint.macd);
-    double r = mMACDWidth / 2;
+    double r = style.macdWidth / 2;
     double zeroy = getY(0);
     if (curPoint.macd > 0) {
       canvas.drawRect(Rect.fromLTRB(curX - r, macdY, curX + r, zeroy),
@@ -72,6 +84,7 @@ class SecondaryRenderer extends BaseChartRenderer<MACDEntity> {
   @override
   void drawText(Canvas canvas, MACDEntity data, double x) {
     List<TextSpan> children;
+
     switch (state) {
       case SecondaryState.MACD:
         children = [
@@ -92,6 +105,7 @@ class SecondaryRenderer extends BaseChartRenderer<MACDEntity> {
                 style: getTextStyle(ChartColors.deaColor)),
         ];
         break;
+
       case SecondaryState.KDJ:
         children = [
           TextSpan(
@@ -111,6 +125,7 @@ class SecondaryRenderer extends BaseChartRenderer<MACDEntity> {
                 style: getTextStyle(ChartColors.jColor)),
         ];
         break;
+
       case SecondaryState.RSI:
         children = [
           TextSpan(
@@ -118,6 +133,7 @@ class SecondaryRenderer extends BaseChartRenderer<MACDEntity> {
               style: getTextStyle(ChartColors.rsiColor)),
         ];
         break;
+
       case SecondaryState.WR:
         children = [
           TextSpan(
@@ -125,31 +141,49 @@ class SecondaryRenderer extends BaseChartRenderer<MACDEntity> {
               style: getTextStyle(ChartColors.rsiColor)),
         ];
         break;
+
       default:
         break;
     }
-    TextPainter tp = TextPainter(
-        text: TextSpan(children: children ?? []),
-        textDirection: TextDirection.ltr);
+
+    final tp = TextPainter(
+      text: TextSpan(children: children ?? []),
+      textDirection: TextDirection.ltr,
+    );
+
     tp.layout();
     tp.paint(canvas, Offset(x, chartRect.top - topPadding));
   }
 
   @override
   void drawRightText(canvas, textStyle, int gridRows) {
-    TextPainter maxTp = TextPainter(
-        text: TextSpan(text: "${format(maxValue)}", style: textStyle),
-        textDirection: TextDirection.ltr);
+    final maxTp = TextPainter(
+      text: TextSpan(text: "${format(maxValue)}", style: textStyle),
+      textDirection: TextDirection.ltr,
+    );
     maxTp.layout();
-    TextPainter minTp = TextPainter(
-        text: TextSpan(text: "${format(minValue)}", style: textStyle),
-        textDirection: TextDirection.ltr);
+
+    final minTp = TextPainter(
+      text: TextSpan(text: "${format(minValue)}", style: textStyle),
+      textDirection: TextDirection.ltr,
+    );
     minTp.layout();
 
-    maxTp.paint(canvas,
-        Offset(chartRect.width - maxTp.width, chartRect.top - topPadding));
-    minTp.paint(canvas,
-        Offset(chartRect.width - minTp.width, chartRect.bottom - minTp.height));
+    maxTp.paint(
+      canvas,
+      Offset(
+        chartRect.width - maxTp.width,
+        chartRect.top - topPadding,
+      ),
+    );
+
+    minTp.paint(
+      canvas,
+      Offset(
+        chartRect.width - minTp.width,
+        chartRect.bottom - minTp.height,
+      ),
+    );
   }
 
   @override
@@ -159,6 +193,7 @@ class SecondaryRenderer extends BaseChartRenderer<MACDEntity> {
     canvas.drawLine(Offset(0, chartRect.bottom),
         Offset(chartRect.width, chartRect.bottom), gridPaint);
     double columnSpace = chartRect.width / gridColumns;
+
     for (int i = 0; i <= columnSpace; i++) {
       //mSecondaryRect垂直线
       canvas.drawLine(Offset(columnSpace * i, chartRect.top - topPadding),

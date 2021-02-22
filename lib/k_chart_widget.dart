@@ -73,6 +73,7 @@ class KChartWidget extends StatefulWidget {
   final List<InfoWindowElement> infoWindowElements;
   final int gridRows, gridColumns;
   final String Function(double) priceFormatter;
+  final ChartStyle style;
 
   KChartWidget(
     this.datas, {
@@ -102,6 +103,7 @@ class KChartWidget extends StatefulWidget {
     this.gridRows = 4,
     this.gridColumns = 5,
     this.priceFormatter,
+    this.style = ChartStyle.defaultStyle,
   }) : assert(maDayList != null);
 
   @override
@@ -228,6 +230,7 @@ class _KChartWidgetState extends State<KChartWidget>
                   gridRows: widget.gridRows,
                   gridColumns: widget.gridColumns,
                   priceFormatter: widget.priceFormatter,
+                  style: widget.style,
                 ),
               ),
               _buildInfoDialog()

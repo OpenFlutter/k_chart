@@ -4,8 +4,6 @@ import '../k_chart_widget.dart' show MainState;
 import 'base_chart_renderer.dart';
 
 class MainRenderer extends BaseChartRenderer<CandleEntity> {
-  double mCandleWidth = ChartStyle.candleWidth;
-  double mCandleLineWidth = ChartStyle.candleLineWidth;
   MainState state;
   bool isLine;
   Rect _contentRect;
@@ -15,6 +13,7 @@ class MainRenderer extends BaseChartRenderer<CandleEntity> {
   final double contentPadding;
   final String Function(double) priceFormatter;
   final Color priceLabelBackgroundColor;
+  final ChartStyle style;
 
   MainRenderer({
     @required Rect mainRect,
@@ -27,6 +26,7 @@ class MainRenderer extends BaseChartRenderer<CandleEntity> {
     @required this.lineChartColor,
     @required this.lineChartFillColor,
     @required this.contentPadding,
+    @required this.style,
     this.priceFormatter,
     this.priceLabelBackgroundColor,
     this.maDayList = const [5, 10, 20],
@@ -203,8 +203,10 @@ class MainRenderer extends BaseChartRenderer<CandleEntity> {
     var low = getY(curPoint.low);
     var open = getY(curPoint.open);
     var close = getY(curPoint.close);
-    double r = mCandleWidth / 2;
-    double lineR = mCandleLineWidth / 2;
+
+    double r = style.candleWidth / 2;
+    double lineR = style.candleLineWidth / 2;
+
     if (open > close) {
       chartPaint.color = ChartColors.upColor;
       canvas.drawRect(

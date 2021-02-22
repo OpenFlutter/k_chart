@@ -33,6 +33,7 @@ class ChartPainter extends BaseChartPainter {
   final List<String> datetimeFormat;
   final KChartLanguage language;
   final String Function(double) priceFormatter;
+  final ChartStyle style;
 
   ChartPainter({
     @required datas,
@@ -41,6 +42,7 @@ class ChartPainter extends BaseChartPainter {
     @required isLongPass,
     @required selectX,
     @required this.language,
+    @required this.style,
     mainState,
     volHidden,
     secondaryState,
@@ -76,6 +78,7 @@ class ChartPainter extends BaseChartPainter {
           dateFormat: datetimeFormat,
           gridRows: gridRows,
           gridColumns: gridColumns,
+          style: style,
         );
 
   @override
@@ -108,10 +111,12 @@ class ChartPainter extends BaseChartPainter {
       maDayList: maDayList,
       priceFormatter: priceFormatter,
       priceLabelBackgroundColor: Color(0xe1f5f5f5),
+      style: style,
     );
 
     if (mVolRect != null) {
       mVolRenderer ??= VolRenderer(
+        style,
         mVolRect,
         mVolMaxValue,
         mVolMinValue,
@@ -119,8 +124,10 @@ class ChartPainter extends BaseChartPainter {
         fixedLength,
       );
     }
+
     if (mSecondaryRect != null)
       mSecondaryRenderer ??= SecondaryRenderer(
+        style,
         mSecondaryRect,
         mSecondaryMaxValue,
         mSecondaryMinValue,
@@ -219,8 +226,8 @@ class ChartPainter extends BaseChartPainter {
   @override
   void drawDate(Canvas canvas, Size size) {
     double columnSpace = size.width / gridColumns;
-    double startX = getX(mStartIndex) - mPointWidth / 2;
-    double stopX = getX(mStopIndex) + mPointWidth / 2;
+    double startX = getX(mStartIndex) - style.pointWidth / 2;
+    double stopX = getX(mStopIndex) + style.pointWidth / 2;
     double y = 0.0;
 
     for (var i = 1; i <= gridColumns; ++i) {
@@ -246,11 +253,12 @@ class ChartPainter extends BaseChartPainter {
 //    }
   }
 
-  Paint selectPointPaint = Paint()
+  final selectPointPaint = Paint()
     ..isAntiAlias = true
     ..strokeWidth = 0.5
     ..color = ChartColors.selectFillColor;
-  Paint selectorBorderPaint = Paint()
+
+  final selectorBorderPaint = Paint()
     ..isAntiAlias = true
     ..strokeWidth = 0.5
     ..style = PaintingStyle.stroke
@@ -374,20 +382,23 @@ class ChartPainter extends BaseChartPainter {
   void drawCrossLine(Canvas canvas, Size size) {
     var index = calculateSelectedX(selectX);
     KLineEntity point = getItem(index);
-    Paint paintY = Paint()
+
+    final paintY = Paint()
       ..color = selectionLineColor
-      ..strokeWidth = ChartStyle.vCrossWidth
+      ..strokeWidth = style.vCrossWidth
       ..isAntiAlias = true;
+
     double x = getX(index);
     double y = getMainY(point.close);
     // k线图竖线
     canvas.drawLine(
         Offset(x, topPadding), Offset(x, size.height - bottomPadding), paintY);
 
-    Paint paintX = Paint()
+    final paintX = Paint()
       ..color = selectionLineColor
-      ..strokeWidth = ChartStyle.hCrossWidth
+      ..strokeWidth = style.hCrossWidth
       ..isAntiAlias = true;
+
     // k线图横线
     canvas.drawLine(Offset(-mTranslateX, y),
         Offset(-mTranslateX + mWidth / scaleX, y), paintX);
