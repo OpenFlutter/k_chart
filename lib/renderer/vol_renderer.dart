@@ -41,7 +41,7 @@ class VolRenderer extends BaseChartRenderer<VolumeEntity> {
           chartPaint
             ..color = curPoint.close > curPoint.open
                 ? ChartColors.upColor
-                : ChartColors.dnColor);
+                : ChartColors.downColor);
     }
 
     if (lastPoint.MA5Volume != 0) {

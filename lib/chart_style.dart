@@ -7,7 +7,7 @@ class ChartColors {
   static const Color ma10Color = Color(0xff6CB0A6);
   static const Color ma30Color = Color(0xff9979C6);
   static const Color upColor = Color(0xff76C42D);
-  static const Color dnColor = Color(0xffFD4762);
+  static const Color downColor = Color(0xffFD4762);
   static const Color volColor = Color(0xff4729AE);
 
   static const Color macdColor = Color(0xff4729AE);
@@ -49,53 +49,53 @@ class ChartStyle {
     this.pointWidth,
     this.candleWidth,
     this.candleLineWidth,
-    this.volWidth,
+    this.volumeWidth,
     this.macdWidth,
-    this.vCrossWidth,
-    this.hCrossWidth,
+    this.vCrossLineWidth,
+    this.hCrossLineWidth,
   })  : assert(pointWidth != null),
         assert(candleWidth != null),
         assert(candleLineWidth != null),
-        assert(volWidth != null),
+        assert(volumeWidth != null),
         assert(macdWidth != null),
-        assert(vCrossWidth != null),
-        assert(hCrossWidth != null);
+        assert(vCrossLineWidth != null),
+        assert(hCrossLineWidth != null);
 
   final double pointWidth;
   final double candleWidth;
   final double candleLineWidth;
-  final double volWidth;
+  final double volumeWidth;
   final double macdWidth;
-  final double vCrossWidth;
-  final double hCrossWidth;
+  final double vCrossLineWidth;
+  final double hCrossLineWidth;
 
   static const defaultStyle = ChartStyle(
     pointWidth: 20,
     candleWidth: 12.5,
     candleLineWidth: 1.5,
-    volWidth: 8.5,
+    volumeWidth: 8.5,
     macdWidth: 3,
-    vCrossWidth: 8.5,
-    hCrossWidth: 0.5,
+    vCrossLineWidth: 8.5,
+    hCrossLineWidth: 0.5,
   );
 
   ChartStyle copyWith({
     double pointWidth,
     double candleWidth,
     double candleLineWidth,
-    double volWidth,
+    double volumeWidth,
     double macdWidth,
-    double vCrossWidth,
-    double hCrossWidth,
+    double vCrossLineWidth,
+    double hCrossLineWidth,
   }) {
     return ChartStyle(
       pointWidth: pointWidth ?? this.pointWidth,
       candleWidth: candleWidth ?? this.candleWidth,
       candleLineWidth: candleLineWidth ?? this.candleLineWidth,
-      volWidth: volWidth ?? this.volWidth,
+      volumeWidth: volumeWidth ?? this.volumeWidth,
       macdWidth: macdWidth ?? this.macdWidth,
-      vCrossWidth: vCrossWidth ?? this.vCrossWidth,
-      hCrossWidth: hCrossWidth ?? this.hCrossWidth,
+      vCrossLineWidth: vCrossLineWidth ?? this.vCrossLineWidth,
+      hCrossLineWidth: hCrossLineWidth ?? this.hCrossLineWidth,
     );
   }
 }

@@ -385,7 +385,7 @@ class ChartPainter extends BaseChartPainter {
 
     final paintY = Paint()
       ..color = selectionLineColor
-      ..strokeWidth = style.vCrossWidth
+      ..strokeWidth = style.vCrossLineWidth
       ..isAntiAlias = true;
 
     double x = getX(index);
@@ -396,7 +396,7 @@ class ChartPainter extends BaseChartPainter {
 
     final paintX = Paint()
       ..color = selectionLineColor
-      ..strokeWidth = style.hCrossWidth
+      ..strokeWidth = style.hCrossLineWidth
       ..isAntiAlias = true;
 
     // k线图横线

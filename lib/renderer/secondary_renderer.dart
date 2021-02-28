@@ -69,7 +69,7 @@ class SecondaryRenderer extends BaseChartRenderer<MACDEntity> {
           chartPaint..color = ChartColors.upColor);
     } else {
       canvas.drawRect(Rect.fromLTRB(curX - r, zeroy, curX + r, macdY),
-          chartPaint..color = ChartColors.dnColor);
+          chartPaint..color = ChartColors.downColor);
     }
     if (lastPoint.dif != 0) {
       drawLine(lastPoint.dif, curPoint.dif, canvas, lastX, curX,
