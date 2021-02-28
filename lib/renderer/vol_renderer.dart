@@ -32,7 +32,7 @@ class VolRenderer extends BaseChartRenderer<VolumeEntity> {
     Size size,
     Canvas canvas,
   ) {
-    double r = style.volWidth / 2;
+    double r = style.volumeWidth / 2;
     double top = getVolY(curPoint.vol);
     double bottom = chartRect.bottom;
     if (curPoint.vol != 0) {
