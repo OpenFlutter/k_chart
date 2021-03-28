@@ -1,0 +1,3 @@
+mixin CCIEntity {
+  double cci;
+}
