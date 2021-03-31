@@ -136,6 +136,7 @@ class _MyHomePageState extends State<MyHomePage> {
         button("KDJ", onPressed: () => _secondaryState = SecondaryState.KDJ),
         button("RSI", onPressed: () => _secondaryState = SecondaryState.RSI),
         button("WR", onPressed: () => _secondaryState = SecondaryState.WR),
+        button("CCI", onPressed: () => _secondaryState = SecondaryState.CCI),
         button("隐藏副视图", onPressed: () => _secondaryState = SecondaryState.NONE),
         button(_volHidden ? "显示成交量" : "隐藏成交量", onPressed: () => _volHidden = !_volHidden),
         button("切换中英文", onPressed: () => isChinese = !isChinese),
