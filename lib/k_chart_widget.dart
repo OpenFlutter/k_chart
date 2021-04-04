@@ -31,6 +31,7 @@ class KChartWidget extends StatefulWidget {
   final MainState mainState;
   final bool volHidden;
   final SecondaryState secondaryState;
+  final Function() onSecondaryTap;
   final bool isLine;
   final bool isChinese;
   final List<String> timeFormat;
@@ -48,6 +49,7 @@ class KChartWidget extends StatefulWidget {
     this.datas, {
     this.mainState = MainState.MA,
     this.secondaryState = SecondaryState.MACD,
+    this.onSecondaryTap,
     this.volHidden = false,
     this.isLine,
     this.isChinese = true,
@@ -106,7 +108,26 @@ class _KChartWidgetState extends State<KChartWidget>
       mScrollX = mSelectX = 0.0;
       mScaleX = 1.0;
     }
+    final _painter = ChartPainter(
+        datas: widget.datas,
+        scaleX: mScaleX,
+        scrollX: mScrollX,
+        selectX: mSelectX,
+        isLongPass: isLongPress,
+        mainState: widget.mainState,
+        volHidden: widget.volHidden,
+        secondaryState: widget.secondaryState,
+        isLine: widget.isLine,
+        sink: mInfoWindowStream?.sink,
+        bgColor: widget.bgColor,
+        fixedLength: widget.fixedLength,
+        maDayList: widget.maDayList);
     return GestureDetector(
+      onTapUp: (details) {
+        if(widget.onSecondaryTap != null && _painter.isInSecondaryRect(details.localPosition)) {
+          widget.onSecondaryTap();
+        }
+      },
       onHorizontalDragDown: (details) {
         _stopAnimation();
         _onDragChanged(true);
@@ -156,20 +177,7 @@ class _KChartWidgetState extends State<KChartWidget>
         children: <Widget>[
           CustomPaint(
             size: Size(double.infinity, double.infinity),
-            painter: ChartPainter(
-                datas: widget.datas,
-                scaleX: mScaleX,
-                scrollX: mScrollX,
-                selectX: mSelectX,
-                isLongPass: isLongPress,
-                mainState: widget.mainState,
-                volHidden: widget.volHidden,
-                secondaryState: widget.secondaryState,
-                isLine: widget.isLine,
-                sink: mInfoWindowStream?.sink,
-                bgColor: widget.bgColor,
-                fixedLength: widget.fixedLength,
-                maDayList: widget.maDayList),
+            painter: _painter,
           ),
           _buildInfoDialog()
         ],
