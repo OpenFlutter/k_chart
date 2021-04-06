@@ -43,6 +43,7 @@ Container(
                 isChinese: true,// Graphic language
                 volHidden: false,// hide volume
                 isOnDrag: (isDrag){},// true is on Drag.Don't load data while Draging.
+                onSecondaryTap:(){}// on secondary rect taped.
               ),
             ),
 ```
