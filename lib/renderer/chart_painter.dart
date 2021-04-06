@@ -334,4 +334,9 @@ class ChartPainter extends BaseChartPainter {
       dateFormat(DateTime.fromMillisecondsSinceEpoch(date), mFormats);
 
   double getMainY(double y) => mMainRenderer?.getY(y) ?? 0.0;
+
+  /// 点是否在SecondaryRect中
+  bool isInSecondaryRect(Offset point) {
+    return mSecondaryRect?.contains(point) ?? false;
+  }
 }

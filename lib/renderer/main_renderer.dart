@@ -185,26 +185,26 @@ class MainRenderer extends BaseChartRenderer<CandleEntity> {
     var close = getY(curPoint.close);
     double r = mCandleWidth / 2;
     double lineR = mCandleLineWidth / 2;
-    if (open > close) {
+    if (open >= close) {
+      // 实体高度>= CandleLineWidth
+      if (open - close < mCandleLineWidth) {
+        open = close + mCandleLineWidth;
+      }
       chartPaint.color = ChartColors.upColor;
       canvas.drawRect(
           Rect.fromLTRB(curX - r, close, curX + r, open), chartPaint);
       canvas.drawRect(
           Rect.fromLTRB(curX - lineR, high, curX + lineR, low), chartPaint);
     } else if (close > open) {
+      // 实体高度>= CandleLineWidth
+      if (close - open < mCandleLineWidth) {
+        open = close - mCandleLineWidth;
+      }
       chartPaint.color = ChartColors.dnColor;
       canvas.drawRect(
           Rect.fromLTRB(curX - r, open, curX + r, close), chartPaint);
       canvas.drawRect(
           Rect.fromLTRB(curX - lineR, high, curX + lineR, low), chartPaint);
-    } else {
-      chartPaint.color = ChartColors.upColor;
-      canvas.drawLine(
-          Offset(curX - r, open), Offset(curX + r, open), chartPaint);
-      if (high != low) {
-        canvas.drawRect(
-            Rect.fromLTRB(curX - lineR, high, curX + lineR, low), chartPaint);
-      }
     }
   }
 
