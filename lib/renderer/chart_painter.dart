@@ -299,6 +299,24 @@ class ChartPainter extends BaseChartPainter {
     }
   }
 
+  @override
+  void drawNowPrice(Canvas canvas) {
+    if (isLine == true) return;
+    double x = translateXtoX(getX(datas.length -1));
+    double value = datas[datas.length -1].close;
+    double y = getMainY(value);
+    if (x < mWidth / 2) {
+      //画右边
+      TextPainter tp = getTextPainter(
+          "------ " + value.toStringAsFixed(fixedLength), ChartColors.nowPriceColor);
+      tp.paint(canvas, Offset(x, y - tp.height / 2));
+    } else {
+      TextPainter tp = getTextPainter(
+          value.toStringAsFixed(fixedLength) + " ------", ChartColors.nowPriceColor);
+      tp.paint(canvas, Offset(x - tp.width, y - tp.height / 2));
+    }
+  }
+
   ///画交叉线
   void drawCrossLine(Canvas canvas, Size size) {
     var index = calculateSelectedX(selectX);

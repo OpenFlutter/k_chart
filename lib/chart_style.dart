@@ -23,6 +23,8 @@ class ChartColors {
 
   static const Color defaultTextColor = Color(0xff60738E);
 
+  static const Color nowPriceColor = Color(0xffC9B885);
+
   //深度颜色
   static const Color depthBuyColor = Color(0xff60A893);
   static const Color depthSellColor = Color(0xffC15866);

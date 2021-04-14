@@ -89,6 +89,7 @@ abstract class BaseChartPainter extends CustomPainter {
       if (isLongPress == true) drawCrossLineText(canvas, size);
       drawText(canvas, datas?.last, 5);
       drawMaxAndMin(canvas);
+      drawNowPrice(canvas);
     }
     canvas.restore();
   }
@@ -115,6 +116,9 @@ abstract class BaseChartPainter extends CustomPainter {
 
   //画最大最小值
   void drawMaxAndMin(Canvas canvas);
+
+  //画当前价格
+  void drawNowPrice(Canvas canvas);
 
   //交叉线值
   void drawCrossLineText(Canvas canvas, Size size);
