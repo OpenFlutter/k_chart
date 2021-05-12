@@ -6,16 +6,20 @@ import '../renderer/base_chart_renderer.dart';
 import '../utils/number_util.dart';
 
 class VolRenderer extends BaseChartRenderer<VolumeEntity> {
-  double mVolWidth = ChartStyle.volWidth;
+  double mVolWidth;
+  final ChartStyle chartStyle;
+  final ChartColors chartColors;
 
   VolRenderer(Rect mainRect, double maxValue, double minValue,
-      double topPadding, int fixedLength)
+      double topPadding, int fixedLength, this.chartStyle, this.chartColors)
       : super(
             chartRect: mainRect,
             maxValue: maxValue,
             minValue: minValue,
             topPadding: topPadding,
-            fixedLength: fixedLength);
+            fixedLength: fixedLength){
+    mVolWidth = this.chartStyle.volWidth;
+  }
 
   @override
   void drawChart(VolumeEntity lastPoint, VolumeEntity curPoint, double lastX,
@@ -28,18 +32,18 @@ class VolRenderer extends BaseChartRenderer<VolumeEntity> {
           Rect.fromLTRB(curX - r, top, curX + r, bottom),
           chartPaint
             ..color = curPoint.close > curPoint.open
-                ? ChartColors.upColor
-                : ChartColors.dnColor);
+                ? this.chartColors.upColor
+                : this.chartColors.dnColor);
     }
 
     if (lastPoint.MA5Volume != 0) {
       drawLine(lastPoint.MA5Volume, curPoint.MA5Volume, canvas, lastX, curX,
-          ChartColors.ma5Color);
+          this.chartColors.ma5Color);
     }
 
     if (lastPoint.MA10Volume != 0) {
       drawLine(lastPoint.MA10Volume, curPoint.MA10Volume, canvas, lastX, curX,
-          ChartColors.ma10Color);
+          this.chartColors.ma10Color);
     }
   }
 
@@ -52,15 +56,15 @@ class VolRenderer extends BaseChartRenderer<VolumeEntity> {
       children: [
         TextSpan(
             text: "VOL:${NumberUtil.format(data.vol)}    ",
-            style: getTextStyle(ChartColors.volColor)),
+            style: getTextStyle(this.chartColors.volColor)),
         if (NumberUtil.checkNotNullOrZero(data.MA5Volume))
           TextSpan(
               text: "MA5:${NumberUtil.format(data.MA5Volume)}    ",
-              style: getTextStyle(ChartColors.ma5Color)),
+              style: getTextStyle(this.chartColors.ma5Color)),
         if (NumberUtil.checkNotNullOrZero(data.MA10Volume))
           TextSpan(
               text: "MA10:${NumberUtil.format(data.MA10Volume)}    ",
-              style: getTextStyle(ChartColors.ma10Color)),
+              style: getTextStyle(this.chartColors.ma10Color)),
       ],
     );
     TextPainter tp = TextPainter(text: span, textDirection: TextDirection.ltr);

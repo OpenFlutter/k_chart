@@ -23,8 +23,13 @@ class ChartPainter extends BaseChartPainter {
   List<Color> bgColor;
   int fixedLength;
   List<int> maDayList;
+  final ChartColors chartColors;
+  Paint selectPointPaint, selectorBorderPaint;
+  final ChartStyle chartStyle;
 
   ChartPainter(
+      this.chartStyle,
+      this.chartColors,
       {@required datas,
       @required scaleX,
       @required scrollX,
@@ -40,6 +45,7 @@ class ChartPainter extends BaseChartPainter {
       this.maDayList})
       : assert(bgColor == null || bgColor.length >= 2),
         super(
+            chartStyle,
             datas: datas,
             scaleX: scaleX,
             scrollX: scrollX,
@@ -48,7 +54,18 @@ class ChartPainter extends BaseChartPainter {
             mainState: mainState,
             volHidden: volHidden,
             secondaryState: secondaryState,
-            isLine: isLine);
+            isLine: isLine
+      ) {
+    selectPointPaint = Paint()
+      ..isAntiAlias = true
+      ..strokeWidth = 0.5
+      ..color = this.chartColors.selectFillColor;
+    selectorBorderPaint = Paint()
+      ..isAntiAlias = true
+      ..strokeWidth = 0.5
+      ..style = PaintingStyle.stroke
+      ..color = this.chartColors.selectBorderColor;
+  }
 
   @override
   void initChartRenderer() {
@@ -62,10 +79,10 @@ class ChartPainter extends BaseChartPainter {
       }
     }
     mMainRenderer ??= MainRenderer(mMainRect, mMainMaxValue, mMainMinValue,
-        mTopPadding, mainState, isLine, fixedLength, maDayList);
+        mTopPadding, mainState, isLine, fixedLength, this.chartStyle, this.chartColors, maDayList);
     if (mVolRect != null) {
       mVolRenderer ??= VolRenderer(
-          mVolRect, mVolMaxValue, mVolMinValue, mChildPadding, fixedLength);
+          mVolRect, mVolMaxValue, mVolMinValue, mChildPadding, fixedLength, this.chartStyle, this.chartColors);
     }
     if (mSecondaryRect != null)
       mSecondaryRenderer ??= SecondaryRenderer(
@@ -74,7 +91,9 @@ class ChartPainter extends BaseChartPainter {
           mSecondaryMinValue,
           mChildPadding,
           secondaryState,
-          fixedLength);
+          fixedLength,
+          chartStyle,
+          chartColors);
   }
 
   @override
@@ -142,7 +161,7 @@ class ChartPainter extends BaseChartPainter {
 
   @override
   void drawRightText(canvas) {
-    var textStyle = getTextStyle(ChartColors.defaultTextColor);
+    var textStyle = getTextStyle(this.chartColors.defaultTextColor);
     mMainRenderer?.drawRightText(canvas, textStyle, mGridRows);
     mVolRenderer?.drawRightText(canvas, textStyle, mGridRows);
     mSecondaryRenderer?.drawRightText(canvas, textStyle, mGridRows);
@@ -159,7 +178,7 @@ class ChartPainter extends BaseChartPainter {
       if (translateX >= startX && translateX <= stopX) {
         int index = indexOfTranslateX(translateX);
         if (datas[index] == null) continue;
-        TextPainter tp = getTextPainter(getDate(datas[index].time));
+        TextPainter tp = getTextPainter(getDate(datas[index].time), null);
         y = size.height - (mBottomPadding - tp.height) / 2 - tp.height;
         tp.paint(canvas, Offset(columnSpace * i - tp.width / 2, y));
       }
@@ -176,16 +195,6 @@ class ChartPainter extends BaseChartPainter {
 //      tp.paint(canvas, Offset(size.width - tp.width, y));
 //    }
   }
-
-  Paint selectPointPaint = Paint()
-    ..isAntiAlias = true
-    ..strokeWidth = 0.5
-    ..color = ChartColors.selectFillColor;
-  Paint selectorBorderPaint = Paint()
-    ..isAntiAlias = true
-    ..strokeWidth = 0.5
-    ..style = PaintingStyle.stroke
-    ..color = ChartColors.selectBorderColor;
 
   @override
   void drawCrossLineText(Canvas canvas, Size size) {
@@ -308,11 +317,11 @@ class ChartPainter extends BaseChartPainter {
     if (x < mWidth / 2) {
       //画右边
       TextPainter tp = getTextPainter(
-          "------ " + value.toStringAsFixed(fixedLength), ChartColors.nowPriceColor);
+          "------ " + value.toStringAsFixed(fixedLength), this.chartColors.nowPriceColor);
       tp.paint(canvas, Offset(x, y - tp.height / 2));
     } else {
       TextPainter tp = getTextPainter(
-          value.toStringAsFixed(fixedLength) + " ------", ChartColors.nowPriceColor);
+          value.toStringAsFixed(fixedLength) + " ------", this.chartColors.nowPriceColor);
       tp.paint(canvas, Offset(x - tp.width, y - tp.height / 2));
     }
   }
@@ -323,7 +332,7 @@ class ChartPainter extends BaseChartPainter {
     KLineEntity point = getItem(index);
     Paint paintY = Paint()
       ..color = Colors.white12
-      ..strokeWidth = ChartStyle.vCrossWidth
+      ..strokeWidth = this.chartStyle.vCrossWidth
       ..isAntiAlias = true;
     double x = getX(index);
     double y = getMainY(point.close);
@@ -333,7 +342,7 @@ class ChartPainter extends BaseChartPainter {
 
     Paint paintX = Paint()
       ..color = Colors.white
-      ..strokeWidth = ChartStyle.hCrossWidth
+      ..strokeWidth = this.chartStyle.hCrossWidth
       ..isAntiAlias = true;
     // k线图横线
     canvas.drawLine(Offset(-mTranslateX, y),
@@ -341,7 +350,10 @@ class ChartPainter extends BaseChartPainter {
     canvas.drawCircle(Offset(x, y), 2.0, paintX);
   }
 
-  TextPainter getTextPainter(text, [color = ChartColors.defaultTextColor]) {
+  TextPainter getTextPainter(text, color) {
+    if (color == null) {
+      color = this.chartColors.defaultTextColor;
+    }
     TextSpan span = TextSpan(text: "$text", style: getTextStyle(color));
     TextPainter tp = TextPainter(text: span, textDirection: TextDirection.ltr);
     tp.layout();
