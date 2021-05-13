@@ -30,6 +30,8 @@ Container(
               height: 450,
               width: double.infinity,
               child: KChartWidget(
+                chartStyle, // Required for styling purposes
+                chartColors,// Required for styling purposes
                 datas,// Required，Data must be an ordered list，(history=>now)
                 isLine: isLine,// Decide whether it is k-line or time-sharing
                 mainState: _mainState,// Decide what the main view shows
@@ -59,7 +61,7 @@ if you want change DepthChart color, you can use just like this:
             height: 230,
             width: double.infinity,
             color: Colors.grey, //background color
-            child: DepthChart(_bids, _asks,buyPathColor: Colors.blue, sellPathColor: Colors.green),
+            child: DepthChart(_bids, _asks, chartColors, buyPathColor: Colors.blue, sellPathColor: Colors.green),
           )
 ```
 
