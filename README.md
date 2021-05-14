@@ -5,9 +5,9 @@ Maybe this is the best k chart in Flutter.Support drag,scale,long press,fling.An
 
 #### image
 
-![Screenshot](https://github.com/mafanwei/k_chart/blob/master/example/images/Screenshot1.jpg)
+<img src="https://github.com/mafanwei/k_chart/blob/master/example/images/Screenshot1.jpg" width="375" alt="Screenshot"/>
 
-![Screenshot](https://github.com/mafanwei/k_chart/blob/master/example/images/Screenshot2.jpg)
+<img src="https://github.com/mafanwei/k_chart/blob/master/example/images/Screenshot2.jpg" width="375" alt="Screenshot"/>
 
 #### gif(This is outdated)
 
