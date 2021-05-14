@@ -14,3 +14,8 @@
 
 * NEW: Add onSecondaryTap
 * Changed the k-line drawing logic
+
+## [0.2.0]
+
+* NEW: Added real-time price display
+* Breaking Change: Ability to customise UI of KChartWidget.(The chartStyle and chartColors must be specified)

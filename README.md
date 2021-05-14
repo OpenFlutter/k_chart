@@ -1,7 +1,15 @@
 # k_chart
 Maybe this is the best k chart in Flutter.Support drag,scale,long press,fling.And easy to use.
 
-![Screenshot](https://github.com/mafanwei/k_chart/blob/master/example/images/Screenshot.jpg)
+## display
+
+#### image
+
+![Screenshot](https://github.com/mafanwei/k_chart/blob/master/example/images/Screenshot1.jpg)
+
+![Screenshot](https://github.com/mafanwei/k_chart/blob/master/example/images/Screenshot2.jpg)
+
+#### gif(This is outdated)
 
 ![demo](https://github.com/mafanwei/k_chart/blob/master/example/images/demo.gif)
 
@@ -9,7 +17,7 @@ Maybe this is the best k chart in Flutter.Support drag,scale,long press,fling.An
 #### Install
 ```
 dependencies:
-  k_chart: ^0.1.4
+  k_chart: ^0.2.0
 ```
 or use latest：
 ```
