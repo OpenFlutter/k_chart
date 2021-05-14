@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:k_chart/chart_style.dart';
 import 'package:k_chart/flutter_k_chart.dart';
 import 'package:k_chart/k_chart_widget.dart';
 import 'package:http/http.dart' as http;
@@ -39,6 +40,9 @@ class _MyHomePageState extends State<MyHomePage> {
   bool isLine = true;
   bool isChinese = true;
   List<DepthEntity> _bids, _asks;
+
+  ChartStyle chartStyle = new ChartStyle();
+  ChartColors chartColors = new ChartColors();
 
   @override
   void initState() {
@@ -96,6 +100,8 @@ class _MyHomePageState extends State<MyHomePage> {
               width: double.infinity,
               child: KChartWidget(
                 datas,
+                chartStyle,
+                chartColors,
                 isLine: isLine,
                 mainState: _mainState,
                 volHidden: _volHidden,
@@ -116,7 +122,7 @@ class _MyHomePageState extends State<MyHomePage> {
           Container(
             height: 230,
             width: double.infinity,
-            child: DepthChart(_bids, _asks),
+            child: DepthChart(_bids, _asks, this.chartColors),
           )
         ],
       ),
@@ -140,6 +146,14 @@ class _MyHomePageState extends State<MyHomePage> {
         button("隐藏副视图", onPressed: () => _secondaryState = SecondaryState.NONE),
         button(_volHidden ? "显示成交量" : "隐藏成交量", onPressed: () => _volHidden = !_volHidden),
         button("切换中英文", onPressed: () => isChinese = !isChinese),
+        button("Customize UI", onPressed: () {
+          setState(() {
+            chartColors.selectBorderColor = Colors.red;
+            chartColors.selectFillColor = Colors.red;
+            chartColors.lineFillColor = Colors.red;
+            chartColors.kLineColor = Colors.yellow;
+          });
+        }),
       ],
     );
   }

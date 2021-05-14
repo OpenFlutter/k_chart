@@ -34,10 +34,12 @@ abstract class BaseChartPainter extends CustomPainter {
       mMainLowMinValue = double.maxFinite;
   int mItemCount = 0;
   double mDataLen = 0.0; //数据占屏幕总长度
-  double mPointWidth = ChartStyle.pointWidth;
+  final ChartStyle chartStyle;
+  double mPointWidth;
   List<String> mFormats = [yyyy, '-', mm, '-', dd, ' ', HH, ':', nn]; //格式化时间
 
   BaseChartPainter(
+      this.chartStyle,
       {@required this.datas,
       @required this.scaleX,
       @required this.scrollX,
@@ -48,6 +50,7 @@ abstract class BaseChartPainter extends CustomPainter {
       this.secondaryState,
       this.isLine}) {
     mItemCount = datas?.length ?? 0;
+    mPointWidth = this.chartStyle.pointWidth;
     mDataLen = mItemCount * mPointWidth;
     initFormats();
   }

@@ -44,9 +44,13 @@ class KChartWidget extends StatefulWidget {
   final double flingRatio;
   final Curve flingCurve;
   final Function(bool) isOnDrag;
+  final ChartColors chartColors;
+  final ChartStyle chartStyle;
 
   KChartWidget(
-    this.datas, {
+    this.datas,
+    this.chartStyle,
+    this.chartColors, {
     this.mainState = MainState.MA,
     this.secondaryState = SecondaryState.MACD,
     this.onSecondaryTap,
@@ -61,7 +65,7 @@ class KChartWidget extends StatefulWidget {
     this.flingTime = 600,
     this.flingRatio = 0.5,
     this.flingCurve = Curves.decelerate,
-    this.isOnDrag,
+    this.isOnDrag
   }) : assert(maDayList != null);
 
   @override
@@ -109,6 +113,8 @@ class _KChartWidgetState extends State<KChartWidget>
       mScaleX = 1.0;
     }
     final _painter = ChartPainter(
+        widget.chartStyle,
+        widget.chartColors,
         datas: widget.datas,
         scaleX: mScaleX,
         scrollX: mScrollX,
@@ -121,7 +127,8 @@ class _KChartWidgetState extends State<KChartWidget>
         sink: mInfoWindowStream?.sink,
         bgColor: widget.bgColor,
         fixedLength: widget.fixedLength,
-        maDayList: widget.maDayList);
+        maDayList: widget.maDayList,
+    );
     return GestureDetector(
       onTapUp: (details) {
         if(widget.onSecondaryTap != null && _painter.isInSecondaryRect(details.localPosition)) {
@@ -287,9 +294,9 @@ class _KChartWidgetState extends State<KChartWidget>
                 top: 25),
             width: mWidth / 3,
             decoration: BoxDecoration(
-                color: ChartColors.selectFillColor,
+                color: widget.chartColors.selectFillColor,
                 border: Border.all(
-                    color: ChartColors.selectBorderColor, width: 0.5)),
+                    color: widget.chartColors.selectBorderColor, width: 0.5)),
             child: ListView.builder(
               padding: EdgeInsets.all(4),
               itemCount: infoNamesCN.length,
