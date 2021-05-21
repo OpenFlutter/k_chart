@@ -14,10 +14,13 @@ class MainRenderer extends BaseChartRenderer<CandleEntity> {
   List<int> maDayList;
   final ChartStyle chartStyle;
   final ChartColors chartColors;
+  final double mLineStrokeWidth = 1.0;
+  double scaleX;
   Paint mLinePaint;
 
   MainRenderer(Rect mainRect, double maxValue, double minValue,
       double topPadding, this.state, this.isLine, int fixedLength, this.chartStyle, this.chartColors,
+  this.scaleX,
       [this.maDayList = const [5, 10, 20]])
       : super(
             chartRect: mainRect,
@@ -30,7 +33,7 @@ class MainRenderer extends BaseChartRenderer<CandleEntity> {
     mLinePaint = Paint()
       ..isAntiAlias = true
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 1.0
+      ..strokeWidth = mLineStrokeWidth
       ..color = this.chartColors.kLineColor;
     _contentRect = Rect.fromLTRB(
         chartRect.left,
@@ -150,7 +153,7 @@ class MainRenderer extends BaseChartRenderer<CandleEntity> {
     canvas.drawPath(mLineFillPath, mLineFillPaint);
     mLineFillPath.reset();
 
-    canvas.drawPath(mLinePath, mLinePaint);
+    canvas.drawPath(mLinePath, mLinePaint..strokeWidth = (mLineStrokeWidth / scaleX).clamp(0.1, 1.0));
     mLinePath.reset();
   }
 
