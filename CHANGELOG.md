@@ -19,3 +19,7 @@
 
 * NEW: Added real-time price display
 * Breaking Change: Ability to customise UI of KChartWidget.(The chartStyle and chartColors must be specified)
+
+## [0.2.1]
+
+* Fix: Fixed some UI issues about zooming
