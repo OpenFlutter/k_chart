@@ -39,10 +39,10 @@ class _MyHomePageState extends State<MyHomePage> {
   SecondaryState _secondaryState = SecondaryState.MACD;
   bool isLine = true;
   bool isChinese = true;
-  late List<DepthEntity> _bids, _asks;
+  List<DepthEntity>? _bids, _asks;
 
-  ChartStyle chartStyle = new ChartStyle();
-  ChartColors chartColors = new ChartColors();
+  ChartStyle chartStyle = ChartStyle();
+  ChartColors chartColors = ChartColors();
 
   @override
   void initState() {
@@ -50,16 +50,17 @@ class _MyHomePageState extends State<MyHomePage> {
     getData('1day');
     rootBundle.loadString('assets/depth.json').then((result) {
       final parseJson = json.decode(result);
-      Map tick = parseJson['tick'];
-      var bids = tick['bids']
-          .map((item) => DepthEntity(item[0], item[1]))
-          .toList()
-          .cast<DepthEntity>();
-      var asks = tick['asks']
-          .map((item) => DepthEntity(item[0], item[1]))
-          .toList()
-          .cast<DepthEntity>();
-      initDepth(bids, asks);
+      final tick = parseJson['tick'];
+      debugPrint('### tick $tick');
+      // var bids = tick['bids']
+      //     .map((item) => DepthEntity(item[0], item[1]))
+      //     .toList()
+      //     .cast<DepthEntity>();
+      // var asks = tick['asks']
+      //     .map((item) => DepthEntity(item[0], item[1]))
+      //     .toList()
+      //     .cast<DepthEntity>();
+      // initDepth(bids, asks);
     });
   }
 
@@ -73,7 +74,7 @@ class _MyHomePageState extends State<MyHomePage> {
     bids.reversed.forEach((item) {
       amount += item.vol;
       item.vol = amount;
-      _bids.insert(0, item);
+      _bids!.insert(0, item);
     });
 
     amount = 0.0;
@@ -82,7 +83,7 @@ class _MyHomePageState extends State<MyHomePage> {
     asks.forEach((item) {
       amount += item.vol;
       item.vol = amount;
-      _asks.add(item);
+      _asks!.add(item);
     });
     setState(() {});
   }
@@ -116,14 +117,15 @@ class _MyHomePageState extends State<MyHomePage> {
                   width: double.infinity,
                   height: 450,
                   alignment: Alignment.center,
-                  child: CircularProgressIndicator()),
+                  child: const CircularProgressIndicator()),
           ]),
           buildButtons(),
-          Container(
-            height: 230,
-            width: double.infinity,
-            child: DepthChart(_bids, _asks, this.chartColors),
-          )
+          if (_bids != null && _asks != null)
+            Container(
+              height: 230,
+              width: double.infinity,
+              child: DepthChart(_bids!, _asks!, chartColors),
+            )
         ],
       ),
     );
@@ -180,11 +182,11 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  void getData(String? period) {
-    Future<String> future = getIPAddress('$period');
-    future.then((result) {
-      Map parseJson = json.decode(result);
-      List list = parseJson['data'];
+  void getData(String period) {
+    final Future<String> future = getIPAddress(period);
+    future.then((String result) {
+      final Map parseJson = json.decode(result) as Map<dynamic, dynamic>;
+      final list = parseJson['data'] as List<dynamic>;
       datas = list
           .map((item) => KLineEntity.fromJson(item))
           .toList()
@@ -206,7 +208,7 @@ class _MyHomePageState extends State<MyHomePage> {
     var url =
         'https://api.huobi.br.com/market/history/kline?period=${period ?? '1day'}&size=300&symbol=btcusdt';
     late String result;
-    var response = await http.get(url);
+    final response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
       result = response.body;
     } else {
