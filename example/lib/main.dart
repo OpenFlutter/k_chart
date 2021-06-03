@@ -50,17 +50,16 @@ class _MyHomePageState extends State<MyHomePage> {
     getData('1day');
     rootBundle.loadString('assets/depth.json').then((result) {
       final parseJson = json.decode(result);
-      final tick = parseJson['tick'];
-      debugPrint('### tick $tick');
-      // var bids = tick['bids']
-      //     .map((item) => DepthEntity(item[0], item[1]))
-      //     .toList()
-      //     .cast<DepthEntity>();
-      // var asks = tick['asks']
-      //     .map((item) => DepthEntity(item[0], item[1]))
-      //     .toList()
-      //     .cast<DepthEntity>();
-      // initDepth(bids, asks);
+      final tick = parseJson['tick'] as Map<String, dynamic>;
+      final List<DepthEntity> bids = (tick['bids'] as List<dynamic>)
+          .map<DepthEntity>(
+              (item) => DepthEntity(item[0] as double, item[1] as double))
+          .toList();
+      final List<DepthEntity> asks = (tick['asks'] as List<dynamic>)
+          .map<DepthEntity>(
+              (item) => DepthEntity(item[0] as double, item[1] as double))
+          .toList();
+      initDepth(bids, asks);
     });
   }
 
@@ -90,44 +89,42 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color(0xff17212F),
-//      appBar: AppBar(title: Text(widget.title)),
-      body: ListView(
-        children: <Widget>[
-          Stack(children: <Widget>[
-            Container(
-              height: 450,
-              width: double.infinity,
-              child: KChartWidget(
-                datas,
-                chartStyle,
-                chartColors,
-                isLine: isLine,
-                mainState: _mainState,
-                volHidden: _volHidden,
-                secondaryState: _secondaryState,
-                fixedLength: 2,
-                timeFormat: TimeFormat.YEAR_MONTH_DAY,
-                isChinese: isChinese,
-              ),
+    return ListView(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      children: <Widget>[
+        Stack(children: <Widget>[
+          Container(
+            height: 450,
+            width: double.infinity,
+            child: KChartWidget(
+              datas,
+              chartStyle,
+              chartColors,
+              isLine: isLine,
+              mainState: _mainState,
+              volHidden: _volHidden,
+              secondaryState: _secondaryState,
+              fixedLength: 2,
+              timeFormat: TimeFormat.YEAR_MONTH_DAY,
+              isChinese: isChinese,
             ),
-            if (showLoading)
-              Container(
-                  width: double.infinity,
-                  height: 450,
-                  alignment: Alignment.center,
-                  child: const CircularProgressIndicator()),
-          ]),
-          buildButtons(),
-          if (_bids != null && _asks != null)
+          ),
+          if (showLoading)
             Container(
-              height: 230,
-              width: double.infinity,
-              child: DepthChart(_bids!, _asks!, chartColors),
-            )
-        ],
-      ),
+                width: double.infinity,
+                height: 450,
+                alignment: Alignment.center,
+                child: const CircularProgressIndicator()),
+        ]),
+        buildButtons(),
+        if (_bids != null && _asks != null)
+          Container(
+            height: 230,
+            width: double.infinity,
+            child: DepthChart(_bids!, _asks!, chartColors),
+          )
+      ],
     );
   }
 
@@ -169,11 +166,11 @@ class _MyHomePageState extends State<MyHomePage> {
           setState(() {});
         }
       },
-      child: Text("$text"),
+      child: Text(text),
       style: TextButton.styleFrom(
         primary: Colors.white,
-        minimumSize: Size(88, 44),
-        padding: EdgeInsets.symmetric(horizontal: 16.0),
+        minimumSize: const Size(88, 44),
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(2.0)),
         ),
@@ -188,7 +185,7 @@ class _MyHomePageState extends State<MyHomePage> {
       final Map parseJson = json.decode(result) as Map<dynamic, dynamic>;
       final list = parseJson['data'] as List<dynamic>;
       datas = list
-          .map((item) => KLineEntity.fromJson(item))
+          .map((item) => KLineEntity.fromJson(item as Map<String, dynamic>))
           .toList()
           .reversed
           .toList()
