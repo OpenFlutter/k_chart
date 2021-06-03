@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+
 export '../chart_style.dart';
 
 abstract class BaseChartRenderer<T> {
   double maxValue, minValue;
-  double scaleY;
+  late double scaleY;
   double topPadding;
   Rect chartRect;
   int fixedLength;
@@ -18,12 +19,13 @@ abstract class BaseChartRenderer<T> {
     ..strokeWidth = 0.5
     ..color = Color(0xff4c5c74);
 
-  BaseChartRenderer(
-      {@required this.chartRect,
-      @required this.maxValue,
-      @required this.minValue,
-      @required this.topPadding,
-      @required this.fixedLength}) {
+  BaseChartRenderer({
+    required this.chartRect,
+    required this.maxValue,
+    required this.minValue,
+    required this.topPadding,
+    required this.fixedLength,
+  }) {
     if (maxValue == minValue) {
       maxValue *= 1.5;
       minValue /= 2;
