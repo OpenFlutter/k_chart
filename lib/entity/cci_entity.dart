@@ -1,3 +1,3 @@
 mixin CCIEntity {
-  late double cci;
+  double? cci;
 }

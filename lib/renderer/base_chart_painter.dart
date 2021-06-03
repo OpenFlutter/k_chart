@@ -230,10 +230,12 @@ abstract class BaseChartPainter extends CustomPainter {
 
   void getSecondaryMaxMinValue(KLineEntity item) {
     if (secondaryState == SecondaryState.MACD) {
-      mSecondaryMaxValue =
-          max(mSecondaryMaxValue, max(item.macd!, max(item.dif!, item.dea!)));
-      mSecondaryMinValue =
-          min(mSecondaryMinValue, min(item.macd!, min(item.dif!, item.dea!)));
+      if (item.macd != null) {
+        mSecondaryMaxValue =
+            max(mSecondaryMaxValue, max(item.macd!, max(item.dif!, item.dea!)));
+        mSecondaryMinValue =
+            min(mSecondaryMinValue, min(item.macd!, min(item.dif!, item.dea!)));
+      }
     } else if (secondaryState == SecondaryState.KDJ) {
       if (item.d != null) {
         mSecondaryMaxValue =
@@ -250,8 +252,10 @@ abstract class BaseChartPainter extends CustomPainter {
       mSecondaryMaxValue = 0;
       mSecondaryMinValue = -100;
     } else if (secondaryState == SecondaryState.CCI) {
-      mSecondaryMaxValue = max(mSecondaryMaxValue, item.cci);
-      mSecondaryMinValue = min(mSecondaryMinValue, item.cci);
+      if (item.cci != null) {
+        mSecondaryMaxValue = max(mSecondaryMaxValue, item.cci!);
+        mSecondaryMinValue = min(mSecondaryMinValue, item.cci!);
+      }
     } else {
       mSecondaryMaxValue = 0;
       mSecondaryMinValue = 0;

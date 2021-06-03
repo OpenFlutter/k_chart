@@ -70,15 +70,15 @@ class MainRenderer extends BaseChartRenderer<CandleEntity> {
         children: [
           if (data.up != 0)
             TextSpan(
-                text: "BOLL:${format(data.mb!)}    ",
+                text: "BOLL:${format(data.mb)}    ",
                 style: getTextStyle(this.chartColors.ma5Color)),
           if (data.mb != 0)
             TextSpan(
-                text: "UB:${format(data.up!)}    ",
+                text: "UB:${format(data.up)}    ",
                 style: getTextStyle(this.chartColors.ma10Color)),
           if (data.dn != 0)
             TextSpan(
-                text: "LB:${format(data.dn!)}    ",
+                text: "LB:${format(data.dn)}    ",
                 style: getTextStyle(this.chartColors.ma30Color)),
         ],
       );
@@ -184,15 +184,15 @@ class MainRenderer extends BaseChartRenderer<CandleEntity> {
   void drawBollLine(CandleEntity lastPoint, CandleEntity curPoint,
       Canvas canvas, double lastX, double curX) {
     if (lastPoint.up != 0) {
-      drawLine(lastPoint.up!, curPoint.up!, canvas, lastX, curX,
+      drawLine(lastPoint.up, curPoint.up, canvas, lastX, curX,
           this.chartColors.ma10Color);
     }
     if (lastPoint.mb != 0) {
-      drawLine(lastPoint.mb!, curPoint.mb!, canvas, lastX, curX,
+      drawLine(lastPoint.mb, curPoint.mb, canvas, lastX, curX,
           this.chartColors.ma5Color);
     }
     if (lastPoint.dn != 0) {
-      drawLine(lastPoint.dn!, curPoint.dn!, canvas, lastX, curX,
+      drawLine(lastPoint.dn, curPoint.dn, canvas, lastX, curX,
           this.chartColors.ma30Color);
     }
   }

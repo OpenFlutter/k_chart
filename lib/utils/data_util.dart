@@ -256,7 +256,7 @@ class DataUtil {
       }
       final md = amount / len;
       kline.cci = ((tp - ma) / 0.015 / md);
-      if (kline.cci.isNaN) {
+      if (kline.cci!.isNaN) {
         kline.cci = 0.0;
       }
     }

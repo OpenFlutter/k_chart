@@ -27,7 +27,7 @@ class NumberUtil {
     return result;
   }
 
-  static bool checkNotNullOrZero(double a) {
+  static bool checkNotNullOrZero(double? a) {
     if (a == null || a == 0) {
       return false;
     } else if (a.abs().toStringAsFixed(4) == "0.0000") {

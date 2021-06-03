@@ -89,6 +89,49 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    // return Scaffold(
+    //   body: KChartWidget(
+    //       [
+    //         KLineEntity.fromCustom(
+    //           amount: 10,
+    //           open: 10,
+    //           close: 10,
+    //           change: 10,
+    //           ratio: 10,
+    //           time: 10,
+    //           high: 10,
+    //           low: 10,
+    //           vol: 10,
+    //         ),
+    //       ],
+    //       ChartStyle(), // Required for styling purposes
+    //       ChartColors(), // Required for styling purposes
+    //
+    //       isLine: false,
+    //       // Decide whether it is k-line or time-sharing
+    //       mainState: MainState.BOLL,
+    //       // Decide what the main view shows
+    //       secondaryState: SecondaryState.CCI,
+    //       // Decide what the sub view shows
+    //       fixedLength: 2,
+    //       // Displayed decimal precision
+    //       timeFormat: TimeFormat.YEAR_MONTH_DAY,
+    //       onLoadMore: (bool a) {},
+    //       // Called when the data scrolls to the end. When a is true, it means the user is pulled to the end of the right side of the data. When a
+    //       // is false, it means the user is pulled to the end of the left side of the data.
+    //       maDayList: [5, 10, 20],
+    //       // Display of MA,This parameter must be equal to DataUtil.calculate‘s maDayList
+    //       bgColor: [Colors.black, Colors.black],
+    //       // The background color of the chart is gradient
+    //       isChinese: false,
+    //       // Graphic language
+    //       // volHidden: false,
+    //       // hide volume
+    //       isOnDrag: (isDrag) {},
+    //       // true is on Drag.Don't load data while Draging.
+    //       onSecondaryTap: () {} // on secondary rect taped.
+    //   ),
+    // );
     return Scaffold(
       backgroundColor: Color(0xff17212F),
 //      appBar: AppBar(title: Text(widget.title)),
