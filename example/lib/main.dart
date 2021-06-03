@@ -23,23 +23,23 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  MyHomePage({Key? key, this.title}) : super(key: key);
 
-  final String title;
+  final String? title;
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<KLineEntity> datas;
+  List<KLineEntity>? datas;
   bool showLoading = true;
   MainState _mainState = MainState.MA;
   bool _volHidden = false;
   SecondaryState _secondaryState = SecondaryState.MACD;
   bool isLine = true;
   bool isChinese = true;
-  List<DepthEntity> _bids, _asks;
+  late List<DepthEntity> _bids, _asks;
 
   ChartStyle chartStyle = new ChartStyle();
   ChartColors chartColors = new ChartColors();
@@ -63,12 +63,12 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  void initDepth(List<DepthEntity> bids, List<DepthEntity> asks) {
+  void initDepth(List<DepthEntity>? bids, List<DepthEntity>? asks) {
     if (bids == null || asks == null || bids.isEmpty || asks.isEmpty) return;
     _bids = [];
     _asks = [];
     double amount = 0.0;
-    bids?.sort((left, right) => left.price.compareTo(right.price));
+    bids.sort((left, right) => left.price.compareTo(right.price));
     //累加买入委托量
     bids.reversed.forEach((item) {
       amount += item.vol;
@@ -77,9 +77,9 @@ class _MyHomePageState extends State<MyHomePage> {
     });
 
     amount = 0.0;
-    asks?.sort((left, right) => left.price.compareTo(right.price));
+    asks.sort((left, right) => left.price.compareTo(right.price));
     //累加卖出委托量
-    asks?.forEach((item) {
+    asks.forEach((item) {
       amount += item.vol;
       item.vol = amount;
       _asks.add(item);
@@ -89,49 +89,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // return Scaffold(
-    //   body: KChartWidget(
-    //       [
-    //         KLineEntity.fromCustom(
-    //           amount: 10,
-    //           open: 10,
-    //           close: 10,
-    //           change: 10,
-    //           ratio: 10,
-    //           time: 10,
-    //           high: 10,
-    //           low: 10,
-    //           vol: 10,
-    //         ),
-    //       ],
-    //       ChartStyle(), // Required for styling purposes
-    //       ChartColors(), // Required for styling purposes
-    //
-    //       isLine: false,
-    //       // Decide whether it is k-line or time-sharing
-    //       mainState: MainState.BOLL,
-    //       // Decide what the main view shows
-    //       secondaryState: SecondaryState.CCI,
-    //       // Decide what the sub view shows
-    //       fixedLength: 2,
-    //       // Displayed decimal precision
-    //       timeFormat: TimeFormat.YEAR_MONTH_DAY,
-    //       onLoadMore: (bool a) {},
-    //       // Called when the data scrolls to the end. When a is true, it means the user is pulled to the end of the right side of the data. When a
-    //       // is false, it means the user is pulled to the end of the left side of the data.
-    //       maDayList: [5, 10, 20],
-    //       // Display of MA,This parameter must be equal to DataUtil.calculate‘s maDayList
-    //       bgColor: [Colors.black, Colors.black],
-    //       // The background color of the chart is gradient
-    //       isChinese: false,
-    //       // Graphic language
-    //       // volHidden: false,
-    //       // hide volume
-    //       isOnDrag: (isDrag) {},
-    //       // true is on Drag.Don't load data while Draging.
-    //       onSecondaryTap: () {} // on secondary rect taped.
-    //   ),
-    // );
     return Scaffold(
       backgroundColor: Color(0xff17212F),
 //      appBar: AppBar(title: Text(widget.title)),
@@ -202,7 +159,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget button(String text, {VoidCallback onPressed}) {
+  Widget button(String text, {VoidCallback? onPressed}) {
     return TextButton(
       onPressed: () {
         if (onPressed != null) {
@@ -223,7 +180,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  void getData(String period) {
+  void getData(String? period) {
     Future<String> future = getIPAddress('$period');
     future.then((result) {
       Map parseJson = json.decode(result);
@@ -234,7 +191,7 @@ class _MyHomePageState extends State<MyHomePage> {
           .reversed
           .toList()
           .cast<KLineEntity>();
-      DataUtil.calculate(datas);
+      DataUtil.calculate(datas!);
       showLoading = false;
       setState(() {});
     }).catchError((_) {
@@ -245,10 +202,10 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   //获取火币数据，需要翻墙
-  Future<String> getIPAddress(String period) async {
+  Future<String> getIPAddress(String? period) async {
     var url =
         'https://api.huobi.br.com/market/history/kline?period=${period ?? '1day'}&size=300&symbol=btcusdt';
-    String result;
+    late String result;
     var response = await http.get(url);
     if (response.statusCode == 200) {
       result = response.body;
