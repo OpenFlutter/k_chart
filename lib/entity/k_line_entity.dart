@@ -1,11 +1,11 @@
 import '../entity/k_entity.dart';
 
 class KLineEntity extends KEntity {
-  double? open;
-  double? high;
-  double? low;
-  double? close;
-  double? vol;
+  late double open;
+  late double high;
+  late double low;
+  late double close;
+  late double vol;
   double? amount;
   double? change;
   double? ratio;
@@ -13,14 +13,14 @@ class KLineEntity extends KEntity {
 
   KLineEntity.fromCustom({
     this.amount,
-    this.open,
-    this.close,
+    required this.open,
+    required this.close,
     this.change,
     this.ratio,
     this.time,
-    this.high,
-    this.low,
-    this.vol,
+    required this.high,
+    required this.low,
+    required this.vol,
   });
 
   KLineEntity.fromJson(Map<String, dynamic> json) {

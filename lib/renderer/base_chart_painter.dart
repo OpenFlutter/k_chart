@@ -176,29 +176,29 @@ abstract class BaseChartPainter extends CustomPainter {
 
   void getMainMaxMinValue(KLineEntity item, int i) {
     if (isLine == true) {
-      mMainMaxValue = max(mMainMaxValue, item.close!);
-      mMainMinValue = min(mMainMinValue, item.close!);
+      mMainMaxValue = max(mMainMaxValue, item.close);
+      mMainMinValue = min(mMainMinValue, item.close);
     } else {
       double maxPrice, minPrice;
       if (mainState == MainState.MA) {
-        maxPrice = max(item.high!, _findMaxMA(item.maValueList));
-        minPrice = min(item.low!, _findMinMA(item.maValueList));
+        maxPrice = max(item.high, _findMaxMA(item.maValueList));
+        minPrice = min(item.low, _findMinMA(item.maValueList));
       } else if (mainState == MainState.BOLL) {
-        maxPrice = max(item.up ?? 0, item.high!);
-        minPrice = min(item.dn ?? 0, item.low!);
+        maxPrice = max(item.up ?? 0, item.high);
+        minPrice = min(item.dn ?? 0, item.low);
       } else {
-        maxPrice = item.high!;
-        minPrice = item.low!;
+        maxPrice = item.high;
+        minPrice = item.low;
       }
       mMainMaxValue = max(mMainMaxValue, maxPrice);
       mMainMinValue = min(mMainMinValue, minPrice);
 
-      if (mMainHighMaxValue < item.high!) {
-        mMainHighMaxValue = item.high!;
+      if (mMainHighMaxValue < item.high) {
+        mMainHighMaxValue = item.high;
         mMainMaxIndex = i;
       }
-      if (mMainLowMinValue > item.low!) {
-        mMainLowMinValue = item.low!;
+      if (mMainLowMinValue > item.low) {
+        mMainLowMinValue = item.low;
         mMainMinIndex = i;
       }
     }
@@ -222,9 +222,9 @@ abstract class BaseChartPainter extends CustomPainter {
 
   void getVolMaxMinValue(KLineEntity item) {
     mVolMaxValue = max(mVolMaxValue,
-        max(item.vol!, max(item.MA5Volume ?? 0, item.MA10Volume ?? 0)));
+        max(item.vol, max(item.MA5Volume ?? 0, item.MA10Volume ?? 0)));
     mVolMinValue = min(mVolMinValue,
-        min(item.vol!, min(item.MA5Volume ?? 0, item.MA10Volume ?? 0)));
+        min(item.vol, min(item.MA5Volume ?? 0, item.MA10Volume ?? 0)));
   }
 
   void getSecondaryMaxMinValue(KLineEntity item) {
@@ -249,8 +249,8 @@ abstract class BaseChartPainter extends CustomPainter {
       mSecondaryMaxValue = 0;
       mSecondaryMinValue = -100;
     } else if (secondaryState == SecondaryState.CCI) {
-      mSecondaryMaxValue = max(mSecondaryMaxValue, item.cci!);
-      mSecondaryMinValue = min(mSecondaryMinValue, item.cci!);
+      mSecondaryMaxValue = max(mSecondaryMaxValue, item.cci);
+      mSecondaryMinValue = min(mSecondaryMinValue, item.cci);
     } else {
       mSecondaryMaxValue = 0;
       mSecondaryMinValue = 0;

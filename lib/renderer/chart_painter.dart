@@ -15,7 +15,7 @@ import 'vol_renderer.dart';
 class ChartPainter extends BaseChartPainter {
   static get maxScrollX => BaseChartPainter.maxScrollX;
   BaseChartRenderer? mMainRenderer, mVolRenderer, mSecondaryRenderer;
-  StreamSink<InfoWindowEntity>? sink;
+  StreamSink<InfoWindowEntity?>? sink;
   Color? upColor, dnColor;
   Color? ma5Color, ma10Color, ma30Color;
   Color? volColor;
@@ -73,7 +73,7 @@ class ChartPainter extends BaseChartPainter {
       } else {
         var t = datas[0];
         fixedLength =
-            NumberUtil.getMaxDecimalLength(t.open!, t.close!, t.high!, t.low!);
+            NumberUtil.getMaxDecimalLength(t.open, t.close, t.high, t.low);
       }
     }
     mMainRenderer ??= MainRenderer(
@@ -216,7 +216,7 @@ class ChartPainter extends BaseChartPainter {
     double w1 = 5;
     double w2 = 3;
     double r = textHeight / 2 + w2;
-    double y = getMainY(point.close!);
+    double y = getMainY(point.close);
     double x;
     bool isLeft = false;
     if (translateXtoX(getX(index)) < mWidth! / 2) {
@@ -322,7 +322,7 @@ class ChartPainter extends BaseChartPainter {
   void drawNowPrice(Canvas canvas) {
     if (isLine == true) return;
     double x = translateXtoX(getX(datas.length - 1));
-    double value = datas[datas.length - 1].close!;
+    double value = datas[datas.length - 1].close;
     double y = getMainY(value);
     if (x < mWidth! / 2) {
       //画右边
@@ -347,7 +347,7 @@ class ChartPainter extends BaseChartPainter {
       ..strokeWidth = this.chartStyle.vCrossWidth
       ..isAntiAlias = true;
     double x = getX(index);
-    double y = getMainY(point.close!);
+    double y = getMainY(point.close);
     // k线图竖线
     canvas.drawLine(Offset(x, mTopPadding),
         Offset(x, size.height - mBottomPadding), paintY);
