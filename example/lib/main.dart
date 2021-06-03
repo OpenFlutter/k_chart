@@ -2,10 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
 import 'package:k_chart/chart_style.dart';
 import 'package:k_chart/flutter_k_chart.dart';
 import 'package:k_chart/k_chart_widget.dart';
-import 'package:http/http.dart' as http;
 
 void main() => runApp(MyApp());
 
@@ -65,8 +65,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void initDepth(List<DepthEntity> bids, List<DepthEntity> asks) {
     if (bids == null || asks == null || bids.isEmpty || asks.isEmpty) return;
-    _bids = List();
-    _asks = List();
+    _bids = [];
+    _asks = [];
     double amount = 0.0;
     bids?.sort((left, right) => left.price.compareTo(right.price));
     //累加买入委托量
@@ -144,7 +144,8 @@ class _MyHomePageState extends State<MyHomePage> {
         button("WR", onPressed: () => _secondaryState = SecondaryState.WR),
         button("CCI", onPressed: () => _secondaryState = SecondaryState.CCI),
         button("隐藏副视图", onPressed: () => _secondaryState = SecondaryState.NONE),
-        button(_volHidden ? "显示成交量" : "隐藏成交量", onPressed: () => _volHidden = !_volHidden),
+        button(_volHidden ? "显示成交量" : "隐藏成交量",
+            onPressed: () => _volHidden = !_volHidden),
         button("切换中英文", onPressed: () => isChinese = !isChinese),
         button("Customize UI", onPressed: () {
           setState(() {
@@ -159,15 +160,24 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget button(String text, {VoidCallback onPressed}) {
-    return FlatButton(
-        onPressed: () {
-          if (onPressed != null) {
-            onPressed();
-            setState(() {});
-          }
-        },
-        child: Text("$text"),
-        color: Colors.blue);
+    return TextButton(
+      onPressed: () {
+        if (onPressed != null) {
+          onPressed();
+          setState(() {});
+        }
+      },
+      child: Text("$text"),
+      style: TextButton.styleFrom(
+        primary: Colors.white,
+        minimumSize: Size(88, 44),
+        padding: EdgeInsets.symmetric(horizontal: 16.0),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(2.0)),
+        ),
+        backgroundColor: Colors.blue,
+      ),
+    );
   }
 
   void getData(String period) {
@@ -187,7 +197,7 @@ class _MyHomePageState extends State<MyHomePage> {
     }).catchError((_) {
       showLoading = false;
       setState(() {});
-      print('获取数据失败');
+      print('### datas error $_');
     });
   }
 

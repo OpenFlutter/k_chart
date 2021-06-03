@@ -38,23 +38,23 @@ class SecondaryRenderer extends BaseChartRenderer<MACDEntity> {
         drawMACD(curPoint, canvas, curX, lastPoint, lastX);
         break;
       case SecondaryState.KDJ:
-        drawLine(lastPoint.k!, curPoint.k!, canvas, lastX, curX,
+        drawLine(lastPoint.k, curPoint.k, canvas, lastX, curX,
             this.chartColors.kColor);
-        drawLine(lastPoint.d!, curPoint.d!, canvas, lastX, curX,
+        drawLine(lastPoint.d, curPoint.d, canvas, lastX, curX,
             this.chartColors.dColor);
-        drawLine(lastPoint.j!, curPoint.j!, canvas, lastX, curX,
+        drawLine(lastPoint.j, curPoint.j, canvas, lastX, curX,
             this.chartColors.jColor);
         break;
       case SecondaryState.RSI:
-        drawLine(lastPoint.rsi!, curPoint.rsi!, canvas, lastX, curX,
+        drawLine(lastPoint.rsi, curPoint.rsi, canvas, lastX, curX,
             this.chartColors.rsiColor);
         break;
       case SecondaryState.WR:
-        drawLine(lastPoint.r!, curPoint.r!, canvas, lastX, curX,
+        drawLine(lastPoint.r, curPoint.r, canvas, lastX, curX,
             this.chartColors.rsiColor);
         break;
       case SecondaryState.CCI:
-        drawLine(lastPoint.cci!, curPoint.cci!, canvas, lastX, curX,
+        drawLine(lastPoint.cci, curPoint.cci, canvas, lastX, curX,
             this.chartColors.rsiColor);
         break;
       default:
@@ -143,7 +143,7 @@ class SecondaryRenderer extends BaseChartRenderer<MACDEntity> {
       case SecondaryState.CCI:
         children = [
           TextSpan(
-              text: "CCI(14):${format(data.cci!)}    ",
+              text: "CCI(14):${format(data.cci)}    ",
               style: getTextStyle(this.chartColors.rsiColor)),
         ];
         break;

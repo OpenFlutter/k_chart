@@ -36,7 +36,7 @@ abstract class BaseChartRenderer<T> {
 
   double getY(double y) => (maxValue - y) * scaleY + chartRect.top;
 
-  String format(double n) {
+  String format(double? n) {
     if (n == null || n.isNaN) {
       return "0.00";
     } else {
@@ -53,8 +53,8 @@ abstract class BaseChartRenderer<T> {
   void drawChart(T lastPoint, T curPoint, double lastX, double curX, Size size,
       Canvas canvas);
 
-  void drawLine(double lastPrice, double curPrice, Canvas canvas, double lastX,
-      double curX, Color color) {
+  void drawLine(double? lastPrice, double? curPrice, Canvas canvas,
+      double lastX, double curX, Color color) {
     if (lastPrice == null || curPrice == null) {
       return;
     }

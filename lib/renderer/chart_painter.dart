@@ -67,11 +67,11 @@ class ChartPainter extends BaseChartPainter {
 
   @override
   void initChartRenderer() {
-    if (fixedLength! == null) {
-      if (datas.isEmpty) {
+    if (fixedLength == null && datas != null) {
+      if (datas!.isEmpty) {
         fixedLength = 2;
       } else {
-        var t = datas[0];
+        var t = datas![0];
         fixedLength =
             NumberUtil.getMaxDecimalLength(t.open, t.close, t.high, t.low);
       }
@@ -151,9 +151,9 @@ class ChartPainter extends BaseChartPainter {
     canvas.translate(mTranslateX * scaleX, 0.0);
     canvas.scale(scaleX, 1.0);
     for (int i = mStartIndex; datas != null && i <= mStopIndex; i++) {
-      KLineEntity curPoint = datas[i];
+      KLineEntity curPoint = datas![i];
       if (curPoint == null) continue;
-      KLineEntity lastPoint = i == 0 ? curPoint : datas[i - 1];
+      KLineEntity lastPoint = i == 0 ? curPoint : datas![i - 1];
       double curX = getX(i);
       double lastX = i == 0 ? curX : getX(i - 1);
 
@@ -185,8 +185,8 @@ class ChartPainter extends BaseChartPainter {
       double translateX = xToTranslateX(columnSpace * i);
       if (translateX >= startX && translateX <= stopX) {
         int index = indexOfTranslateX(translateX);
-        if (datas[index] == null) continue;
-        TextPainter tp = getTextPainter(getDate(datas[index].time!), null);
+        if (datas![index] == null) continue;
+        TextPainter tp = getTextPainter(getDate(datas![index].time!), null);
         y = size.height - (mBottomPadding - tp.height) / 2 - tp.height;
         tp.paint(canvas, Offset(columnSpace * i - tp.width / 2, y));
       }
@@ -320,9 +320,9 @@ class ChartPainter extends BaseChartPainter {
 
   @override
   void drawNowPrice(Canvas canvas) {
-    if (isLine == true) return;
-    double x = translateXtoX(getX(datas.length - 1));
-    double value = datas[datas.length - 1].close;
+    if (isLine == true || datas == null) return;
+    double x = translateXtoX(getX(datas!.length - 1));
+    double value = datas![datas!.length - 1].close;
     double y = getMainY(value);
     if (x < mWidth! / 2) {
       //画右边

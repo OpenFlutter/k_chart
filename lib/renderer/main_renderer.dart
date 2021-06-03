@@ -109,7 +109,7 @@ class MainRenderer extends BaseChartRenderer<CandleEntity> {
       drawCandle(curPoint, canvas, curX);
     }
     if (isLine == true) {
-      drawPolyline(lastPoint.close!, curPoint.close!, canvas, lastX, curX);
+      drawPolyline(lastPoint.close, curPoint.close, canvas, lastX, curX);
     } else if (state == MainState.MA) {
       drawMaLine(lastPoint, curPoint, canvas, lastX, curX);
     } else if (state == MainState.BOLL) {
@@ -198,10 +198,10 @@ class MainRenderer extends BaseChartRenderer<CandleEntity> {
   }
 
   void drawCandle(CandleEntity curPoint, Canvas canvas, double curX) {
-    var high = getY(curPoint.high!);
-    var low = getY(curPoint.low!);
-    var open = getY(curPoint.open!);
-    var close = getY(curPoint.close!);
+    var high = getY(curPoint.high);
+    var low = getY(curPoint.low);
+    var open = getY(curPoint.open);
+    var close = getY(curPoint.close);
     double r = mCandleWidth / 2;
     double lineR = mCandleLineWidth / 2;
     if (open >= close) {

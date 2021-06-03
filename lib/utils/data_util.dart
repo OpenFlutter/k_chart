@@ -57,8 +57,8 @@ class DataUtil {
         md = md / (n - 1);
         md = sqrt(md);
         entity.mb = entity.BOLLMA!;
-        entity.up = entity.mb + k * md;
-        entity.dn = entity.mb - k * md;
+        entity.up = entity.mb! + k * md;
+        entity.dn = entity.mb! - k * md;
       }
     }
   }

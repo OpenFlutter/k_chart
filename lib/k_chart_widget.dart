@@ -28,7 +28,7 @@ class TimeFormat {
 }
 
 class KChartWidget extends StatefulWidget {
-  final List<KLineEntity> datas;
+  final List<KLineEntity>? datas;
   final MainState mainState;
   final bool volHidden;
   final SecondaryState secondaryState;
@@ -110,7 +110,7 @@ class _KChartWidgetState extends State<KChartWidget>
 
   @override
   Widget build(BuildContext context) {
-    if (widget.datas.isEmpty) {
+    if (widget.datas != null && widget.datas!.isEmpty) {
       mScrollX = mSelectX = 0.0;
       mScaleX = 1.0;
     }
@@ -218,7 +218,8 @@ class _KChartWidgetState extends State<KChartWidget>
         duration: Duration(milliseconds: widget.flingTime), vsync: this);
     aniX = null;
     aniX = Tween<double>(begin: mScrollX, end: x * widget.flingRatio + mScrollX)
-        .animate(CurvedAnimation(parent: aniX!, curve: widget.flingCurve));
+        .animate(CurvedAnimation(
+            parent: _controller!.view, curve: widget.flingCurve));
     aniX!.addListener(() {
       mScrollX = aniX!.value;
       if (mScrollX <= 0) {

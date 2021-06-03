@@ -11,7 +11,7 @@ mixin CandleEntity {
   double? up;
 
 //  中轨线
-  late double mb;
+  double? mb;
 
 //  下轨线
   double? dn;

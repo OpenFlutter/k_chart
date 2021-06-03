@@ -13,7 +13,7 @@ export 'package:flutter/material.dart'
 
 abstract class BaseChartPainter extends CustomPainter {
   static double maxScrollX = 0.0;
-  List<KLineEntity> datas;
+  List<KLineEntity>? datas;
   MainState mainState;
 
   SecondaryState secondaryState;
@@ -45,7 +45,7 @@ abstract class BaseChartPainter extends CustomPainter {
 
   BaseChartPainter(
     this.chartStyle, {
-    required this.datas,
+    this.datas,
     required this.scaleX,
     required this.scrollX,
     required this.isLongPress,
@@ -55,7 +55,7 @@ abstract class BaseChartPainter extends CustomPainter {
     this.secondaryState = SecondaryState.MACD,
     this.isLine = false,
   }) {
-    mItemCount = datas.length;
+    mItemCount = datas?.length ?? 0;
     mPointWidth = this.chartStyle.pointWidth;
     mDataLen = mItemCount * mPointWidth;
     initFormats();
@@ -64,8 +64,8 @@ abstract class BaseChartPainter extends CustomPainter {
   void initFormats() {
 //    [yyyy, '-', mm, '-', dd, ' ', HH, ':', nn]
     if (mItemCount < 2) return;
-    int firstTime = datas.first.time ?? 0;
-    int secondTime = datas[1].time ?? 0;
+    int firstTime = datas!.first.time ?? 0;
+    int secondTime = datas![1].time ?? 0;
     int time = secondTime - firstTime;
     time ~/= 1000;
     //月线
@@ -92,12 +92,12 @@ abstract class BaseChartPainter extends CustomPainter {
     canvas.scale(1, 1);
     drawBg(canvas, size);
     drawGrid(canvas);
-    if (datas.isNotEmpty) {
+    if (datas != null && datas!.isNotEmpty) {
       drawChart(canvas, size);
       drawRightText(canvas);
       drawDate(canvas, size);
       if (isLongPress == true) drawCrossLineText(canvas, size);
-      drawText(canvas, datas.last, 5);
+      drawText(canvas, datas!.last, 5);
       drawMaxAndMin(canvas);
       drawNowPrice(canvas);
     }
@@ -161,13 +161,14 @@ abstract class BaseChartPainter extends CustomPainter {
   }
 
   calculateValue() {
-    if (datas.isEmpty) return;
+    if (datas == null) return;
+    if (datas!.isEmpty) return;
     maxScrollX = getMinTranslateX().abs();
     setTranslateXFromScrollX(scrollX);
     mStartIndex = indexOfTranslateX(xToTranslateX(0));
     mStopIndex = indexOfTranslateX(xToTranslateX(mWidth!));
     for (int i = mStartIndex; i <= mStopIndex; i++) {
-      var item = datas[i];
+      var item = datas![i];
       getMainMaxMinValue(item, i);
       getVolMaxMinValue(item);
       getSecondaryMaxMinValue(item);
@@ -291,7 +292,7 @@ abstract class BaseChartPainter extends CustomPainter {
   double getX(int position) => position * mPointWidth + mPointWidth / 2;
 
   KLineEntity getItem(int position) {
-    return datas[position];
+    return datas![position];
     // if (datas != null) {
     //   return datas[position];
     // } else {
