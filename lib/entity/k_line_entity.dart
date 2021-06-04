@@ -24,13 +24,13 @@ class KLineEntity extends KEntity {
   });
 
   KLineEntity.fromJson(Map<String, dynamic> json) {
-    open = json['open']!.toDouble();
-    high = json['high']!.toDouble();
-    low = json['low']!.toDouble();
-    close = json['close']!.toDouble();
-    vol = json['vol']!.toDouble();
-    amount = json['amount']!.toDouble();
-    time = json['time']?.toInt();
+    open = json['open']?.toDouble() ?? 0;
+    high = json['high']?.toDouble() ?? 0;
+    low = json['low']?.toDouble() ?? 0;
+    close = json['close']?.toDouble() ?? 0;
+    vol = json['vol']?.toDouble() ?? 0;
+    amount = json['amount']?.toDouble() ?? 0;
+    time = json['time']?.toInt() ?? 0;
     //兼容火币数据
     if (time == null) {
       time = (json['id']?.toInt());
@@ -38,8 +38,8 @@ class KLineEntity extends KEntity {
         time = time! * 1000;
       }
     }
-    ratio = json['ratio']?.toDouble();
-    change = json['change']?.toDouble();
+    ratio = json['ratio']?.toDouble() ?? 0;
+    change = json['change']?.toDouble() ?? 0;
   }
 
   Map<String, dynamic> toJson() {
