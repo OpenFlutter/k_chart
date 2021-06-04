@@ -134,19 +134,18 @@ abstract class BaseChartPainter extends CustomPainter {
   void drawCrossLineText(Canvas canvas, Size size);
 
   void initRect(Size size) {
-    double volHeight = volHidden != true ? mDisplayHeight! * 0.2 : 0;
+    double volHeight = volHidden != true ? mDisplayHeight * 0.2 : 0;
     double secondaryHeight =
-        secondaryState != SecondaryState.NONE ? mDisplayHeight! * 0.2 : 0;
+        secondaryState != SecondaryState.NONE ? mDisplayHeight * 0.2 : 0;
 
-    double mainHeight = mDisplayHeight!;
+    double mainHeight = mDisplayHeight;
     mainHeight -= volHeight;
     mainHeight -= secondaryHeight;
 
-    mMainRect =
-        Rect.fromLTRB(0, mTopPadding, mWidth!, mTopPadding + mainHeight);
+    mMainRect = Rect.fromLTRB(0, mTopPadding, mWidth, mTopPadding + mainHeight);
 
     if (volHidden != true) {
-      mVolRect = Rect.fromLTRB(0, mMainRect!.bottom + mChildPadding, mWidth!,
+      mVolRect = Rect.fromLTRB(0, mMainRect!.bottom + mChildPadding, mWidth,
           mMainRect!.bottom + volHeight);
     }
 
@@ -155,7 +154,7 @@ abstract class BaseChartPainter extends CustomPainter {
       mSecondaryRect = Rect.fromLTRB(
           0,
           mMainRect!.bottom + volHeight + mChildPadding,
-          mWidth!,
+          mWidth,
           mMainRect!.bottom + volHeight + secondaryHeight);
     }
   }
@@ -166,7 +165,7 @@ abstract class BaseChartPainter extends CustomPainter {
     maxScrollX = getMinTranslateX().abs();
     setTranslateXFromScrollX(scrollX);
     mStartIndex = indexOfTranslateX(xToTranslateX(0));
-    mStopIndex = indexOfTranslateX(xToTranslateX(mWidth!));
+    mStopIndex = indexOfTranslateX(xToTranslateX(mWidth));
     for (int i = mStartIndex; i <= mStopIndex; i++) {
       var item = datas![i];
       getMainMaxMinValue(item, i);
@@ -310,7 +309,7 @@ abstract class BaseChartPainter extends CustomPainter {
 
   ///获取平移的最小值
   double getMinTranslateX() {
-    var x = -mDataLen + mWidth! / scaleX - mPointWidth / 2;
+    var x = -mDataLen + mWidth / scaleX - mPointWidth / 2;
     return x >= 0 ? 0.0 : x;
   }
 
