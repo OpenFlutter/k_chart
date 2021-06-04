@@ -152,7 +152,7 @@ class ChartPainter extends BaseChartPainter {
     canvas.translate(mTranslateX * scaleX, 0.0);
     canvas.scale(scaleX, 1.0);
     for (int i = mStartIndex; datas != null && i <= mStopIndex; i++) {
-      KLineEntity curPoint = datas![i];
+      KLineEntity? curPoint = datas?[i];
       if (curPoint == null) continue;
       KLineEntity lastPoint = i == 0 ? curPoint : datas![i - 1];
       double curX = getX(i);
@@ -186,7 +186,7 @@ class ChartPainter extends BaseChartPainter {
       double translateX = xToTranslateX(columnSpace * i);
       if (translateX >= startX && translateX <= stopX) {
         int index = indexOfTranslateX(translateX);
-        if (datas![index] == null) continue;
+        if (datas?[index] == null) continue;
         TextPainter tp = getTextPainter(getDate(datas![index].time!), null);
         y = size.height - (mBottomPadding - tp.height) / 2 - tp.height;
         tp.paint(canvas, Offset(columnSpace * i - tp.width / 2, y));
@@ -220,7 +220,7 @@ class ChartPainter extends BaseChartPainter {
     double y = getMainY(point.close);
     double x;
     bool isLeft = false;
-    if (translateXtoX(getX(index)) < mWidth! / 2) {
+    if (translateXtoX(getX(index)) < mWidth / 2) {
       isLeft = false;
       x = 1;
       Path path = new Path();
@@ -235,12 +235,12 @@ class ChartPainter extends BaseChartPainter {
       tp.paint(canvas, Offset(x + w1, y - textHeight / 2));
     } else {
       isLeft = true;
-      x = mWidth! - textWidth - 1 - 2 * w1 - w2;
+      x = mWidth - textWidth - 1 - 2 * w1 - w2;
       Path path = new Path();
       path.moveTo(x, y);
       path.lineTo(x + w2, y + r);
-      path.lineTo(mWidth! - 2, y + r);
-      path.lineTo(mWidth! - 2, y - r);
+      path.lineTo(mWidth - 2, y + r);
+      path.lineTo(mWidth - 2, y - r);
       path.lineTo(x + w2, y - r);
       path.close();
       canvas.drawPath(path, selectPointPaint!);
@@ -256,8 +256,8 @@ class ChartPainter extends BaseChartPainter {
 
     if (x < textWidth + 2 * w1) {
       x = 1 + textWidth / 2 + w1;
-    } else if (mWidth! - x < textWidth + 2 * w1) {
-      x = mWidth! - 1 - textWidth / 2 - w1;
+    } else if (mWidth - x < textWidth + 2 * w1) {
+      x = mWidth - 1 - textWidth / 2 - w1;
     }
     double baseLine = textHeight / 2;
     canvas.drawRect(
@@ -293,7 +293,7 @@ class ChartPainter extends BaseChartPainter {
     //绘制最大值和最小值
     double x = translateXtoX(getX(mMainMinIndex));
     double y = getMainY(mMainLowMinValue);
-    if (x < mWidth! / 2) {
+    if (x < mWidth / 2) {
       //画右边
       TextPainter tp = getTextPainter(
           "── " + mMainLowMinValue.toStringAsFixed(fixedLength!), Colors.white);
@@ -305,7 +305,7 @@ class ChartPainter extends BaseChartPainter {
     }
     x = translateXtoX(getX(mMainMaxIndex));
     y = getMainY(mMainHighMaxValue);
-    if (x < mWidth! / 2) {
+    if (x < mWidth / 2) {
       //画右边
       TextPainter tp = getTextPainter(
           "── " + mMainHighMaxValue.toStringAsFixed(fixedLength!),
@@ -325,7 +325,7 @@ class ChartPainter extends BaseChartPainter {
     double x = translateXtoX(getX(datas!.length - 1));
     double value = datas![datas!.length - 1].close;
     double y = getMainY(value);
-    if (x < mWidth! / 2) {
+    if (x < mWidth / 2) {
       //画右边
       TextPainter tp = getTextPainter(
           "------ " + value.toStringAsFixed(fixedLength!),
@@ -359,7 +359,7 @@ class ChartPainter extends BaseChartPainter {
       ..isAntiAlias = true;
     // k线图横线
     canvas.drawLine(Offset(-mTranslateX, y),
-        Offset(-mTranslateX + mWidth! / scaleX, y), paintX);
+        Offset(-mTranslateX + mWidth / scaleX, y), paintX);
     if (scaleX >= 1) {
       canvas.drawOval(
           Rect.fromCenter(
