@@ -30,12 +30,12 @@ class DataUtil {
         for (int j = 0; j < maDayList.length; j++) {
           ma[j] += closePrice;
           if (i == maDayList[j] - 1) {
-            entity.maValueList[j] = ma[j] / maDayList[j];
+            entity.maValueList?[j] = ma[j] / maDayList[j];
           } else if (i >= maDayList[j]) {
             ma[j] -= dataList[i - maDayList[j]].close;
-            entity.maValueList[j] = ma[j] / maDayList[j];
+            entity.maValueList?[j] = ma[j] / maDayList[j];
           } else {
-            entity.maValueList[j] = 0;
+            entity.maValueList?[j] = 0;
           }
         }
       }

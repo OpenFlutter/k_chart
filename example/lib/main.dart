@@ -108,6 +108,7 @@ class _MyHomePageState extends State<MyHomePage> {
               fixedLength: 2,
               timeFormat: TimeFormat.YEAR_MONTH_DAY,
               isChinese: isChinese,
+              maDayList: [1, 100, 1000],
             ),
           ),
           if (showLoading)

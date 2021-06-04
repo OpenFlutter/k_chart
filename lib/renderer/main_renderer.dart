@@ -91,10 +91,10 @@ class MainRenderer extends BaseChartRenderer<CandleEntity> {
 
   List<InlineSpan> _createMATextSpan(CandleEntity data) {
     List<InlineSpan> result = [];
-    for (int i = 0; i < data.maValueList.length; i++) {
-      if (data.maValueList[i] != 0) {
+    for (int i = 0; i < (data.maValueList?.length ?? 0); i++) {
+      if (data.maValueList?[i] != 0) {
         var item = TextSpan(
-            text: "MA${maDayList[i]}:${format(data.maValueList[i])}    ",
+            text: "MA${maDayList[i]}:${format(data.maValueList![i])}    ",
             style: getTextStyle(this.chartColors.getMAColor(i)));
         result.add(item);
       }
@@ -170,12 +170,12 @@ class MainRenderer extends BaseChartRenderer<CandleEntity> {
 
   void drawMaLine(CandleEntity lastPoint, CandleEntity curPoint, Canvas canvas,
       double lastX, double curX) {
-    for (int i = 0; i < curPoint.maValueList.length; i++) {
+    for (int i = 0; i < (curPoint.maValueList?.length ?? 0); i++) {
       if (i == 3) {
         break;
       }
-      if (lastPoint.maValueList[i] != 0) {
-        drawLine(lastPoint.maValueList[i], curPoint.maValueList[i], canvas,
+      if (lastPoint.maValueList?[i] != 0) {
+        drawLine(lastPoint.maValueList?[i], curPoint.maValueList?[i], canvas,
             lastX, curX, this.chartColors.getMAColor(i));
       }
     }

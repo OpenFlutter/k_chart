@@ -24,7 +24,8 @@ abstract class BaseChartPainter extends CustomPainter {
   bool isLine;
 
   //3块区域大小与位置
-  Rect? mMainRect, mVolRect, mSecondaryRect;
+  late Rect mMainRect;
+  Rect? mVolRect, mSecondaryRect;
   late double mDisplayHeight, mWidth;
   double mTopPadding = 30.0, mBottomPadding = 20.0, mChildPadding = 12.0;
   final int mGridRows = 4, mGridColumns = 4;
@@ -145,17 +146,17 @@ abstract class BaseChartPainter extends CustomPainter {
     mMainRect = Rect.fromLTRB(0, mTopPadding, mWidth, mTopPadding + mainHeight);
 
     if (volHidden != true) {
-      mVolRect = Rect.fromLTRB(0, mMainRect!.bottom + mChildPadding, mWidth,
-          mMainRect!.bottom + volHeight);
+      mVolRect = Rect.fromLTRB(0, mMainRect.bottom + mChildPadding, mWidth,
+          mMainRect.bottom + volHeight);
     }
 
     //secondaryState == SecondaryState.NONE隐藏副视图
     if (secondaryState != SecondaryState.NONE) {
       mSecondaryRect = Rect.fromLTRB(
           0,
-          mMainRect!.bottom + volHeight + mChildPadding,
+          mMainRect.bottom + volHeight + mChildPadding,
           mWidth,
-          mMainRect!.bottom + volHeight + secondaryHeight);
+          mMainRect.bottom + volHeight + secondaryHeight);
     }
   }
 
@@ -181,8 +182,8 @@ abstract class BaseChartPainter extends CustomPainter {
     } else {
       double maxPrice, minPrice;
       if (mainState == MainState.MA) {
-        maxPrice = max(item.high, _findMaxMA(item.maValueList));
-        minPrice = min(item.low, _findMinMA(item.maValueList));
+        maxPrice = max(item.high, _findMaxMA(item.maValueList ?? [0]));
+        minPrice = min(item.low, _findMinMA(item.maValueList ?? [0]));
       } else if (mainState == MainState.BOLL) {
         maxPrice = max(item.up ?? 0, item.high);
         minPrice = min(item.dn ?? 0, item.low);

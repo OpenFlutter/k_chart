@@ -5,7 +5,7 @@ mixin CandleEntity {
   late double low;
   late double close;
 
-  late List<double> maValueList;
+  List<double>? maValueList;
 
 //  上轨线
   double? up;

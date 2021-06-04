@@ -64,10 +64,11 @@ class SecondaryRenderer extends BaseChartRenderer<MACDEntity> {
 
   void drawMACD(MACDEntity curPoint, Canvas canvas, double curX,
       MACDEntity lastPoint, double lastX) {
-    double macdY = getY(curPoint.macd!);
+    final macd = curPoint.macd ?? 0;
+    double macdY = getY(macd);
     double r = mMACDWidth / 2;
     double zeroy = getY(0);
-    if (curPoint.macd! > 0) {
+    if (macd > 0) {
       canvas.drawRect(Rect.fromLTRB(curX - r, macdY, curX + r, zeroy),
           chartPaint..color = this.chartColors.upColor);
     } else {
@@ -75,11 +76,11 @@ class SecondaryRenderer extends BaseChartRenderer<MACDEntity> {
           chartPaint..color = this.chartColors.dnColor);
     }
     if (lastPoint.dif != 0) {
-      drawLine(lastPoint.dif!, curPoint.dif!, canvas, lastX, curX,
+      drawLine(lastPoint.dif, curPoint.dif, canvas, lastX, curX,
           this.chartColors.difColor);
     }
     if (lastPoint.dea != 0) {
-      drawLine(lastPoint.dea!, curPoint.dea!, canvas, lastX, curX,
+      drawLine(lastPoint.dea, curPoint.dea, canvas, lastX, curX,
           this.chartColors.deaColor);
     }
   }
@@ -95,15 +96,15 @@ class SecondaryRenderer extends BaseChartRenderer<MACDEntity> {
               style: getTextStyle(this.chartColors.defaultTextColor)),
           if (data.macd != 0)
             TextSpan(
-                text: "MACD:${format(data.macd!)}    ",
+                text: "MACD:${format(data.macd)}    ",
                 style: getTextStyle(this.chartColors.macdColor)),
           if (data.dif != 0)
             TextSpan(
-                text: "DIF:${format(data.dif!)}    ",
+                text: "DIF:${format(data.dif)}    ",
                 style: getTextStyle(this.chartColors.difColor)),
           if (data.dea != 0)
             TextSpan(
-                text: "DEA:${format(data.dea!)}    ",
+                text: "DEA:${format(data.dea)}    ",
                 style: getTextStyle(this.chartColors.deaColor)),
         ];
         break;
@@ -114,29 +115,29 @@ class SecondaryRenderer extends BaseChartRenderer<MACDEntity> {
               style: getTextStyle(this.chartColors.defaultTextColor)),
           if (data.macd != 0)
             TextSpan(
-                text: "K:${format(data.k!)}    ",
+                text: "K:${format(data.k)}    ",
                 style: getTextStyle(this.chartColors.kColor)),
           if (data.dif != 0)
             TextSpan(
-                text: "D:${format(data.d!)}    ",
+                text: "D:${format(data.d)}    ",
                 style: getTextStyle(this.chartColors.dColor)),
           if (data.dea != 0)
             TextSpan(
-                text: "J:${format(data.j!)}    ",
+                text: "J:${format(data.j)}    ",
                 style: getTextStyle(this.chartColors.jColor)),
         ];
         break;
       case SecondaryState.RSI:
         children = [
           TextSpan(
-              text: "RSI(14):${format(data.rsi!)}    ",
+              text: "RSI(14):${format(data.rsi)}    ",
               style: getTextStyle(this.chartColors.rsiColor)),
         ];
         break;
       case SecondaryState.WR:
         children = [
           TextSpan(
-              text: "WR(14):${format(data.r!)}    ",
+              text: "WR(14):${format(data.r)}    ",
               style: getTextStyle(this.chartColors.rsiColor)),
         ];
         break;

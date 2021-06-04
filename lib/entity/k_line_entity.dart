@@ -6,30 +6,30 @@ class KLineEntity extends KEntity {
   late double low;
   late double close;
   late double vol;
-  double? amount;
+  late double amount;
   double? change;
   double? ratio;
   int? time;
 
   KLineEntity.fromCustom({
-    this.amount,
+    required this.amount,
     required this.open,
     required this.close,
     this.change,
     this.ratio,
-    this.time,
+    required this.time,
     required this.high,
     required this.low,
     required this.vol,
   });
 
   KLineEntity.fromJson(Map<String, dynamic> json) {
-    open = json['open']?.toDouble();
-    high = json['high']?.toDouble();
-    low = json['low']?.toDouble();
-    close = json['close']?.toDouble();
-    vol = json['vol']?.toDouble();
-    amount = json['amount']?.toDouble();
+    open = json['open']!.toDouble();
+    high = json['high']!.toDouble();
+    low = json['low']!.toDouble();
+    close = json['close']!.toDouble();
+    vol = json['vol']!.toDouble();
+    amount = json['amount']!.toDouble();
     time = json['time']?.toInt();
     //兼容火币数据
     if (time == null) {

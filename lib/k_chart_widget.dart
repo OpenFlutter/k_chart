@@ -284,7 +284,7 @@ class _KChartWidgetState extends State<KChartWidget>
             entity.close.toStringAsFixed(widget.fixedLength),
             "${upDown > 0 ? "+" : ""}${upDown.toStringAsFixed(widget.fixedLength)}",
             "${upDownPercent > 0 ? "+" : ''}${upDownPercent.toStringAsFixed(2)}%",
-            entity.amount!.toInt().toString()
+            entity.amount.toInt().toString()
           ];
           return Container(
             margin: EdgeInsets.only(
