@@ -3,12 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:k_chart/flutter_k_chart.dart';
 
-import 'chart_style.dart';
-import 'entity/info_window_entity.dart';
-import 'entity/k_line_entity.dart';
-import 'renderer/chart_painter.dart';
-import 'utils/date_format_util.dart';
-
 enum MainState { MA, BOLL, NONE }
 enum SecondaryState { MACD, KDJ, RSI, WR, CCI, NONE }
 

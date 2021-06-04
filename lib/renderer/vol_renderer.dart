@@ -1,10 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-
-import '../entity/volume_entity.dart';
-import '../renderer/base_chart_renderer.dart';
-import '../utils/number_util.dart';
+import 'package:k_chart/flutter_k_chart.dart';
 
 class VolRenderer extends BaseChartRenderer<VolumeEntity> {
   late double mVolWidth;
@@ -18,7 +15,7 @@ class VolRenderer extends BaseChartRenderer<VolumeEntity> {
             maxValue: maxValue,
             minValue: minValue,
             topPadding: topPadding,
-            fixedLength: fixedLength){
+            fixedLength: fixedLength) {
     mVolWidth = this.chartStyle.volWidth;
   }
 
@@ -58,11 +55,11 @@ class VolRenderer extends BaseChartRenderer<VolumeEntity> {
         TextSpan(
             text: "VOL:${NumberUtil.format(data.vol)}    ",
             style: getTextStyle(this.chartColors.volColor)),
-        if (NumberUtil.checkNotNullOrZero(data.MA5Volume))
+        if (!data.MA5Volume.nullOrZero)
           TextSpan(
               text: "MA5:${NumberUtil.format(data.MA5Volume!)}    ",
               style: getTextStyle(this.chartColors.ma5Color)),
-        if (NumberUtil.checkNotNullOrZero(data.MA10Volume))
+        if (!data.MA10Volume.nullOrZero)
           TextSpan(
               text: "MA10:${NumberUtil.format(data.MA10Volume!)}    ",
               style: getTextStyle(this.chartColors.ma10Color)),

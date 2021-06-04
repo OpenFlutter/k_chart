@@ -25,7 +25,7 @@ abstract class BaseChartPainter extends CustomPainter {
 
   //3块区域大小与位置
   Rect? mMainRect, mVolRect, mSecondaryRect;
-  double? mDisplayHeight, mWidth;
+  late double mDisplayHeight, mWidth;
   double mTopPadding = 30.0, mBottomPadding = 20.0, mChildPadding = 12.0;
   final int mGridRows = 4, mGridColumns = 4;
   int mStartIndex = 0, mStopIndex = 0;

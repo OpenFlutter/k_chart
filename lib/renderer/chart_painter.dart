@@ -92,7 +92,7 @@ class ChartPainter extends BaseChartPainter {
       mVolRenderer ??= VolRenderer(mVolRect!, mVolMaxValue, mVolMinValue,
           mChildPadding, fixedLength!, this.chartStyle, this.chartColors);
     }
-    if (mSecondaryRect != null)
+    if (mSecondaryRect != null) {
       mSecondaryRenderer ??= SecondaryRenderer(
           mSecondaryRect!,
           mSecondaryMaxValue,
@@ -102,6 +102,7 @@ class ChartPainter extends BaseChartPainter {
           fixedLength!,
           chartStyle,
           chartColors);
+    }
   }
 
   @override

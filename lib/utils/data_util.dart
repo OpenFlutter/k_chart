@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:k_chart/utils/number_util.dart';
 
-import '../entity/k_line_entity.dart';
+import '../entity/index.dart';
 
 // ignore_for_file: non_constant_identifier_names,library_prefixes,unused_import,camel_case_types
 class DataUtil {
