@@ -71,7 +71,7 @@ class KChartWidget extends StatefulWidget {
 class _KChartWidgetState extends State<KChartWidget>
     with TickerProviderStateMixin {
   double mScaleX = 1.0, mScrollX = 0.0, mSelectX = 0.0;
-  StreamController<InfoWindowEntity?>? mInfoWindowStream;
+  late StreamController<InfoWindowEntity?> mInfoWindowStream;
   double mWidth = 0;
   AnimationController? _controller;
   Animation<double>? aniX;
@@ -97,7 +97,7 @@ class _KChartWidgetState extends State<KChartWidget>
 
   @override
   void dispose() {
-    mInfoWindowStream?.close();
+    mInfoWindowStream.close();
     _controller?.dispose();
     super.dispose();
   }
@@ -120,7 +120,7 @@ class _KChartWidgetState extends State<KChartWidget>
       volHidden: widget.volHidden,
       secondaryState: widget.secondaryState,
       isLine: widget.isLine,
-      sink: mInfoWindowStream?.sink,
+      sink: mInfoWindowStream.sink,
       bgColor: widget.bgColor,
       fixedLength: widget.fixedLength,
       maDayList: widget.maDayList,
@@ -175,7 +175,7 @@ class _KChartWidgetState extends State<KChartWidget>
       },
       onLongPressEnd: (details) {
         isLongPress = false;
-        mInfoWindowStream?.sink.add(null);
+        mInfoWindowStream.sink.add(null);
         notifyChanged();
       },
       child: Stack(
@@ -267,7 +267,7 @@ class _KChartWidgetState extends State<KChartWidget>
 
   Widget _buildInfoDialog() {
     return StreamBuilder<InfoWindowEntity?>(
-        stream: mInfoWindowStream?.stream,
+        stream: mInfoWindowStream.stream,
         builder: (context, snapshot) {
           if (!isLongPress ||
               widget.isLine == true ||
