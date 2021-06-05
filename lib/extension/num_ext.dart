@@ -1,8 +1,8 @@
 extension NumExt on num? {
-  bool get nullOrZero {
+  bool get notNullOrZero {
     if (this == null || this == 0) {
-      return true;
+      return false;
     }
-    return this!.abs().toStringAsFixed(4) == "0.0000";
+    return this!.abs().toStringAsFixed(4) != "0.0000";
   }
 }

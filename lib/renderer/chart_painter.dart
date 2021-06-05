@@ -78,17 +78,18 @@ class ChartPainter extends BaseChartPainter {
       }
     }
     mMainRenderer = MainRenderer(
-        mMainRect,
-        mMainMaxValue,
-        mMainMinValue,
-        mTopPadding,
-        mainState,
-        isLine,
-        fixedLength!,
-        this.chartStyle,
-        this.chartColors,
-        this.scaleX,
-        maDayList);
+      mMainRect,
+      mMainMaxValue,
+      mMainMinValue,
+      mTopPadding,
+      mainState,
+      isLine,
+      fixedLength!,
+      this.chartStyle,
+      this.chartColors,
+      this.scaleX,
+      maDayList,
+    );
     if (mVolRect != null) {
       mVolRenderer = VolRenderer(mVolRect!, mVolMaxValue, mVolMinValue,
           mChildPadding, fixedLength!, this.chartStyle, this.chartColors);
