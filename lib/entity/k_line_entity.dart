@@ -17,7 +17,7 @@ class KLineEntity extends KEntity {
     required this.close,
     this.change,
     this.ratio,
-    required this.time,
+    this.time,
     required this.high,
     required this.low,
     required this.vol,

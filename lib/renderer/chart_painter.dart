@@ -22,7 +22,7 @@ class ChartPainter extends BaseChartPainter {
   Color? volColor;
   Color? macdColor, difColor, deaColor, jColor;
   List<Color>? bgColor;
-  int? fixedLength;
+  int fixedLength;
   List<int> maDayList;
   final ChartColors chartColors;
   Paint? selectPointPaint, selectorBorderPaint;
@@ -42,7 +42,7 @@ class ChartPainter extends BaseChartPainter {
     this.sink,
     bool isLine = false,
     this.bgColor,
-    this.fixedLength,
+    this.fixedLength = 2,
     this.maDayList = const [5, 10, 20],
   })  : assert(bgColor == null || bgColor.length >= 2),
         super(chartStyle,
@@ -68,14 +68,10 @@ class ChartPainter extends BaseChartPainter {
 
   @override
   void initChartRenderer() {
-    if (fixedLength == null && datas != null) {
-      if (datas!.isEmpty) {
-        fixedLength = 2;
-      } else {
-        var t = datas![0];
-        fixedLength =
-            NumberUtil.getMaxDecimalLength(t.open, t.close, t.high, t.low);
-      }
+    if (datas != null) {
+      var t = datas![0];
+      fixedLength =
+          NumberUtil.getMaxDecimalLength(t.open, t.close, t.high, t.low);
     }
     mMainRenderer = MainRenderer(
       mMainRect,
@@ -84,7 +80,7 @@ class ChartPainter extends BaseChartPainter {
       mTopPadding,
       mainState,
       isLine,
-      fixedLength!,
+      fixedLength,
       this.chartStyle,
       this.chartColors,
       this.scaleX,
@@ -92,7 +88,7 @@ class ChartPainter extends BaseChartPainter {
     );
     if (mVolRect != null) {
       mVolRenderer = VolRenderer(mVolRect!, mVolMaxValue, mVolMinValue,
-          mChildPadding, fixedLength!, this.chartStyle, this.chartColors);
+          mChildPadding, fixedLength, this.chartStyle, this.chartColors);
     }
     if (mSecondaryRect != null) {
       mSecondaryRenderer = SecondaryRenderer(
@@ -101,7 +97,7 @@ class ChartPainter extends BaseChartPainter {
           mSecondaryMinValue,
           mChildPadding,
           secondaryState,
-          fixedLength!,
+          fixedLength,
           chartStyle,
           chartColors);
     }
@@ -296,11 +292,11 @@ class ChartPainter extends BaseChartPainter {
     if (x < mWidth / 2) {
       //画右边
       TextPainter tp = getTextPainter(
-          "── " + mMainLowMinValue.toStringAsFixed(fixedLength!), Colors.white);
+          "── " + mMainLowMinValue.toStringAsFixed(fixedLength), Colors.white);
       tp.paint(canvas, Offset(x, y - tp.height / 2));
     } else {
       TextPainter tp = getTextPainter(
-          mMainLowMinValue.toStringAsFixed(fixedLength!) + " ──", Colors.white);
+          mMainLowMinValue.toStringAsFixed(fixedLength) + " ──", Colors.white);
       tp.paint(canvas, Offset(x - tp.width, y - tp.height / 2));
     }
     x = translateXtoX(getX(mMainMaxIndex));
@@ -308,13 +304,11 @@ class ChartPainter extends BaseChartPainter {
     if (x < mWidth / 2) {
       //画右边
       TextPainter tp = getTextPainter(
-          "── " + mMainHighMaxValue.toStringAsFixed(fixedLength!),
-          Colors.white);
+          "── " + mMainHighMaxValue.toStringAsFixed(fixedLength), Colors.white);
       tp.paint(canvas, Offset(x, y - tp.height / 2));
     } else {
       TextPainter tp = getTextPainter(
-          mMainHighMaxValue.toStringAsFixed(fixedLength!) + " ──",
-          Colors.white);
+          mMainHighMaxValue.toStringAsFixed(fixedLength) + " ──", Colors.white);
       tp.paint(canvas, Offset(x - tp.width, y - tp.height / 2));
     }
   }
@@ -328,12 +322,12 @@ class ChartPainter extends BaseChartPainter {
     if (x < mWidth / 2) {
       //画右边
       TextPainter tp = getTextPainter(
-          "------ " + value.toStringAsFixed(fixedLength!),
+          "------ " + value.toStringAsFixed(fixedLength),
           this.chartColors.nowPriceColor);
       tp.paint(canvas, Offset(x, y - tp.height / 2));
     } else {
       TextPainter tp = getTextPainter(
-          value.toStringAsFixed(fixedLength!) + " ------",
+          value.toStringAsFixed(fixedLength) + " ------",
           this.chartColors.nowPriceColor);
       tp.paint(canvas, Offset(x - tp.width, y - tp.height / 2));
     }
