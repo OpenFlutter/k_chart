@@ -30,11 +30,13 @@ class KLineEntity extends KEntity {
     close = json['close']?.toDouble() ?? 0;
     vol = json['vol']?.toDouble() ?? 0;
     amount = json['amount']?.toDouble() ?? 0;
-    time = json['time']?.toInt() ?? json['id']?.toInt();
+    int? tempTime = json['time']?.toInt();
     //兼容火币数据
-    if (time != null) {
-      time = time! * 1000;
+    if (tempTime == null) {
+      tempTime = json['id']?.toInt() ?? 0;
+      tempTime = tempTime! * 1000;
     }
+    time = tempTime;
     ratio = json['ratio']?.toDouble() ?? 0;
     change = json['change']?.toDouble() ?? 0;
   }

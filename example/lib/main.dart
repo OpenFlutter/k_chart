@@ -91,7 +91,6 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return ListView(
       shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
       children: <Widget>[
         Stack(children: <Widget>[
           Container(
