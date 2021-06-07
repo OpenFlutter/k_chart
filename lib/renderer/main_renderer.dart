@@ -1,26 +1,36 @@
 import 'package:flutter/material.dart';
+
 import '../entity/candle_entity.dart';
 import '../k_chart_widget.dart' show MainState;
 import 'base_chart_renderer.dart';
 
 class MainRenderer extends BaseChartRenderer<CandleEntity> {
-  double mCandleWidth;
-  double mCandleLineWidth;
+  late double mCandleWidth;
+  late double mCandleLineWidth;
   MainState state;
   bool isLine;
+
   //绘制的内容区域
-  Rect _contentRect;
+  late Rect _contentRect;
   double _contentPadding = 5.0;
   List<int> maDayList;
   final ChartStyle chartStyle;
   final ChartColors chartColors;
   final double mLineStrokeWidth = 1.0;
   double scaleX;
-  Paint mLinePaint;
+  late Paint mLinePaint;
 
-  MainRenderer(Rect mainRect, double maxValue, double minValue,
-      double topPadding, this.state, this.isLine, int fixedLength, this.chartStyle, this.chartColors,
-  this.scaleX,
+  MainRenderer(
+      Rect mainRect,
+      double maxValue,
+      double minValue,
+      double topPadding,
+      this.state,
+      this.isLine,
+      int fixedLength,
+      this.chartStyle,
+      this.chartColors,
+      this.scaleX,
       [this.maDayList = const [5, 10, 20]])
       : super(
             chartRect: mainRect,
@@ -50,7 +60,7 @@ class MainRenderer extends BaseChartRenderer<CandleEntity> {
   @override
   void drawText(Canvas canvas, CandleEntity data, double x) {
     if (isLine == true) return;
-    TextSpan span;
+    TextSpan? span;
     if (state == MainState.MA) {
       span = TextSpan(
         children: _createMATextSpan(data),
@@ -81,10 +91,10 @@ class MainRenderer extends BaseChartRenderer<CandleEntity> {
 
   List<InlineSpan> _createMATextSpan(CandleEntity data) {
     List<InlineSpan> result = [];
-    for (int i = 0; i < data.maValueList.length; i++) {
-      if (data.maValueList[i] != 0) {
+    for (int i = 0; i < (data.maValueList?.length ?? 0); i++) {
+      if (data.maValueList?[i] != 0) {
         var item = TextSpan(
-            text: "MA${maDayList[i]}:${format(data.maValueList[i])}    ",
+            text: "MA${maDayList[i]}:${format(data.maValueList![i])}    ",
             style: getTextStyle(this.chartColors.getMAColor(i)));
         result.add(item);
       }
@@ -107,8 +117,8 @@ class MainRenderer extends BaseChartRenderer<CandleEntity> {
     }
   }
 
-  Shader mLineFillShader;
-  Path mLinePath, mLineFillPath;
+  Shader? mLineFillShader;
+  Path? mLinePath, mLineFillPath;
   Paint mLineFillPaint = Paint()
     ..style = PaintingStyle.fill
     ..isAntiAlias = true;
@@ -127,8 +137,8 @@ class MainRenderer extends BaseChartRenderer<CandleEntity> {
 //          (lastX + curX) / 2, getY(lastPrice), (lastX + curX) / 2, getY(curPrice), curX, getY(curPrice));
 //    }
     if (lastX == curX) lastX = 0; //起点位置填充
-    mLinePath.moveTo(lastX, getY(lastPrice));
-    mLinePath.cubicTo((lastX + curX) / 2, getY(lastPrice), (lastX + curX) / 2,
+    mLinePath!.moveTo(lastX, getY(lastPrice));
+    mLinePath!.cubicTo((lastX + curX) / 2, getY(lastPrice), (lastX + curX) / 2,
         getY(curPrice), curX, getY(curPrice));
 
 //    //画阴影
@@ -143,28 +153,29 @@ class MainRenderer extends BaseChartRenderer<CandleEntity> {
 
     mLineFillPath ??= Path();
 
-    mLineFillPath.moveTo(lastX, chartRect.height + chartRect.top);
-    mLineFillPath.lineTo(lastX, getY(lastPrice));
-    mLineFillPath.cubicTo((lastX + curX) / 2, getY(lastPrice),
+    mLineFillPath!.moveTo(lastX, chartRect.height + chartRect.top);
+    mLineFillPath!.lineTo(lastX, getY(lastPrice));
+    mLineFillPath!.cubicTo((lastX + curX) / 2, getY(lastPrice),
         (lastX + curX) / 2, getY(curPrice), curX, getY(curPrice));
-    mLineFillPath.lineTo(curX, chartRect.height + chartRect.top);
-    mLineFillPath.close();
+    mLineFillPath!.lineTo(curX, chartRect.height + chartRect.top);
+    mLineFillPath!.close();
 
-    canvas.drawPath(mLineFillPath, mLineFillPaint);
-    mLineFillPath.reset();
+    canvas.drawPath(mLineFillPath!, mLineFillPaint);
+    mLineFillPath!.reset();
 
-    canvas.drawPath(mLinePath, mLinePaint..strokeWidth = (mLineStrokeWidth / scaleX).clamp(0.1, 1.0));
-    mLinePath.reset();
+    canvas.drawPath(mLinePath!,
+        mLinePaint..strokeWidth = (mLineStrokeWidth / scaleX).clamp(0.1, 1.0));
+    mLinePath!.reset();
   }
 
   void drawMaLine(CandleEntity lastPoint, CandleEntity curPoint, Canvas canvas,
       double lastX, double curX) {
-    for (int i = 0; i < curPoint.maValueList.length; i++) {
+    for (int i = 0; i < (curPoint.maValueList?.length ?? 0); i++) {
       if (i == 3) {
         break;
       }
-      if (lastPoint.maValueList[i] != 0) {
-        drawLine(lastPoint.maValueList[i], curPoint.maValueList[i], canvas,
+      if (lastPoint.maValueList?[i] != 0) {
+        drawLine(lastPoint.maValueList?[i], curPoint.maValueList?[i], canvas,
             lastX, curX, this.chartColors.getMAColor(i));
       }
     }
@@ -177,8 +188,8 @@ class MainRenderer extends BaseChartRenderer<CandleEntity> {
           this.chartColors.ma10Color);
     }
     if (lastPoint.mb != 0) {
-      drawLine(
-          lastPoint.mb, curPoint.mb, canvas, lastX, curX, this.chartColors.ma5Color);
+      drawLine(lastPoint.mb, curPoint.mb, canvas, lastX, curX,
+          this.chartColors.ma5Color);
     }
     if (lastPoint.dn != 0) {
       drawLine(lastPoint.dn, curPoint.dn, canvas, lastX, curX,

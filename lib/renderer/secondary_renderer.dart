@@ -1,19 +1,26 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+
 import '../entity/macd_entity.dart';
 import '../k_chart_widget.dart' show SecondaryState;
-
 import 'base_chart_renderer.dart';
 
 class SecondaryRenderer extends BaseChartRenderer<MACDEntity> {
-  double mMACDWidth;
+  late double mMACDWidth;
   SecondaryState state;
   final ChartStyle chartStyle;
   final ChartColors chartColors;
 
-  SecondaryRenderer(Rect mainRect, double maxValue, double minValue,
-      double topPadding, this.state, int fixedLength, this.chartStyle, this.chartColors)
+  SecondaryRenderer(
+      Rect mainRect,
+      double maxValue,
+      double minValue,
+      double topPadding,
+      this.state,
+      int fixedLength,
+      this.chartStyle,
+      this.chartColors)
       : super(
             chartRect: mainRect,
             maxValue: maxValue,
@@ -31,23 +38,24 @@ class SecondaryRenderer extends BaseChartRenderer<MACDEntity> {
         drawMACD(curPoint, canvas, curX, lastPoint, lastX);
         break;
       case SecondaryState.KDJ:
-        drawLine(
-            lastPoint.k, curPoint.k, canvas, lastX, curX, this.chartColors.kColor);
-        drawLine(
-            lastPoint.d, curPoint.d, canvas, lastX, curX, this.chartColors.dColor);
-        drawLine(
-            lastPoint.j, curPoint.j, canvas, lastX, curX, this.chartColors.jColor);
+        drawLine(lastPoint.k, curPoint.k, canvas, lastX, curX,
+            this.chartColors.kColor);
+        drawLine(lastPoint.d, curPoint.d, canvas, lastX, curX,
+            this.chartColors.dColor);
+        drawLine(lastPoint.j, curPoint.j, canvas, lastX, curX,
+            this.chartColors.jColor);
         break;
       case SecondaryState.RSI:
         drawLine(lastPoint.rsi, curPoint.rsi, canvas, lastX, curX,
             this.chartColors.rsiColor);
         break;
       case SecondaryState.WR:
-        drawLine(
-            lastPoint.r, curPoint.r, canvas, lastX, curX, this.chartColors.rsiColor);
+        drawLine(lastPoint.r, curPoint.r, canvas, lastX, curX,
+            this.chartColors.rsiColor);
         break;
       case SecondaryState.CCI:
-        drawLine(lastPoint.cci, curPoint.cci, canvas, lastX, curX, this.chartColors.rsiColor);
+        drawLine(lastPoint.cci, curPoint.cci, canvas, lastX, curX,
+            this.chartColors.rsiColor);
         break;
       default:
         break;
@@ -56,10 +64,11 @@ class SecondaryRenderer extends BaseChartRenderer<MACDEntity> {
 
   void drawMACD(MACDEntity curPoint, Canvas canvas, double curX,
       MACDEntity lastPoint, double lastX) {
-    double macdY = getY(curPoint.macd);
+    final macd = curPoint.macd ?? 0;
+    double macdY = getY(macd);
     double r = mMACDWidth / 2;
     double zeroy = getY(0);
-    if (curPoint.macd > 0) {
+    if (macd > 0) {
       canvas.drawRect(Rect.fromLTRB(curX - r, macdY, curX + r, zeroy),
           chartPaint..color = this.chartColors.upColor);
     } else {
@@ -78,7 +87,7 @@ class SecondaryRenderer extends BaseChartRenderer<MACDEntity> {
 
   @override
   void drawText(Canvas canvas, MACDEntity data, double x) {
-    List<TextSpan> children;
+    List<TextSpan>? children;
     switch (state) {
       case SecondaryState.MACD:
         children = [

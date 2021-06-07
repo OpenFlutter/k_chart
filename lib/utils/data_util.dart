@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:k_chart/utils/number_util.dart';
 
-import '../entity/k_line_entity.dart';
+import '../entity/index.dart';
 
 // ignore_for_file: non_constant_identifier_names,library_prefixes,unused_import,camel_case_types
 class DataUtil {
@@ -21,21 +21,21 @@ class DataUtil {
   static calcMA(List<KLineEntity> dataList, List<int> maDayList) {
     List<double> ma = List<double>.filled(maDayList.length, 0);
 
-    if (dataList != null && dataList.isNotEmpty) {
+    if (dataList.isNotEmpty) {
       for (int i = 0; i < dataList.length; i++) {
         KLineEntity entity = dataList[i];
         final closePrice = entity.close;
-        entity.maValueList = List<double>(maDayList.length);
+        entity.maValueList = List<double>.filled(maDayList.length, 0);
 
         for (int j = 0; j < maDayList.length; j++) {
           ma[j] += closePrice;
           if (i == maDayList[j] - 1) {
-            entity.maValueList[j] = ma[j] / maDayList[j];
+            entity.maValueList?[j] = ma[j] / maDayList[j];
           } else if (i >= maDayList[j]) {
             ma[j] -= dataList[i - maDayList[j]].close;
-            entity.maValueList[j] = ma[j] / maDayList[j];
+            entity.maValueList?[j] = ma[j] / maDayList[j];
           } else {
-            entity.maValueList[j] = 0;
+            entity.maValueList?[j] = 0;
           }
         }
       }
@@ -50,22 +50,22 @@ class DataUtil {
         double md = 0;
         for (int j = i - n + 1; j <= i; j++) {
           double c = dataList[j].close;
-          double m = entity.BOLLMA;
+          double m = entity.BOLLMA!;
           double value = c - m;
           md += value * value;
         }
         md = md / (n - 1);
         md = sqrt(md);
-        entity.mb = entity.BOLLMA;
-        entity.up = entity.mb + k * md;
-        entity.dn = entity.mb - k * md;
+        entity.mb = entity.BOLLMA!;
+        entity.up = entity.mb! + k * md;
+        entity.dn = entity.mb! - k * md;
       }
     }
   }
 
   static void _calcBOLLMA(int day, List<KLineEntity> dataList) {
     double ma = 0;
-    for (int i = 0; dataList != null && i < dataList.length; i++) {
+    for (int i = 0; i < dataList.length; i++) {
       KLineEntity entity = dataList[i];
       ma += entity.close;
       if (i == day - 1) {
@@ -141,7 +141,7 @@ class DataUtil {
   }
 
   static void calcRSI(List<KLineEntity> dataList) {
-    double rsi;
+    double? rsi;
     double rsiABSEma = 0;
     double rsiMaxEma = 0;
     for (int i = 0; i < dataList.length; i++) {
@@ -152,8 +152,8 @@ class DataUtil {
         rsiABSEma = 0;
         rsiMaxEma = 0;
       } else {
-        double Rmax = max(0, closePrice - dataList[i - 1].close);
-        double RAbs = (closePrice - dataList[i - 1].close).abs();
+        double Rmax = max(0, closePrice - dataList[i - 1].close.toDouble());
+        double RAbs = (closePrice - dataList[i - 1].close.toDouble()).abs();
 
         rsiMaxEma = (Rmax + (14 - 1) * rsiMaxEma) / 14;
         rsiABSEma = (RAbs + (14 - 1) * rsiABSEma) / 14;
@@ -251,11 +251,12 @@ class DataUtil {
       final ma = amount / len;
       amount = 0.0;
       for (int n = start; n <= i; n++) {
-        amount += (ma - (dataList[n].high + dataList[n].low + dataList[n].close) / 3).abs();
+        amount += (ma - (dataList[n].high + dataList[n].low + dataList[n].close) / 3)
+                .abs();
       }
       final md = amount / len;
       kline.cci = ((tp - ma) / 0.015 / md);
-      if(kline.cci.isNaN) {
+      if (kline.cci!.isNaN) {
         kline.cci = 0.0;
       }
     }

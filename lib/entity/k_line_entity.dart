@@ -1,45 +1,42 @@
 import '../entity/k_entity.dart';
 
 class KLineEntity extends KEntity {
-  double open;
-  double high;
-  double low;
-  double close;
-  double vol;
-  double amount;
-  double change;
-  double ratio;
-  int time;
+  late double open;
+  late double high;
+  late double low;
+  late double close;
+  late double vol;
+  late double amount;
+  double? change;
+  double? ratio;
+  int? time;
 
   KLineEntity.fromCustom({
-    this.amount,
-    this.open,
-    this.close,
+    required this.amount,
+    required this.open,
+    required this.close,
     this.change,
     this.ratio,
-    this.time,
-    this.high,
-    this.low,
-    this.vol,
+    required this.time,
+    required this.high,
+    required this.low,
+    required this.vol,
   });
 
   KLineEntity.fromJson(Map<String, dynamic> json) {
-    open = (json['open'] as num)?.toDouble();
-    high = (json['high'] as num)?.toDouble();
-    low = (json['low'] as num)?.toDouble();
-    close = (json['close'] as num)?.toDouble();
-    vol = (json['vol'] as num)?.toDouble();
-    amount = (json['amount'] as num)?.toDouble();
-    time = (json['time'] as num)?.toInt();
+    open = json['open']?.toDouble() ?? 0;
+    high = json['high']?.toDouble() ?? 0;
+    low = json['low']?.toDouble() ?? 0;
+    close = json['close']?.toDouble() ?? 0;
+    vol = json['vol']?.toDouble() ?? 0;
+    amount = json['amount']?.toDouble() ?? 0;
+    time = json['time']?.toInt() ?? json['id']?.toInt();
     //兼容火币数据
-    if (time == null) {
-      time = ((json['id'] as num)?.toInt());
-      if (time != null) {
-        time *= 1000;
-      }
+    if (time != null) {
+      time = time! * 1000;
     }
-    ratio = (json['ratio'] as num)?.toDouble();
-    change = (json['change'] as num)?.toDouble();
+    ratio = json['ratio']?.toDouble() ?? 0;
+    change = json['change']?.toDouble() ?? 0;
   }
 
   Map<String, dynamic> toJson() {
