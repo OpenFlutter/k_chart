@@ -93,16 +93,14 @@ abstract class BaseChartPainter extends CustomPainter {
     canvas.scale(1, 1);
     drawBg(canvas, size);
     drawGrid(canvas);
-    if (datas != null) {
-      if (datas!.isNotEmpty) {
-        drawChart(canvas, size);
-        drawRightText(canvas);
-        drawDate(canvas, size);
-        if (isLongPress == true) drawCrossLineText(canvas, size);
-        drawText(canvas, datas!.last, 5);
-        drawMaxAndMin(canvas);
-        drawNowPrice(canvas);
-      }
+    if (datas != null && datas!.isNotEmpty) {
+      drawChart(canvas, size);
+      drawRightText(canvas);
+      drawDate(canvas, size);
+      if (isLongPress == true) drawCrossLineText(canvas, size);
+      drawText(canvas, datas!.last, 5);
+      drawMaxAndMin(canvas);
+      drawNowPrice(canvas);
     }
     canvas.restore();
   }
