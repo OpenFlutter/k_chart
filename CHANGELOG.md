@@ -23,3 +23,8 @@
 ## [0.2.1]
 
 * Fix: Fixed some UI issues about zooming
+
+## [0.3.0]
+
+* Breaking Change: null safety.
+* NEW: Add line under Touch Dialog.

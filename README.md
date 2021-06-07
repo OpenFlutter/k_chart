@@ -9,15 +9,17 @@ Maybe this is the best k chart in Flutter.Support drag,scale,long press,fling.An
 
 <img src="https://github.com/mafanwei/k_chart/blob/master/example/images/Screenshot2.jpg" width="375" alt="Screenshot"/>
 
-#### gif(This is outdated)
+#### gif
 
 ![demo](https://github.com/mafanwei/k_chart/blob/master/example/images/demo.gif)
+
+![demo](https://github.com/mafanwei/k_chart/blob/master/example/images/demo2.gif)
 
 ## Getting Started
 #### Install
 ```
 dependencies:
-  k_chart: ^0.2.1
+  k_chart: ^0.3.0
 ```
 or use latest：
 ```
