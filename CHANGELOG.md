@@ -28,3 +28,7 @@
 
 * Breaking Change: null safety.
 * NEW: Add line under Touch Dialog.
+
+## [0.3.1]
+
+* NEW: More color can change.

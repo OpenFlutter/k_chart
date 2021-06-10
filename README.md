@@ -19,7 +19,7 @@ Maybe this is the best k chart in Flutter.Support drag,scale,long press,fling.An
 #### Install
 ```
 dependencies:
-  k_chart: ^0.3.0
+  k_chart: ^0.3.1
 ```
 or use latest：
 ```
@@ -62,17 +62,7 @@ Container(
 
 use depth chart:
 ```dart
-DepthChart(_bids, _asks) //Note: Datas must be an ordered list，
-```
-
-if you want change DepthChart color, you can use just like this:
-```dart
- Container(
-            height: 230,
-            width: double.infinity,
-            color: Colors.grey, //background color
-            child: DepthChart(_bids, _asks, chartColors, buyPathColor: Colors.blue, sellPathColor: Colors.green),
-          )
+DepthChart(_bids, _asks, chartColors) //Note: Datas must be an ordered list，
 ```
 
 #### Donate
