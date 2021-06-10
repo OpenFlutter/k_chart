@@ -33,6 +33,22 @@ class ChartColors {
   //选中后显示值背景的填充颜色
   Color selectFillColor = Color(0xff0D1722);
 
+  //分割线颜色
+  Color gridColor = Color(0xff4c5c74);
+
+  Color infoWindowNormalColor = Color(0xffffffff);
+  Color infoWindowTitleColor = Color(0xffffffff);
+  Color infoWindowUpColor = Color(0xff00ff00);
+  Color infoWindowDnColor = Color(0xffff0000);
+
+  Color hCrossColor = Color(0xffffffff);
+  Color vCrossColor = Color(0x1Effffff);
+  Color crossTextColor = Color(0xffffffff);
+
+  //当前显示内最大和最小值的颜色
+  Color maxColor = Color(0xffffffff);
+  Color minColor = Color(0xffffffff);
+
   Color getMAColor(int index) {
     Color maColor = ma5Color;
     switch (index % 3) {

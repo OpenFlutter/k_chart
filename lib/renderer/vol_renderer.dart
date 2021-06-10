@@ -15,7 +15,8 @@ class VolRenderer extends BaseChartRenderer<VolumeEntity> {
             maxValue: maxValue,
             minValue: minValue,
             topPadding: topPadding,
-            fixedLength: fixedLength) {
+            fixedLength: fixedLength,
+            gridColor: chartColors.gridColor,) {
     mVolWidth = this.chartStyle.volWidth;
   }
 

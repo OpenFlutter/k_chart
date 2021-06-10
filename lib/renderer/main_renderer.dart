@@ -37,7 +37,8 @@ class MainRenderer extends BaseChartRenderer<CandleEntity> {
             maxValue: maxValue,
             minValue: minValue,
             topPadding: topPadding,
-            fixedLength: fixedLength) {
+            fixedLength: fixedLength,
+            gridColor: chartColors.gridColor) {
     mCandleWidth = this.chartStyle.candleWidth;
     mCandleLineWidth = this.chartStyle.candleLineWidth;
     mLinePaint = Paint()

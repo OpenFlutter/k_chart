@@ -310,20 +310,20 @@ class _KChartWidgetState extends State<KChartWidget>
   }
 
   Widget _buildItem(String info, String infoName) {
-    Color color = Colors.white;
+    Color color = widget.chartColors.infoWindowNormalColor;
     if (info.startsWith("+"))
-      color = Colors.green;
+      color = widget.chartColors.infoWindowUpColor;
     else if (info.startsWith("-"))
-      color = Colors.red;
+      color = widget.chartColors.infoWindowDnColor;
     else
-      color = Colors.white;
+      color = widget.chartColors.infoWindowNormalColor;
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         Expanded(
             child: Text("$infoName",
-                style: const TextStyle(color: Colors.white, fontSize: 10.0))),
+                style: TextStyle(color: widget.chartColors.infoWindowTitleColor, fontSize: 10.0))),
         Text(info, style: TextStyle(color: color, fontSize: 10.0)),
       ],
     );

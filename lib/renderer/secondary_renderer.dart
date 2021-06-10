@@ -26,7 +26,8 @@ class SecondaryRenderer extends BaseChartRenderer<MACDEntity> {
             maxValue: maxValue,
             minValue: minValue,
             topPadding: topPadding,
-            fixedLength: fixedLength) {
+            fixedLength: fixedLength,
+            gridColor: chartColors.gridColor,) {
     mMACDWidth = this.chartStyle.macdWidth;
   }
 

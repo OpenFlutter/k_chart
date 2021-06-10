@@ -206,7 +206,7 @@ class ChartPainter extends BaseChartPainter {
     var index = calculateSelectedX(selectX);
     KLineEntity point = getItem(index);
 
-    TextPainter tp = getTextPainter(point.close, Colors.white);
+    TextPainter tp = getTextPainter(point.close, chartColors.crossTextColor);
     double textHeight = tp.height;
     double textWidth = tp.width;
 
@@ -244,7 +244,7 @@ class ChartPainter extends BaseChartPainter {
       tp.paint(canvas, Offset(x + w1 + w2, y - textHeight / 2));
     }
 
-    TextPainter dateTp = getTextPainter(getDate(point.time), Colors.white);
+    TextPainter dateTp = getTextPainter(getDate(point.time), chartColors.crossTextColor);
     textWidth = dateTp.width;
     r = textHeight / 2;
     x = translateXtoX(getX(index));
@@ -292,11 +292,11 @@ class ChartPainter extends BaseChartPainter {
     if (x < mWidth / 2) {
       //画右边
       TextPainter tp = getTextPainter(
-          "── " + mMainLowMinValue.toStringAsFixed(fixedLength), Colors.white);
+          "── " + mMainLowMinValue.toStringAsFixed(fixedLength), chartColors.minColor);
       tp.paint(canvas, Offset(x, y - tp.height / 2));
     } else {
       TextPainter tp = getTextPainter(
-          mMainLowMinValue.toStringAsFixed(fixedLength) + " ──", Colors.white);
+          mMainLowMinValue.toStringAsFixed(fixedLength) + " ──", chartColors.minColor);
       tp.paint(canvas, Offset(x - tp.width, y - tp.height / 2));
     }
     x = translateXtoX(getX(mMainMaxIndex));
@@ -304,11 +304,11 @@ class ChartPainter extends BaseChartPainter {
     if (x < mWidth / 2) {
       //画右边
       TextPainter tp = getTextPainter(
-          "── " + mMainHighMaxValue.toStringAsFixed(fixedLength), Colors.white);
+          "── " + mMainHighMaxValue.toStringAsFixed(fixedLength), chartColors.maxColor);
       tp.paint(canvas, Offset(x, y - tp.height / 2));
     } else {
       TextPainter tp = getTextPainter(
-          mMainHighMaxValue.toStringAsFixed(fixedLength) + " ──", Colors.white);
+          mMainHighMaxValue.toStringAsFixed(fixedLength) + " ──", chartColors.maxColor);
       tp.paint(canvas, Offset(x - tp.width, y - tp.height / 2));
     }
   }
@@ -338,7 +338,7 @@ class ChartPainter extends BaseChartPainter {
     var index = calculateSelectedX(selectX);
     KLineEntity point = getItem(index);
     Paint paintY = Paint()
-      ..color = Colors.white12
+      ..color = this.chartColors.vCrossColor
       ..strokeWidth = this.chartStyle.vCrossWidth
       ..isAntiAlias = true;
     double x = getX(index);
@@ -348,7 +348,7 @@ class ChartPainter extends BaseChartPainter {
         Offset(x, size.height - mBottomPadding), paintY);
 
     Paint paintX = Paint()
-      ..color = Colors.white
+      ..color = this.chartColors.hCrossColor
       ..strokeWidth = this.chartStyle.hCrossWidth
       ..isAntiAlias = true;
     // k线图横线

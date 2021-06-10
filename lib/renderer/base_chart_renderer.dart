@@ -25,12 +25,14 @@ abstract class BaseChartRenderer<T> {
     required this.minValue,
     required this.topPadding,
     required this.fixedLength,
+    required Color gridColor,
   }) {
     if (maxValue == minValue) {
       maxValue *= 1.5;
       minValue /= 2;
     }
     scaleY = chartRect.height / (maxValue - minValue);
+    gridPaint.color = gridColor;
     // print("maxValue=====" + maxValue.toString() + "====minValue===" + minValue.toString() + "==scaleY==" + scaleY.toString());
   }
 
