@@ -166,45 +166,37 @@ class DataUtil {
   }
 
   static void calcKDJ(List<KLineEntity> dataList) {
-    double k = 0;
-    double d = 0;
-    for (int i = 0; i < dataList.length; i++) {
-      KLineEntity entity = dataList[i];
-      final double closePrice = entity.close;
-      int startIndex = i - 13;
-      if (startIndex < 0) {
-        startIndex = 0;
+    var preK = 50.0;
+    var preD = 50.0;
+    final tmp = dataList.first;
+    tmp.k = preK;
+    tmp.d = preD;
+    tmp.j = 50.0;
+    for (int i = 1; i < dataList.length; i++) {
+      final entity = dataList[i];
+      final n = max(0, i - 8);
+      var low = entity.low;
+      var high = entity.high;
+      for (int j = n; j < i; j++) {
+        final t = dataList[j];
+        if (t.low < low) {
+          low = t.low;
+        }
+        if (t.high > high) {
+          high = t.high;
+        }
       }
-      double max14 = double.minPositive;
-      double min14 = double.maxFinite;
-      for (int index = startIndex; index <= i; index++) {
-        max14 = max(max14, dataList[index].high);
-        min14 = min(min14, dataList[index].low);
-      }
-      double rsv = 100 * (closePrice - min14) / (max14 - min14);
-      if (rsv.isNaN) {
-        rsv = 0;
-      }
-      if (i == 0) {
-        k = 50;
-        d = 50;
-      } else {
-        k = (rsv + 2 * k) / 3;
-        d = (k + 2 * d) / 3;
-      }
-      if (i < 13) {
-        entity.k = null;
-        entity.d = null;
-        entity.j = null;
-      } else if (i == 13 || i == 14) {
-        entity.k = k;
-        entity.d = null;
-        entity.j = null;
-      } else {
-        entity.k = k;
-        entity.d = d;
-        entity.j = 3 * k - 2 * d;
-      }
+      final cur = entity.close;
+      var rsv = (cur - low) * 100.0 / (high - low);
+      rsv = rsv.isNaN ? 0 : rsv;
+      final k = (2 * preK + rsv) / 3.0;
+      final d = (2 * preD + k)/ 3.0;
+      final j = 3 * k - 2 * d;
+      preK = k;
+      preD = d;
+      entity.k = k;
+      entity.d = d;
+      entity.j = j;
     }
   }
 
