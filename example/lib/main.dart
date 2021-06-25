@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:k_chart/chart_style.dart';
+import 'package:k_chart/chart_translations.dart';
 import 'package:k_chart/flutter_k_chart.dart';
 import 'package:k_chart/k_chart_widget.dart';
 
@@ -39,6 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
   SecondaryState _secondaryState = SecondaryState.MACD;
   bool isLine = true;
   bool isChinese = true;
+  bool hideGrid = false;
   List<DepthEntity>? _bids, _asks;
   bool isChangeUI = false;
 
@@ -107,7 +109,10 @@ class _MyHomePageState extends State<MyHomePage> {
               secondaryState: _secondaryState,
               fixedLength: 2,
               timeFormat: TimeFormat.YEAR_MONTH_DAY,
+              translations: kChartTranslations,
+              //`isChinese` is Deprecated, Use `translations` instead.
               isChinese: isChinese,
+              hideGrid: hideGrid,
               maDayList: [1, 100, 1000],
             ),
           ),
@@ -147,6 +152,7 @@ class _MyHomePageState extends State<MyHomePage> {
         button(_volHidden ? "Show Vol" : "Hide Vol",
             onPressed: () => _volHidden = !_volHidden),
         button("Change Language", onPressed: () => isChinese = !isChinese),
+        button("Change Grid", onPressed: () => hideGrid = !hideGrid),
         button("Customize UI", onPressed: () {
           setState(() {
             this.isChangeUI = !this.isChangeUI;
