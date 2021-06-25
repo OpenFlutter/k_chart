@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:k_chart/chart_translations.dart';
+import 'package:k_chart/extension/map_ext.dart';
 import 'package:k_chart/flutter_k_chart.dart';
 
 enum MainState { MA, BOLL, NONE }
@@ -28,7 +30,9 @@ class KChartWidget extends StatefulWidget {
   final SecondaryState secondaryState;
   final Function()? onSecondaryTap;
   final bool isLine;
+  @Deprecated('Use `translations` instead.')
   final bool isChinese;
+  final Map<String, ChartTranslations> translations;
   final List<String> timeFormat;
 
   //当屏幕滚动到尽头会调用，真为拉到屏幕右侧尽头，假为拉到屏幕左侧尽头
@@ -53,6 +57,7 @@ class KChartWidget extends StatefulWidget {
     this.volHidden = false,
     this.isLine = false,
     this.isChinese = false,
+    this.translations = kChartTranslations,
     this.timeFormat = TimeFormat.YEAR_MONTH_DAY,
     this.onLoadMore,
     this.bgColor,
@@ -243,26 +248,6 @@ class _KChartWidgetState extends State<KChartWidget>
 
   void notifyChanged() => setState(() {});
 
-  final List<String> infoNamesCN = [
-    "时间",
-    "开",
-    "高",
-    "低",
-    "收",
-    "涨跌额",
-    "涨跌幅",
-    "成交额"
-  ];
-  final List<String> infoNamesEN = [
-    "Date",
-    "Open",
-    "High",
-    "Low",
-    "Close",
-    "Change",
-    "Change%",
-    "Amount"
-  ];
   late List<String> infos;
 
   Widget _buildInfoDialog() {
@@ -297,12 +282,18 @@ class _KChartWidgetState extends State<KChartWidget>
                     color: widget.chartColors.selectBorderColor, width: 0.5)),
             child: ListView.builder(
               padding: EdgeInsets.all(4),
-              itemCount: infoNamesCN.length,
+              itemCount: infos.length,
               itemExtent: 14.0,
               shrinkWrap: true,
               itemBuilder: (context, index) {
-                return _buildItem(infos[index],
-                    widget.isChinese ? infoNamesCN[index] : infoNamesEN[index]);
+                final translations = widget.isChinese
+                    ? kChartTranslations['zh_CN']!
+                    : widget.translations.of(context);
+
+                return _buildItem(
+                  infos[index],
+                  translations.byIndex(index),
+                );
               },
             ),
           );
@@ -323,7 +314,9 @@ class _KChartWidgetState extends State<KChartWidget>
       children: <Widget>[
         Expanded(
             child: Text("$infoName",
-                style: TextStyle(color: widget.chartColors.infoWindowTitleColor, fontSize: 10.0))),
+                style: TextStyle(
+                    color: widget.chartColors.infoWindowTitleColor,
+                    fontSize: 10.0))),
         Text(info, style: TextStyle(color: color, fontSize: 10.0)),
       ],
     );
