@@ -52,10 +52,19 @@ Container(
                 // is false, it means the user is pulled to the end of the left side of the data.
                 maDayList: [5,10,20],// Display of MA,This parameter must be equal to DataUtil.calculate‘s maDayList
                 bgColor: [Colors.black, Colors.black],// The background color of the chart is gradient
-                isChinese: true,// Graphic language
+                translations: kChartTranslations,// Graphic language
                 volHidden: false,// hide volume
                 isOnDrag: (isDrag){},// true is on Drag.Don't load data while Draging.
                 onSecondaryTap:(){}// on secondary rect taped.
+                watermark: const Align(
+                  alignment: Alignment.bottomLeft,
+                  child: Image(
+                    color: Color(0x1A000000),
+                    colorBlendMode: BlendMode.dstIn,
+                    image: NetworkImage(
+                        'https://i-invdn-com.investing.com/ico_flags/80x80/v32/dogecoin.png'),
+                  ),
+                ),// Any widget show on main rect. Might be null.
               ),
             ),
 ```

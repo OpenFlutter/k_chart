@@ -114,6 +114,15 @@ class _MyHomePageState extends State<MyHomePage> {
               isChinese: isChinese,
               hideGrid: hideGrid,
               maDayList: [1, 100, 1000],
+              watermark: const Align(
+                alignment: Alignment.bottomLeft,
+                child: Image(
+                  color: Color(0x1A000000),
+                  colorBlendMode: BlendMode.dstIn,
+                  image: NetworkImage(
+                      'https://i-invdn-com.investing.com/ico_flags/80x80/v32/dogecoin.png'),
+                ),
+              ),
             ),
           ),
           if (showLoading)

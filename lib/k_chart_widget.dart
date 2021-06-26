@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:k_chart/chart_translations.dart';
 import 'package:k_chart/extension/map_ext.dart';
 import 'package:k_chart/flutter_k_chart.dart';
+import 'package:k_chart/k_chart_watermark_widget.dart';
 
 enum MainState { MA, BOLL, NONE }
 enum SecondaryState { MACD, KDJ, RSI, WR, CCI, NONE }
@@ -47,6 +48,7 @@ class KChartWidget extends StatefulWidget {
   final Function(bool)? isOnDrag;
   final ChartColors chartColors;
   final ChartStyle chartStyle;
+  final Widget? watermark;
 
   KChartWidget(
     this.datas,
@@ -69,6 +71,7 @@ class KChartWidget extends StatefulWidget {
     this.flingRatio = 0.5,
     this.flingCurve = Curves.decelerate,
     this.isOnDrag,
+    this.watermark,
   });
 
   @override
@@ -189,10 +192,13 @@ class _KChartWidgetState extends State<KChartWidget>
       child: Stack(
         children: <Widget>[
           CustomPaint(
-            size: Size(double.infinity, double.infinity),
             painter: _painter,
+            child: KChartWatermarkWidget(
+              chartPainter: _painter,
+              child: widget.watermark,
+            ),
           ),
-          _buildInfoDialog()
+          _buildInfoDialog(),
         ],
       ),
     );

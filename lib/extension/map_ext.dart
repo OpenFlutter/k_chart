@@ -6,6 +6,6 @@ extension ChartTranslationsMap on Map<String, ChartTranslations> {
     final locale = Localizations.localeOf(context);
     final languageTag = '${locale.languageCode}_${locale.countryCode}';
 
-    return this[languageTag] ?? ChartTranslations();
+    return this[languageTag] ?? const ChartTranslations();
   }
 }
