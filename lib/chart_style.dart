@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart' show Color;
+import 'package:flutter/material.dart' show Color, Gradient;
 
 class ChartColors {
 
@@ -43,6 +43,7 @@ class ChartColors {
 
   Color hCrossColor = Color(0xffffffff);
   Color vCrossColor = Color(0x1Effffff);
+  Gradient? vCrossGradient;
   Color crossTextColor = Color(0xffffffff);
 
   //当前显示内最大和最小值的颜色

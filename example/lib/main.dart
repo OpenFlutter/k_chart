@@ -44,8 +44,19 @@ class _MyHomePageState extends State<MyHomePage> {
   List<DepthEntity>? _bids, _asks;
   bool isChangeUI = false;
 
-  ChartStyle chartStyle = ChartStyle();
-  ChartColors chartColors = ChartColors();
+  static final chartStyle = ChartStyle();
+  static final chartColors = ChartColors()
+    ..vCrossGradient = const LinearGradient(
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter,
+      colors: [
+        Colors.transparent,
+        Color(0x1CFFFFFF),
+        Color(0x33FFFFFF),
+        Color(0x1CFFFFFF),
+        Colors.transparent,
+      ],
+    );
 
   @override
   void initState() {
