@@ -139,7 +139,7 @@ class ChartPainter extends BaseChartPainter {
 
   @override
   void drawGrid(canvas) {
-    if(hideGrid) return
+    if(hideGrid) return;
     mMainRenderer.drawGrid(canvas, mGridRows, mGridColumns);
     mVolRenderer?.drawGrid(canvas, mGridRows, mGridColumns);
     mSecondaryRenderer?.drawGrid(canvas, mGridRows, mGridColumns);
