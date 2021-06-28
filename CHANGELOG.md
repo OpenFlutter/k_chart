@@ -32,3 +32,9 @@
 ## [0.3.1]
 
 * NEW: More color can change.
+
+## [0.3.2]
+
+* NEW: You can show or hide the grid.
+* Changed the multi-language implementation.(Please migrate to the new way as soon as possible)
+* Changed the period of kdj from 14 to 9.

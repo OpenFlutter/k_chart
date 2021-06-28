@@ -40,7 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
   SecondaryState _secondaryState = SecondaryState.MACD;
   bool isLine = true;
   bool isChinese = true;
-  bool hideGrid = false;
+  bool _hideGrid = false;
   List<DepthEntity>? _bids, _asks;
   bool isChangeUI = false;
 
@@ -123,7 +123,7 @@ class _MyHomePageState extends State<MyHomePage> {
               translations: kChartTranslations,
               //`isChinese` is Deprecated, Use `translations` instead.
               isChinese: isChinese,
-              hideGrid: hideGrid,
+              hideGrid: _hideGrid,
               maDayList: [1, 100, 1000],
               watermark: const Align(
                 alignment: Alignment.bottomLeft,
@@ -172,7 +172,8 @@ class _MyHomePageState extends State<MyHomePage> {
         button(_volHidden ? "Show Vol" : "Hide Vol",
             onPressed: () => _volHidden = !_volHidden),
         button("Change Language", onPressed: () => isChinese = !isChinese),
-        button("Change Grid", onPressed: () => hideGrid = !hideGrid),
+        button(_hideGrid ? "Show Grid" : "Hide Grid",
+            onPressed: () => _hideGrid = !_hideGrid),
         button("Customize UI", onPressed: () {
           setState(() {
             this.isChangeUI = !this.isChangeUI;
