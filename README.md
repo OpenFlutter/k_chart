@@ -19,7 +19,7 @@ Maybe this is the best k chart in Flutter.Support drag,scale,long press,fling.An
 #### Install
 ```
 dependencies:
-  k_chart: ^0.3.1
+  k_chart: ^0.3.2
 ```
 or use latest：
 ```
@@ -52,7 +52,7 @@ Container(
                 // is false, it means the user is pulled to the end of the left side of the data.
                 maDayList: [5,10,20],// Display of MA,This parameter must be equal to DataUtil.calculate‘s maDayList
                 bgColor: [Colors.black, Colors.black],// The background color of the chart is gradient
-                isChinese: true,// Graphic language
+                translations: kChartTranslations,// Graphic language
                 volHidden: false,// hide volume
                 isOnDrag: (isDrag){},// true is on Drag.Don't load data while Draging.
                 onSecondaryTap:(){}// on secondary rect taped.
