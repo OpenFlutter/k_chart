@@ -27,6 +27,7 @@ class ChartPainter extends BaseChartPainter {
   final ChartColors chartColors;
   Paint? selectPointPaint, selectorBorderPaint;
   final ChartStyle chartStyle;
+  final bool hideGrid;
 
   ChartPainter(
     this.chartStyle,
@@ -41,6 +42,7 @@ class ChartPainter extends BaseChartPainter {
     secondaryState,
     this.sink,
     bool isLine = false,
+    this.hideGrid = false,
     this.bgColor,
     this.fixedLength = 2,
     this.maDayList = const [5, 10, 20],
@@ -137,9 +139,11 @@ class ChartPainter extends BaseChartPainter {
 
   @override
   void drawGrid(canvas) {
-    mMainRenderer.drawGrid(canvas, mGridRows, mGridColumns);
-    mVolRenderer?.drawGrid(canvas, mGridRows, mGridColumns);
-    mSecondaryRenderer?.drawGrid(canvas, mGridRows, mGridColumns);
+    if(!hideGrid) {
+      mMainRenderer.drawGrid(canvas, mGridRows, mGridColumns);
+      mVolRenderer?.drawGrid(canvas, mGridRows, mGridColumns);
+      mSecondaryRenderer?.drawGrid(canvas, mGridRows, mGridColumns);
+    }
   }
 
   @override

@@ -112,7 +112,7 @@ class SecondaryRenderer extends BaseChartRenderer<MACDEntity> {
       case SecondaryState.KDJ:
         children = [
           TextSpan(
-              text: "KDJ(14,1,3)    ",
+              text: "KDJ(9,1,3)    ",
               style: getTextStyle(this.chartColors.defaultTextColor)),
           if (data.macd != 0)
             TextSpan(

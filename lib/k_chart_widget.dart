@@ -30,6 +30,7 @@ class KChartWidget extends StatefulWidget {
   final SecondaryState secondaryState;
   final Function()? onSecondaryTap;
   final bool isLine;
+  final bool hideGrid;
   @Deprecated('Use `translations` instead.')
   final bool isChinese;
   final Map<String, ChartTranslations> translations;
@@ -56,6 +57,7 @@ class KChartWidget extends StatefulWidget {
     this.onSecondaryTap,
     this.volHidden = false,
     this.isLine = false,
+    this.hideGrid = false,
     this.isChinese = false,
     this.translations = kChartTranslations,
     this.timeFormat = TimeFormat.YEAR_MONTH_DAY,
@@ -125,6 +127,7 @@ class _KChartWidgetState extends State<KChartWidget>
       volHidden: widget.volHidden,
       secondaryState: widget.secondaryState,
       isLine: widget.isLine,
+      hideGrid: widget.hideGrid,
       sink: mInfoWindowStream?.sink,
       bgColor: widget.bgColor,
       fixedLength: widget.fixedLength,
