@@ -28,6 +28,7 @@ class ChartPainter extends BaseChartPainter {
   Paint? selectPointPaint, selectorBorderPaint;
   final ChartStyle chartStyle;
   final bool hideGrid;
+  final bool showNowPrice;
 
   ChartPainter(
     this.chartStyle,
@@ -43,6 +44,7 @@ class ChartPainter extends BaseChartPainter {
     this.sink,
     bool isLine = false,
     this.hideGrid = false,
+    this.showNowPrice = true,
     this.bgColor,
     this.fixedLength = 2,
     this.maDayList = const [5, 10, 20],
@@ -319,6 +321,9 @@ class ChartPainter extends BaseChartPainter {
 
   @override
   void drawNowPrice(Canvas canvas) {
+    if (!this.showNowPrice) {
+      return;
+    }
     if (isLine == true || datas == null) return;
     double x = translateXtoX(getX(datas!.length - 1));
     double value = datas![datas!.length - 1].close;
