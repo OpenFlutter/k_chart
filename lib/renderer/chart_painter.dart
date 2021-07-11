@@ -171,7 +171,9 @@ class ChartPainter extends BaseChartPainter {
   @override
   void drawRightText(canvas) {
     var textStyle = getTextStyle(this.chartColors.defaultTextColor);
-    mMainRenderer.drawRightText(canvas, textStyle, mGridRows);
+    if(!hideGrid) {
+      mMainRenderer.drawRightText(canvas, textStyle, mGridRows);
+    }
     mVolRenderer?.drawRightText(canvas, textStyle, mGridRows);
     mSecondaryRenderer?.drawRightText(canvas, textStyle, mGridRows);
   }
