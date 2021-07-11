@@ -9,6 +9,8 @@ Maybe this is the best k chart in Flutter.Support drag,scale,long press,fling.An
 
 <img src="https://github.com/mafanwei/k_chart/blob/master/example/images/Screenshot2.jpg" width="375" alt="Screenshot"/>
 
+<img src="https://github.com/mafanwei/k_chart/blob/master/example/images/Screenshot3.jpeg" width="375" alt="Screenshot"/>
+
 #### gif
 
 ![demo](https://github.com/mafanwei/k_chart/blob/master/example/images/demo.gif)
@@ -54,6 +56,7 @@ Container(
                 bgColor: [Colors.black, Colors.black],// The background color of the chart is gradient
                 translations: kChartTranslations,// Graphic language
                 volHidden: false,// hide volume
+                showNowPrice: true,// show now price
                 isOnDrag: (isDrag){},// true is on Drag.Don't load data while Draging.
                 onSecondaryTap:(){}// on secondary rect taped.
               ),

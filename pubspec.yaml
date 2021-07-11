@@ -1,6 +1,6 @@
 name: k_chart
 description: A Flutter K Chart.
-version: 0.3.2
+version: 0.4.0
 homepage: https://github.com/mafanwei/k_chart
 
 environment:

@@ -38,3 +38,10 @@
 * NEW: You can show or hide the grid.
 * Changed the multi-language implementation.(Please migrate to the new way as soon as possible)
 * Changed the period of kdj from 14 to 9.
+
+## [0.4.0]
+
+* Changed the way the marker values are displayed, from right to left.
+* Changed the UI when gridlines are hidden.
+* Upgraded the display of real-time prices.
+* More configurations are available.
