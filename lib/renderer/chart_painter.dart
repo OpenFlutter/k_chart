@@ -25,7 +25,7 @@ class ChartPainter extends BaseChartPainter {
   int fixedLength;
   List<int> maDayList;
   final ChartColors chartColors;
-  Paint? selectPointPaint, selectorBorderPaint;
+  late Paint selectPointPaint, selectorBorderPaint, nowPricePaint;
   final ChartStyle chartStyle;
   final bool hideGrid;
   final bool showNowPrice;
@@ -68,6 +68,9 @@ class ChartPainter extends BaseChartPainter {
       ..strokeWidth = 0.5
       ..style = PaintingStyle.stroke
       ..color = this.chartColors.selectBorderColor;
+    nowPricePaint = Paint()
+      ..strokeWidth = this.chartStyle.nowPriceLineWidth
+      ..isAntiAlias = true;
   }
 
   @override
@@ -234,8 +237,8 @@ class ChartPainter extends BaseChartPainter {
       path.lineTo(textWidth + 2 * w1 + w2, y);
       path.lineTo(textWidth + 2 * w1, y - r);
       path.close();
-      canvas.drawPath(path, selectPointPaint!);
-      canvas.drawPath(path, selectorBorderPaint!);
+      canvas.drawPath(path, selectPointPaint);
+      canvas.drawPath(path, selectorBorderPaint);
       tp.paint(canvas, Offset(x + w1, y - textHeight / 2));
     } else {
       isLeft = true;
@@ -247,8 +250,8 @@ class ChartPainter extends BaseChartPainter {
       path.lineTo(mWidth - 2, y - r);
       path.lineTo(x + w2, y - r);
       path.close();
-      canvas.drawPath(path, selectPointPaint!);
-      canvas.drawPath(path, selectorBorderPaint!);
+      canvas.drawPath(path, selectPointPaint);
+      canvas.drawPath(path, selectorBorderPaint);
       tp.paint(canvas, Offset(x + w1 + w2, y - textHeight / 2));
     }
 
@@ -267,11 +270,11 @@ class ChartPainter extends BaseChartPainter {
     canvas.drawRect(
         Rect.fromLTRB(x - textWidth / 2 - w1, y, x + textWidth / 2 + w1,
             y + baseLine + r),
-        selectPointPaint!);
+        selectPointPaint);
     canvas.drawRect(
         Rect.fromLTRB(x - textWidth / 2 - w1, y, x + textWidth / 2 + w1,
             y + baseLine + r),
-        selectorBorderPaint!);
+        selectorBorderPaint);
 
     dateTp.paint(canvas, Offset(x - textWidth / 2, y));
     //长按显示这条数据详情
@@ -326,22 +329,39 @@ class ChartPainter extends BaseChartPainter {
     if (!this.showNowPrice) {
       return;
     }
-    if (isLine == true || datas == null) return;
-    double x = translateXtoX(getX(datas!.length - 1));
-    double value = datas![datas!.length - 1].close;
-    double y = getMainY(value);
-    if (x < mWidth / 2) {
-      //画右边
-      TextPainter tp = getTextPainter(
-          "------ " + value.toStringAsFixed(fixedLength),
-          this.chartColors.nowPriceColor);
-      tp.paint(canvas, Offset(x, y - tp.height / 2));
-    } else {
-      TextPainter tp = getTextPainter(
-          value.toStringAsFixed(fixedLength) + " ------",
-          this.chartColors.nowPriceColor);
-      tp.paint(canvas, Offset(x - tp.width, y - tp.height / 2));
+    if (isLine == true || datas == null) {
+      return;
     }
+    double value = datas!.last.close;
+    double y = getMainY(value);
+    //不在视图展示区域不绘制
+    if (y > getMainY(mMainLowMinValue) || y < getMainY(mMainHighMaxValue)) {
+      return;
+    }
+    nowPricePaint
+      ..color = value >= datas!.last.open
+          ? this.chartColors.nowPriceUpColor
+          : this.chartColors.nowPriceDnColor;
+    //先画横线
+    double startX = 0;
+    final max = -mTranslateX + mWidth / scaleX;
+    final space =
+        this.chartStyle.nowPriceLineSpan + this.chartStyle.nowPriceLineLength;
+    while (startX < max) {
+      canvas.drawLine(
+          Offset(startX, y),
+          Offset(startX + this.chartStyle.nowPriceLineLength, y),
+          nowPricePaint);
+      startX += space;
+    }
+    //再画背景和文本
+    TextPainter tp = getTextPainter(
+        value.toStringAsFixed(fixedLength), this.chartColors.nowPriceTextColor);
+    double left = 0;
+    double top = y - tp.height / 2;
+    canvas.drawRect(Rect.fromLTRB(left, top, left + tp.width, top + tp.height),
+        nowPricePaint);
+    tp.paint(canvas, Offset(0, top));
   }
 
   ///画交叉线

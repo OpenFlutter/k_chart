@@ -22,7 +22,9 @@ class ChartColors {
 
   Color defaultTextColor = Color(0xff60738E);
 
-  Color nowPriceColor = Color(0xffC9B885);
+  Color nowPriceUpColor = Color(0xff4DAA90);
+  Color nowPriceDnColor = Color(0xffC15466);
+  Color nowPriceTextColor = Color(0xffffffff);
 
   //深度颜色
   Color depthBuyColor = Color(0xff60A893);
@@ -87,4 +89,13 @@ class ChartStyle {
 
   //水平交叉线宽度
   double hCrossWidth = 0.5;
+
+  //现在价格的线条长度
+  double nowPriceLineLength = 1;
+
+  //现在价格的线条间隔
+  double nowPriceLineSpan = 1;
+
+  //现在价格的线条粗细
+  double nowPriceLineWidth = 1;
 }

@@ -41,6 +41,7 @@ class _MyHomePageState extends State<MyHomePage> {
   bool isLine = true;
   bool isChinese = true;
   bool _hideGrid = false;
+  bool _showNowPrice = true;
   List<DepthEntity>? _bids, _asks;
   bool isChangeUI = false;
 
@@ -110,6 +111,7 @@ class _MyHomePageState extends State<MyHomePage> {
               fixedLength: 2,
               timeFormat: TimeFormat.YEAR_MONTH_DAY,
               translations: kChartTranslations,
+              showNowPrice: _showNowPrice,
               //`isChinese` is Deprecated, Use `translations` instead.
               isChinese: isChinese,
               hideGrid: _hideGrid,
@@ -154,6 +156,8 @@ class _MyHomePageState extends State<MyHomePage> {
         button("Change Language", onPressed: () => isChinese = !isChinese),
         button(_hideGrid ? "Show Grid" : "Hide Grid",
             onPressed: () => _hideGrid = !_hideGrid),
+        button(_showNowPrice ? "Hide Now Price" : "Show Now Price",
+            onPressed: () => _showNowPrice = !_showNowPrice),
         button("Customize UI", onPressed: () {
           setState(() {
             this.isChangeUI = !this.isChangeUI;
