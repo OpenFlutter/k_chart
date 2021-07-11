@@ -33,6 +33,7 @@ class KChartWidget extends StatefulWidget {
   final bool hideGrid;
   @Deprecated('Use `translations` instead.')
   final bool isChinese;
+  final bool showNowPrice;
   final Map<String, ChartTranslations> translations;
   final List<String> timeFormat;
 
@@ -59,6 +60,7 @@ class KChartWidget extends StatefulWidget {
     this.isLine = false,
     this.hideGrid = false,
     this.isChinese = false,
+    this.showNowPrice = true,
     this.translations = kChartTranslations,
     this.timeFormat = TimeFormat.YEAR_MONTH_DAY,
     this.onLoadMore,
@@ -128,6 +130,7 @@ class _KChartWidgetState extends State<KChartWidget>
       secondaryState: widget.secondaryState,
       isLine: widget.isLine,
       hideGrid: widget.hideGrid,
+      showNowPrice: widget.showNowPrice,
       sink: mInfoWindowStream?.sink,
       bgColor: widget.bgColor,
       fixedLength: widget.fixedLength,
