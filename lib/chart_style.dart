@@ -52,19 +52,14 @@ class ChartColors {
   Color minColor = Color(0xffffffff);
 
   Color getMAColor(int index) {
-    Color maColor = ma5Color;
     switch (index % 3) {
-      case 0:
-        maColor = ma5Color;
-        break;
       case 1:
-        maColor = ma10Color;
-        break;
+        return ma10Color;
       case 2:
-        maColor = ma30Color;
-        break;
+        return ma30Color;
+      default:
+        return ma5Color;
     }
-    return maColor;
   }
 }
 
