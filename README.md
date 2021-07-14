@@ -59,6 +59,15 @@ Container(
                 showNowPrice: true,// show now price
                 isOnDrag: (isDrag){},// true is on Drag.Don't load data while Draging.
                 onSecondaryTap:(){}// on secondary rect taped.
+                watermark: const Align(
+                  alignment: Alignment.bottomLeft,
+                  child: Image(
+                    color: Color(0x1A000000),
+                    colorBlendMode: BlendMode.dstIn,
+                    image: NetworkImage(
+                        'https://i-invdn-com.investing.com/ico_flags/80x80/v32/dogecoin.png'),
+                  ),
+                ),// Any widget show on main rect. Might be null.
               ),
             ),
 ```

@@ -45,8 +45,19 @@ class _MyHomePageState extends State<MyHomePage> {
   List<DepthEntity>? _bids, _asks;
   bool isChangeUI = false;
 
-  ChartStyle chartStyle = ChartStyle();
-  ChartColors chartColors = ChartColors();
+  static final chartStyle = ChartStyle();
+  static final chartColors = ChartColors()
+    ..vCrossGradient = const LinearGradient(
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter,
+      colors: [
+        Colors.transparent,
+        Color(0x1CFFFFFF),
+        Color(0x33FFFFFF),
+        Color(0x1CFFFFFF),
+        Colors.transparent,
+      ],
+    );
 
   @override
   void initState() {
@@ -116,6 +127,15 @@ class _MyHomePageState extends State<MyHomePage> {
               isChinese: isChinese,
               hideGrid: _hideGrid,
               maDayList: [1, 100, 1000],
+              watermark: const Align(
+                alignment: Alignment.bottomLeft,
+                child: Image(
+                  color: Color(0x1A000000),
+                  colorBlendMode: BlendMode.dstIn,
+                  image: NetworkImage(
+                      'https://i-invdn-com.investing.com/ico_flags/80x80/v32/dogecoin.png'),
+                ),
+              ),
             ),
           ),
           if (showLoading)
