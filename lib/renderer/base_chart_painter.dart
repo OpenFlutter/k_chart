@@ -28,7 +28,7 @@ abstract class BaseChartPainter extends CustomPainter {
   Rect? mVolRect, mSecondaryRect;
   late double mDisplayHeight, mWidth;
   double mTopPadding = 30.0, mBottomPadding = 20.0, mChildPadding = 12.0;
-  final int mGridRows = 4, mGridColumns = 4;
+  int mGridRows = 4, mGridColumns = 4;
   int mStartIndex = 0, mStopIndex = 0;
   double mMainMaxValue = double.minPositive, mMainMinValue = double.maxFinite;
   double mVolMaxValue = double.minPositive, mVolMinValue = double.maxFinite;
@@ -58,13 +58,26 @@ abstract class BaseChartPainter extends CustomPainter {
   }) {
     mItemCount = datas?.length ?? 0;
     mPointWidth = this.chartStyle.pointWidth;
+    mTopPadding = this.chartStyle.topPadding;
+    mBottomPadding = this.chartStyle.bottomPadding;
+    mChildPadding = this.chartStyle.childPadding;
+    mGridRows = this.chartStyle.gridRows;
+    mGridColumns = this.chartStyle.gridColumns;
     mDataLen = mItemCount * mPointWidth;
     initFormats();
   }
 
   void initFormats() {
-//    [yyyy, '-', mm, '-', dd, ' ', HH, ':', nn]
-    if (mItemCount < 2) return;
+    if (this.chartStyle.dateTimeFormat != null) {
+      mFormats = this.chartStyle.dateTimeFormat!;
+      return;
+    }
+
+    if (mItemCount < 2) {
+      mFormats = [yyyy, '-', mm, '-', dd, ' ', HH, ':', nn];
+      return;
+    }
+
     int firstTime = datas!.first.time ?? 0;
     int secondTime = datas![1].time ?? 0;
     int time = secondTime - firstTime;

@@ -30,6 +30,7 @@ class ChartColors {
   //深度颜色
   Color depthBuyColor = Color(0xff60A893);
   Color depthSellColor = Color(0xffC15866);
+
   //选中后显示值边框颜色
   Color selectBorderColor = Color(0xff6C7A86);
 
@@ -65,6 +66,12 @@ class ChartColors {
 }
 
 class ChartStyle {
+  double topPadding = 30.0;
+
+  double bottomPadding = 20.0;
+
+  double childPadding = 12.0;
+
   //点与点的距离
   double pointWidth = 11.0;
 
@@ -94,4 +101,11 @@ class ChartStyle {
 
   //现在价格的线条粗细
   double nowPriceLineWidth = 1;
+
+  int gridRows = 4;
+
+  int gridColumns = 4;
+
+  //下方時間客製化
+  List<String>? dateTimeFormat;
 }
