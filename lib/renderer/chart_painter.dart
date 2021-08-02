@@ -329,7 +329,8 @@ class ChartPainter extends BaseChartPainter {
     if (!this.showNowPrice) {
       return;
     }
-    if (isLine == true || datas == null) {
+
+    if (datas == null) {
       return;
     }
     double value = datas!.last.close;

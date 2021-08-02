@@ -176,32 +176,32 @@ abstract class BaseChartPainter extends CustomPainter {
   }
 
   void getMainMaxMinValue(KLineEntity item, int i) {
+    double maxPrice, minPrice;
+    if (mainState == MainState.MA) {
+      maxPrice = max(item.high, _findMaxMA(item.maValueList ?? [0]));
+      minPrice = min(item.low, _findMinMA(item.maValueList ?? [0]));
+    } else if (mainState == MainState.BOLL) {
+      maxPrice = max(item.up ?? 0, item.high);
+      minPrice = min(item.dn ?? 0, item.low);
+    } else {
+      maxPrice = item.high;
+      minPrice = item.low;
+    }
+    mMainMaxValue = max(mMainMaxValue, maxPrice);
+    mMainMinValue = min(mMainMinValue, minPrice);
+
+    if (mMainHighMaxValue < item.high) {
+      mMainHighMaxValue = item.high;
+      mMainMaxIndex = i;
+    }
+    if (mMainLowMinValue > item.low) {
+      mMainLowMinValue = item.low;
+      mMainMinIndex = i;
+    }
+
     if (isLine == true) {
       mMainMaxValue = max(mMainMaxValue, item.close);
       mMainMinValue = min(mMainMinValue, item.close);
-    } else {
-      double maxPrice, minPrice;
-      if (mainState == MainState.MA) {
-        maxPrice = max(item.high, _findMaxMA(item.maValueList ?? [0]));
-        minPrice = min(item.low, _findMinMA(item.maValueList ?? [0]));
-      } else if (mainState == MainState.BOLL) {
-        maxPrice = max(item.up ?? 0, item.high);
-        minPrice = min(item.dn ?? 0, item.low);
-      } else {
-        maxPrice = item.high;
-        minPrice = item.low;
-      }
-      mMainMaxValue = max(mMainMaxValue, maxPrice);
-      mMainMinValue = min(mMainMinValue, minPrice);
-
-      if (mMainHighMaxValue < item.high) {
-        mMainHighMaxValue = item.high;
-        mMainMaxIndex = i;
-      }
-      if (mMainLowMinValue > item.low) {
-        mMainLowMinValue = item.low;
-        mMainMinIndex = i;
-      }
     }
   }
 
