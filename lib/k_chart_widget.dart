@@ -34,6 +34,7 @@ class KChartWidget extends StatefulWidget {
   @Deprecated('Use `translations` instead.')
   final bool isChinese;
   final bool showNowPrice;
+  final bool showInfoDialog;
   final Map<String, ChartTranslations> translations;
   final List<String> timeFormat;
 
@@ -63,6 +64,7 @@ class KChartWidget extends StatefulWidget {
     this.hideGrid = false,
     @Deprecated('Use `translations` instead.') this.isChinese = false,
     this.showNowPrice = true,
+    this.showInfoDialog = true,
     this.translations = kChartTranslations,
     this.timeFormat = TimeFormat.YEAR_MONTH_DAY,
     this.onLoadMore,
@@ -83,7 +85,7 @@ class _KChartWidgetState extends State<KChartWidget>
     with TickerProviderStateMixin {
   double mScaleX = 1.0, mScrollX = 0.0, mSelectX = 0.0;
   StreamController<InfoWindowEntity?>? mInfoWindowStream;
-  double mWidth = 0;
+  double mHeight = 0, mWidth = 0;
   AnimationController? _controller;
   Animation<double>? aniX;
 
@@ -103,7 +105,6 @@ class _KChartWidgetState extends State<KChartWidget>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    mWidth = MediaQuery.of(context).size.width;
   }
 
   @override
@@ -138,68 +139,76 @@ class _KChartWidgetState extends State<KChartWidget>
       fixedLength: widget.fixedLength,
       maDayList: widget.maDayList,
     );
-    return GestureDetector(
-      onTapUp: (details) {
-        if (widget.onSecondaryTap != null &&
-            _painter.isInSecondaryRect(details.localPosition)) {
-          widget.onSecondaryTap!();
-        }
-      },
-      onHorizontalDragDown: (details) {
-        _stopAnimation();
-        _onDragChanged(true);
-      },
-      onHorizontalDragUpdate: (details) {
-        if (isScale || isLongPress) return;
-        mScrollX = (details.primaryDelta! / mScaleX + mScrollX)
-            .clamp(0.0, ChartPainter.maxScrollX)
-            .toDouble();
-        notifyChanged();
-      },
-      onHorizontalDragEnd: (DragEndDetails details) {
-        var velocity = details.velocity.pixelsPerSecond.dx;
-        _onFling(velocity);
-      },
-      onHorizontalDragCancel: () => _onDragChanged(false),
-      onScaleStart: (_) {
-        isScale = true;
-      },
-      onScaleUpdate: (details) {
-        if (isDrag || isLongPress) return;
-        mScaleX = (_lastScale * details.scale).clamp(0.5, 2.2);
-        notifyChanged();
-      },
-      onScaleEnd: (_) {
-        isScale = false;
-        _lastScale = mScaleX;
-      },
-      onLongPressStart: (details) {
-        isLongPress = true;
-        if (mSelectX != details.globalPosition.dx) {
-          mSelectX = details.globalPosition.dx;
-          notifyChanged();
-        }
-      },
-      onLongPressMoveUpdate: (details) {
-        if (mSelectX != details.globalPosition.dx) {
-          mSelectX = details.globalPosition.dx;
-          notifyChanged();
-        }
-      },
-      onLongPressEnd: (details) {
-        isLongPress = false;
-        mInfoWindowStream?.sink.add(null);
-        notifyChanged();
-      },
-      child: Stack(
-        children: <Widget>[
-          CustomPaint(
-            size: Size(double.infinity, double.infinity),
-            painter: _painter,
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        mHeight = constraints.maxHeight;
+        mWidth = constraints.maxWidth;
+
+        return GestureDetector(
+          onTapUp: (details) {
+            if (widget.onSecondaryTap != null &&
+                _painter.isInSecondaryRect(details.localPosition)) {
+              widget.onSecondaryTap!();
+            }
+          },
+          onHorizontalDragDown: (details) {
+            _stopAnimation();
+            _onDragChanged(true);
+          },
+          onHorizontalDragUpdate: (details) {
+            if (isScale || isLongPress) return;
+            mScrollX = (details.primaryDelta! / mScaleX + mScrollX)
+                .clamp(0.0, ChartPainter.maxScrollX)
+                .toDouble();
+            notifyChanged();
+          },
+          onHorizontalDragEnd: (DragEndDetails details) {
+            var velocity = details.velocity.pixelsPerSecond.dx;
+            _onFling(velocity);
+          },
+          onHorizontalDragCancel: () => _onDragChanged(false),
+          onScaleStart: (_) {
+            isScale = true;
+          },
+          onScaleUpdate: (details) {
+            if (isDrag || isLongPress) return;
+            mScaleX = (_lastScale * details.scale).clamp(0.5, 2.2);
+            notifyChanged();
+          },
+          onScaleEnd: (_) {
+            isScale = false;
+            _lastScale = mScaleX;
+          },
+          onLongPressStart: (details) {
+            isLongPress = true;
+            if (mSelectX != details.globalPosition.dx) {
+              mSelectX = details.globalPosition.dx;
+              notifyChanged();
+            }
+          },
+          onLongPressMoveUpdate: (details) {
+            if (mSelectX != details.globalPosition.dx) {
+              mSelectX = details.globalPosition.dx;
+              notifyChanged();
+            }
+          },
+          onLongPressEnd: (details) {
+            isLongPress = false;
+            mInfoWindowStream?.sink.add(null);
+            notifyChanged();
+          },
+          child: Stack(
+            children: <Widget>[
+              CustomPaint(
+                size: Size(double.infinity, double.infinity),
+                painter: _painter,
+              ),
+              if (widget.showInfoDialog) _buildInfoDialog()
+            ],
           ),
-          _buildInfoDialog()
-        ],
-      ),
+        );
+      },
     );
   }
 

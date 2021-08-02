@@ -142,7 +142,7 @@ class MainRenderer extends BaseChartRenderer<CandleEntity> {
     mLinePath!.cubicTo((lastX + curX) / 2, getY(lastPrice), (lastX + curX) / 2,
         getY(curPrice), curX, getY(curPrice));
 
-//    //画阴影
+    //画阴影
     mLineFillShader ??= LinearGradient(
       begin: Alignment.topCenter,
       end: Alignment.bottomCenter,
