@@ -144,7 +144,7 @@ class ChartPainter extends BaseChartPainter {
 
   @override
   void drawGrid(canvas) {
-    if(!hideGrid) {
+    if (!hideGrid) {
       mMainRenderer.drawGrid(canvas, mGridRows, mGridColumns);
       mVolRenderer?.drawGrid(canvas, mGridRows, mGridColumns);
       mSecondaryRenderer?.drawGrid(canvas, mGridRows, mGridColumns);
@@ -176,7 +176,7 @@ class ChartPainter extends BaseChartPainter {
   @override
   void drawRightText(canvas) {
     var textStyle = getTextStyle(this.chartColors.defaultTextColor);
-    if(!hideGrid) {
+    if (!hideGrid) {
       mMainRenderer.drawRightText(canvas, textStyle, mGridRows);
     }
     mVolRenderer?.drawRightText(canvas, textStyle, mGridRows);
@@ -185,6 +185,8 @@ class ChartPainter extends BaseChartPainter {
 
   @override
   void drawDate(Canvas canvas, Size size) {
+    if (datas == null) return;
+
     double columnSpace = size.width / mGridColumns;
     double startX = getX(mStartIndex) - mPointWidth / 2;
     double stopX = getX(mStopIndex) + mPointWidth / 2;
@@ -192,8 +194,11 @@ class ChartPainter extends BaseChartPainter {
     double y = 0.0;
     for (var i = 0; i <= mGridColumns; ++i) {
       double translateX = xToTranslateX(columnSpace * i);
-      if (translateX >= startX && translateX <= stopX) {
+
+      // Disable checking for display the last date when scroll to end
+      // if (translateX >= startX && translateX <= stopX) {
         int index = indexOfTranslateX(translateX);
+
         if (datas?[index] == null) continue;
         TextPainter tp = getTextPainter(getDate(datas![index].time), null);
         y = size.height - (mBottomPadding - tp.height) / 2 - tp.height;
@@ -202,8 +207,11 @@ class ChartPainter extends BaseChartPainter {
         if (x < 0) x = 0;
         if (x > size.width - tp.width) x = size.width - tp.width;
         tp.paint(canvas, Offset(x, y));
-      }
+      // }
+
+
     }
+
 
 //    double translateX = xToTranslateX(0);
 //    if (translateX >= startX && translateX <= stopX) {
