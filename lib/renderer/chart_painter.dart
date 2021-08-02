@@ -116,7 +116,7 @@ class ChartPainter extends BaseChartPainter {
     Gradient mBgGradient = LinearGradient(
       begin: Alignment.bottomCenter,
       end: Alignment.topCenter,
-      colors: bgColor ?? [Color(0xff18191d), Color(0xff18191d)],
+      colors: bgColor ?? chartColors.bgColor,
     );
     Rect mainRect =
         Rect.fromLTRB(0, 0, mMainRect.width, mMainRect.height + mTopPadding);

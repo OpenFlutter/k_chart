@@ -39,6 +39,8 @@ class KChartWidget extends StatefulWidget {
 
   //当屏幕滚动到尽头会调用，真为拉到屏幕右侧尽头，假为拉到屏幕左侧尽头
   final Function(bool)? onLoadMore;
+
+  @Deprecated('Use `chartColors` instead.')
   final List<Color>? bgColor;
   final int fixedLength;
   final List<int> maDayList;
