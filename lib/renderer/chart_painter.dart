@@ -194,8 +194,7 @@ class ChartPainter extends BaseChartPainter {
     for (var i = 0; i <= mGridColumns; ++i) {
       double translateX = xToTranslateX(columnSpace * i);
 
-      // Disable checking for display the last date when scroll to end
-      // if (translateX >= startX && translateX <= stopX) {
+      if (translateX >= startX && translateX <= stopX) {
         int index = indexOfTranslateX(translateX);
 
         if (datas?[index] == null) continue;
@@ -206,11 +205,8 @@ class ChartPainter extends BaseChartPainter {
         if (x < 0) x = 0;
         if (x > size.width - tp.width) x = size.width - tp.width;
         tp.paint(canvas, Offset(x, y));
-      // }
-
-
+      }
     }
-
 
 //    double translateX = xToTranslateX(0);
 //    if (translateX >= startX && translateX <= stopX) {
