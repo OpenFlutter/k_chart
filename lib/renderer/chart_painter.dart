@@ -169,7 +169,6 @@ class ChartPainter extends BaseChartPainter {
           lastPoint, curPoint, lastX, curX, size, canvas);
     }
 
-    if (isLongPress == true) drawCrossLine(canvas, size);
     canvas.restore();
   }
 
@@ -346,6 +345,7 @@ class ChartPainter extends BaseChartPainter {
     if (datas == null) {
       return;
     }
+
     double value = datas!.last.close;
     double y = getMainY(value);
     //不在视图展示区域不绘制
