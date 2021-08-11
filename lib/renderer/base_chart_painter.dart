@@ -28,7 +28,7 @@ abstract class BaseChartPainter extends CustomPainter {
   Rect? mVolRect, mSecondaryRect;
   late double mDisplayHeight, mWidth;
   double mTopPadding = 30.0, mBottomPadding = 20.0, mChildPadding = 12.0;
-  final int mGridRows = 4, mGridColumns = 4;
+  int mGridRows = 4, mGridColumns = 4;
   int mStartIndex = 0, mStopIndex = 0;
   double mMainMaxValue = double.minPositive, mMainMinValue = double.maxFinite;
   double mVolMaxValue = double.minPositive, mVolMinValue = double.maxFinite;
@@ -58,13 +58,26 @@ abstract class BaseChartPainter extends CustomPainter {
   }) {
     mItemCount = datas?.length ?? 0;
     mPointWidth = this.chartStyle.pointWidth;
+    mTopPadding = this.chartStyle.topPadding;
+    mBottomPadding = this.chartStyle.bottomPadding;
+    mChildPadding = this.chartStyle.childPadding;
+    mGridRows = this.chartStyle.gridRows;
+    mGridColumns = this.chartStyle.gridColumns;
     mDataLen = mItemCount * mPointWidth;
     initFormats();
   }
 
   void initFormats() {
-//    [yyyy, '-', mm, '-', dd, ' ', HH, ':', nn]
-    if (mItemCount < 2) return;
+    if (this.chartStyle.dateTimeFormat != null) {
+      mFormats = this.chartStyle.dateTimeFormat!;
+      return;
+    }
+
+    if (mItemCount < 2) {
+      mFormats = [yyyy, '-', mm, '-', dd, ' ', HH, ':', nn];
+      return;
+    }
+
     int firstTime = datas!.first.time ?? 0;
     int secondTime = datas![1].time ?? 0;
     int time = secondTime - firstTime;
@@ -97,10 +110,15 @@ abstract class BaseChartPainter extends CustomPainter {
       drawChart(canvas, size);
       drawRightText(canvas);
       drawDate(canvas, size);
-      if (isLongPress == true) drawCrossLineText(canvas, size);
+
       drawText(canvas, datas!.last, 5);
       drawMaxAndMin(canvas);
       drawNowPrice(canvas);
+
+      if (isLongPress == true) {
+        drawCrossLine(canvas, size);
+        drawCrossLineText(canvas, size);
+      }
     }
     canvas.restore();
   }
@@ -130,6 +148,9 @@ abstract class BaseChartPainter extends CustomPainter {
 
   //画当前价格
   void drawNowPrice(Canvas canvas);
+
+  //画交叉线
+  void drawCrossLine(Canvas canvas, Size size);
 
   //交叉线值
   void drawCrossLineText(Canvas canvas, Size size);
@@ -176,32 +197,32 @@ abstract class BaseChartPainter extends CustomPainter {
   }
 
   void getMainMaxMinValue(KLineEntity item, int i) {
+    double maxPrice, minPrice;
+    if (mainState == MainState.MA) {
+      maxPrice = max(item.high, _findMaxMA(item.maValueList ?? [0]));
+      minPrice = min(item.low, _findMinMA(item.maValueList ?? [0]));
+    } else if (mainState == MainState.BOLL) {
+      maxPrice = max(item.up ?? 0, item.high);
+      minPrice = min(item.dn ?? 0, item.low);
+    } else {
+      maxPrice = item.high;
+      minPrice = item.low;
+    }
+    mMainMaxValue = max(mMainMaxValue, maxPrice);
+    mMainMinValue = min(mMainMinValue, minPrice);
+
+    if (mMainHighMaxValue < item.high) {
+      mMainHighMaxValue = item.high;
+      mMainMaxIndex = i;
+    }
+    if (mMainLowMinValue > item.low) {
+      mMainLowMinValue = item.low;
+      mMainMinIndex = i;
+    }
+
     if (isLine == true) {
       mMainMaxValue = max(mMainMaxValue, item.close);
       mMainMinValue = min(mMainMinValue, item.close);
-    } else {
-      double maxPrice, minPrice;
-      if (mainState == MainState.MA) {
-        maxPrice = max(item.high, _findMaxMA(item.maValueList ?? [0]));
-        minPrice = min(item.low, _findMinMA(item.maValueList ?? [0]));
-      } else if (mainState == MainState.BOLL) {
-        maxPrice = max(item.up ?? 0, item.high);
-        minPrice = min(item.dn ?? 0, item.low);
-      } else {
-        maxPrice = item.high;
-        minPrice = item.low;
-      }
-      mMainMaxValue = max(mMainMaxValue, maxPrice);
-      mMainMinValue = min(mMainMinValue, minPrice);
-
-      if (mMainHighMaxValue < item.high) {
-        mMainHighMaxValue = item.high;
-        mMainMaxIndex = i;
-      }
-      if (mMainLowMinValue > item.low) {
-        mMainLowMinValue = item.low;
-        mMainMinIndex = i;
-      }
     }
   }
 

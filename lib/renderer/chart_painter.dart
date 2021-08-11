@@ -75,7 +75,7 @@ class ChartPainter extends BaseChartPainter {
 
   @override
   void initChartRenderer() {
-    if (datas != null) {
+    if (datas != null && datas!.isNotEmpty) {
       var t = datas![0];
       fixedLength =
           NumberUtil.getMaxDecimalLength(t.open, t.close, t.high, t.low);
@@ -116,7 +116,7 @@ class ChartPainter extends BaseChartPainter {
     Gradient mBgGradient = LinearGradient(
       begin: Alignment.bottomCenter,
       end: Alignment.topCenter,
-      colors: bgColor ?? [Color(0xff18191d), Color(0xff18191d)],
+      colors: bgColor ?? chartColors.bgColor,
     );
     Rect mainRect =
         Rect.fromLTRB(0, 0, mMainRect.width, mMainRect.height + mTopPadding);
@@ -144,7 +144,7 @@ class ChartPainter extends BaseChartPainter {
 
   @override
   void drawGrid(canvas) {
-    if(!hideGrid) {
+    if (!hideGrid) {
       mMainRenderer.drawGrid(canvas, mGridRows, mGridColumns);
       mVolRenderer?.drawGrid(canvas, mGridRows, mGridColumns);
       mSecondaryRenderer?.drawGrid(canvas, mGridRows, mGridColumns);
@@ -169,14 +169,13 @@ class ChartPainter extends BaseChartPainter {
           lastPoint, curPoint, lastX, curX, size, canvas);
     }
 
-    if (isLongPress == true) drawCrossLine(canvas, size);
     canvas.restore();
   }
 
   @override
   void drawRightText(canvas) {
     var textStyle = getTextStyle(this.chartColors.defaultTextColor);
-    if(!hideGrid) {
+    if (!hideGrid) {
       mMainRenderer.drawRightText(canvas, textStyle, mGridRows);
     }
     mVolRenderer?.drawRightText(canvas, textStyle, mGridRows);
@@ -185,18 +184,27 @@ class ChartPainter extends BaseChartPainter {
 
   @override
   void drawDate(Canvas canvas, Size size) {
+    if (datas == null) return;
+
     double columnSpace = size.width / mGridColumns;
     double startX = getX(mStartIndex) - mPointWidth / 2;
     double stopX = getX(mStopIndex) + mPointWidth / 2;
+    double x = 0.0;
     double y = 0.0;
     for (var i = 0; i <= mGridColumns; ++i) {
       double translateX = xToTranslateX(columnSpace * i);
+
       if (translateX >= startX && translateX <= stopX) {
         int index = indexOfTranslateX(translateX);
+
         if (datas?[index] == null) continue;
         TextPainter tp = getTextPainter(getDate(datas![index].time), null);
         y = size.height - (mBottomPadding - tp.height) / 2 - tp.height;
-        tp.paint(canvas, Offset(columnSpace * i - tp.width / 2, y));
+        x = columnSpace * i - tp.width / 2;
+        // Prevent date text out of canvas
+        if (x < 0) x = 0;
+        if (x > size.width - tp.width) x = size.width - tp.width;
+        tp.paint(canvas, Offset(x, y));
       }
     }
 
@@ -329,9 +337,11 @@ class ChartPainter extends BaseChartPainter {
     if (!this.showNowPrice) {
       return;
     }
-    if (isLine == true || datas == null) {
+
+    if (datas == null) {
       return;
     }
+
     double value = datas!.last.close;
     double y = getMainY(value);
     //不在视图展示区域不绘制
