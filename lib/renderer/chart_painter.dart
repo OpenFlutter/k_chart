@@ -37,6 +37,7 @@ class ChartPainter extends BaseChartPainter {
     required scaleX,
     required scrollX,
     required isLongPass,
+    required isOnTap,
     required selectX,
     mainState,
     volHidden,
@@ -54,6 +55,7 @@ class ChartPainter extends BaseChartPainter {
             scaleX: scaleX,
             scrollX: scrollX,
             isLongPress: isLongPass,
+            isOnTap: isOnTap,
             selectX: selectX,
             mainState: mainState,
             volHidden: volHidden,
@@ -167,6 +169,11 @@ class ChartPainter extends BaseChartPainter {
       mVolRenderer?.drawChart(lastPoint, curPoint, lastX, curX, size, canvas);
       mSecondaryRenderer?.drawChart(
           lastPoint, curPoint, lastX, curX, size, canvas);
+    }
+
+    if (isLongPress == true || isOnTap == true) {
+      drawCrossLine(canvas, size);
+      drawCrossLineText(canvas, size);
     }
 
     canvas.restore();
@@ -292,7 +299,7 @@ class ChartPainter extends BaseChartPainter {
   @override
   void drawText(Canvas canvas, KLineEntity data, double x) {
     //长按显示按中的数据
-    if (isLongPress) {
+    if (isLongPress || isOnTap) {
       var index = calculateSelectedX(selectX);
       data = getItem(index);
     }
@@ -428,5 +435,10 @@ class ChartPainter extends BaseChartPainter {
   /// 点是否在SecondaryRect中
   bool isInSecondaryRect(Offset point) {
     return mSecondaryRect?.contains(point) ?? false;
+  }
+
+  /// 点是否在MainRect中
+  bool isInMainRect(Offset point) {
+    return mMainRect.contains(point);
   }
 }
