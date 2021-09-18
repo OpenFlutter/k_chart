@@ -351,10 +351,16 @@ class ChartPainter extends BaseChartPainter {
 
     double value = datas!.last.close;
     double y = getMainY(value);
-    //不在视图展示区域不绘制
-    if (y > getMainY(mMainLowMinValue) || y < getMainY(mMainHighMaxValue)) {
-      return;
+
+    //视图展示区域边界值绘制
+    if (y > getMainY(mMainLowMinValue)) {
+      y = getMainY(mMainLowMinValue);
     }
+
+    if (y < getMainY(mMainHighMaxValue)) {
+      y = getMainY(mMainHighMaxValue);
+    }
+
     nowPricePaint
       ..color = value >= datas!.last.open
           ? this.chartColors.nowPriceUpColor
