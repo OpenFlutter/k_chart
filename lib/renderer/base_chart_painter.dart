@@ -19,9 +19,10 @@ abstract class BaseChartPainter extends CustomPainter {
   SecondaryState secondaryState;
 
   bool volHidden;
+  bool isTapShowInfoDialog;
   double scaleX = 1.0, scrollX = 0.0, selectX;
   bool isLongPress = false;
-  bool isOnTap = false;
+  bool isOnTap;
   bool isLine;
 
   //3块区域大小与位置
@@ -51,10 +52,11 @@ abstract class BaseChartPainter extends CustomPainter {
     required this.scaleX,
     required this.scrollX,
     required this.isLongPress,
-    required this.isOnTap,
     required this.selectX,
+    this.isOnTap = false,
     this.mainState = MainState.MA,
     this.volHidden = false,
+    this.isTapShowInfoDialog = false,
     this.secondaryState = SecondaryState.MACD,
     this.isLine = false,
   }) {
@@ -117,7 +119,7 @@ abstract class BaseChartPainter extends CustomPainter {
       drawMaxAndMin(canvas);
       drawNowPrice(canvas);
 
-      if (isLongPress == true || isOnTap == true) {
+      if (isLongPress == true || (isTapShowInfoDialog && isOnTap)) {
         drawCrossLine(canvas, size);
         drawCrossLineText(canvas, size);
       }

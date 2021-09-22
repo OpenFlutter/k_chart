@@ -37,8 +37,9 @@ class ChartPainter extends BaseChartPainter {
     required scaleX,
     required scrollX,
     required isLongPass,
-    required isOnTap,
     required selectX,
+    isOnTap,
+    isTapShowInfoDialog,
     mainState,
     volHidden,
     secondaryState,
@@ -56,6 +57,7 @@ class ChartPainter extends BaseChartPainter {
             scrollX: scrollX,
             isLongPress: isLongPass,
             isOnTap: isOnTap,
+            isTapShowInfoDialog: isTapShowInfoDialog,
             selectX: selectX,
             mainState: mainState,
             volHidden: volHidden,
@@ -171,7 +173,7 @@ class ChartPainter extends BaseChartPainter {
           lastPoint, curPoint, lastX, curX, size, canvas);
     }
 
-    if (isLongPress == true || isOnTap == true) {
+    if (isLongPress == true || (isTapShowInfoDialog && isOnTap)) {
       drawCrossLine(canvas, size);
       drawCrossLineText(canvas, size);
     }
@@ -299,7 +301,7 @@ class ChartPainter extends BaseChartPainter {
   @override
   void drawText(Canvas canvas, KLineEntity data, double x) {
     //长按显示按中的数据
-    if (isLongPress || isOnTap) {
+    if (isLongPress || (isTapShowInfoDialog && isOnTap)) {
       var index = calculateSelectedX(selectX);
       data = getItem(index);
     }
