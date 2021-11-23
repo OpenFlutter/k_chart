@@ -385,7 +385,7 @@ class ChartPainter extends BaseChartPainter {
     canvas.drawRect(
         Rect.fromLTRB(offsetX, top, offsetX + tp.width, top + tp.height),
         nowPricePaint);
-    tp.paint(canvas, Offset(0, top));
+    tp.paint(canvas, Offset(offsetX, top));
   }
 
   ///画交叉线
