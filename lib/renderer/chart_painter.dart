@@ -39,6 +39,8 @@ class ChartPainter extends BaseChartPainter {
     required scrollX,
     required isLongPass,
     required selectX,
+    isOnTap,
+    isTapShowInfoDialog,
     required this.verticalTextAlignment,
     mainState,
     volHidden,
@@ -56,6 +58,8 @@ class ChartPainter extends BaseChartPainter {
             scaleX: scaleX,
             scrollX: scrollX,
             isLongPress: isLongPass,
+            isOnTap: isOnTap,
+            isTapShowInfoDialog: isTapShowInfoDialog,
             selectX: selectX,
             mainState: mainState,
             volHidden: volHidden,
@@ -170,6 +174,11 @@ class ChartPainter extends BaseChartPainter {
       mVolRenderer?.drawChart(lastPoint, curPoint, lastX, curX, size, canvas);
       mSecondaryRenderer?.drawChart(
           lastPoint, curPoint, lastX, curX, size, canvas);
+    }
+
+    if (isLongPress == true || (isTapShowInfoDialog && isOnTap)) {
+      drawCrossLine(canvas, size);
+      drawCrossLineText(canvas, size);
     }
 
     canvas.restore();
@@ -295,7 +304,7 @@ class ChartPainter extends BaseChartPainter {
   @override
   void drawText(Canvas canvas, KLineEntity data, double x) {
     //长按显示按中的数据
-    if (isLongPress) {
+    if (isLongPress || (isTapShowInfoDialog && isOnTap)) {
       var index = calculateSelectedX(selectX);
       data = getItem(index);
     }
@@ -347,10 +356,16 @@ class ChartPainter extends BaseChartPainter {
 
     double value = datas!.last.close;
     double y = getMainY(value);
-    //不在视图展示区域不绘制
-    if (y > getMainY(mMainLowMinValue) || y < getMainY(mMainHighMaxValue)) {
-      return;
+
+    //视图展示区域边界值绘制
+    if (y > getMainY(mMainLowMinValue)) {
+      y = getMainY(mMainLowMinValue);
     }
+
+    if (y < getMainY(mMainHighMaxValue)) {
+      y = getMainY(mMainHighMaxValue);
+    }
+
     nowPricePaint
       ..color = value >= datas!.last.open
           ? this.chartColors.nowPriceUpColor
@@ -442,5 +457,10 @@ class ChartPainter extends BaseChartPainter {
   /// 点是否在SecondaryRect中
   bool isInSecondaryRect(Offset point) {
     return mSecondaryRect?.contains(point) ?? false;
+  }
+
+  /// 点是否在MainRect中
+  bool isInMainRect(Offset point) {
+    return mMainRect.contains(point);
   }
 }

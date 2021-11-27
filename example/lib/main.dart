@@ -115,6 +115,7 @@ class _MyHomePageState extends State<MyHomePage> {
               //`isChinese` is Deprecated, Use `translations` instead.
               isChinese: isChinese,
               hideGrid: _hideGrid,
+              isTapShowInfoDialog: false,
               maDayList: [1, 100, 1000],
             ),
           ),

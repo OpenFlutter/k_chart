@@ -30,6 +30,7 @@ class KChartWidget extends StatefulWidget {
   final SecondaryState secondaryState;
   final Function()? onSecondaryTap;
   final bool isLine;
+  final bool isTapShowInfoDialog;//是否开启单击显示详情数据
   final bool hideGrid;
   @Deprecated('Use `translations` instead.')
   final bool isChinese;
@@ -62,6 +63,7 @@ class KChartWidget extends StatefulWidget {
     this.onSecondaryTap,
     this.volHidden = false,
     this.isLine = false,
+    this.isTapShowInfoDialog = false,
     this.hideGrid = false,
     @Deprecated('Use `translations` instead.') this.isChinese = false,
     this.showNowPrice = true,
@@ -96,7 +98,7 @@ class _KChartWidgetState extends State<KChartWidget>
   }
 
   double _lastScale = 1.0;
-  bool isScale = false, isDrag = false, isLongPress = false;
+  bool isScale = false, isDrag = false, isLongPress = false, isOnTap = false;
 
   @override
   void initState() {
@@ -130,6 +132,8 @@ class _KChartWidgetState extends State<KChartWidget>
       scrollX: mScrollX,
       selectX: mSelectX,
       isLongPass: isLongPress,
+      isOnTap: isOnTap,
+      isTapShowInfoDialog: widget.isTapShowInfoDialog,
       mainState: widget.mainState,
       volHidden: widget.volHidden,
       secondaryState: widget.secondaryState,
@@ -154,8 +158,18 @@ class _KChartWidgetState extends State<KChartWidget>
                 _painter.isInSecondaryRect(details.localPosition)) {
               widget.onSecondaryTap!();
             }
+
+
+            if (_painter.isInMainRect(details.localPosition)) {
+              isOnTap = true;
+              if (mSelectX != details.globalPosition.dx && widget.isTapShowInfoDialog) {
+                mSelectX = details.globalPosition.dx;
+                notifyChanged();
+              }
+            }
           },
           onHorizontalDragDown: (details) {
+            isOnTap = false;
             _stopAnimation();
             _onDragChanged(true);
           },
@@ -184,6 +198,7 @@ class _KChartWidgetState extends State<KChartWidget>
             _lastScale = mScaleX;
           },
           onLongPressStart: (details) {
+            isOnTap = false;
             isLongPress = true;
             if (mSelectX != details.globalPosition.dx) {
               mSelectX = details.globalPosition.dx;
@@ -274,7 +289,7 @@ class _KChartWidgetState extends State<KChartWidget>
     return StreamBuilder<InfoWindowEntity?>(
         stream: mInfoWindowStream?.stream,
         builder: (context, snapshot) {
-          if (!isLongPress ||
+          if ((!isLongPress && !isOnTap) ||
               widget.isLine == true ||
               !snapshot.hasData ||
               snapshot.data?.kLineEntity == null) return Container();
