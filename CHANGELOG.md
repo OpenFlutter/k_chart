@@ -49,3 +49,11 @@
 ## [0.4.1]
 
 * Fix a bug about NPE.
+
+## [0.5.0]
+
+* Fixed Vertical text alignment and make amount nullable.
+* Fixed nowPrice text painting position.
+* Add click show detailed data.
+* View display area boundary value drawing. 
+* Always show the now price.
