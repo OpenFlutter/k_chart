@@ -50,7 +50,7 @@ abstract class BaseChartRenderer<T> {
 
   void drawText(Canvas canvas, T data, double x);
 
-  void drawRightText(canvas, textStyle, int gridRows);
+  void drawVerticalText(canvas, textStyle, int gridRows);
 
   void drawChart(T lastPoint, T curPoint, double lastX, double curX, Size size,
       Canvas canvas);

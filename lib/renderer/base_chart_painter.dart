@@ -112,7 +112,7 @@ abstract class BaseChartPainter extends CustomPainter {
     drawGrid(canvas);
     if (datas != null && datas!.isNotEmpty) {
       drawChart(canvas, size);
-      drawRightText(canvas);
+      drawVerticalText(canvas);
       drawDate(canvas, size);
 
       drawText(canvas, datas!.last, 5);
@@ -139,7 +139,7 @@ abstract class BaseChartPainter extends CustomPainter {
   void drawChart(Canvas canvas, Size size);
 
   //画右边值
-  void drawRightText(canvas);
+  void drawVerticalText(canvas);
 
   //画时间
   void drawDate(Canvas canvas, Size size);

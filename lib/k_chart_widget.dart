@@ -52,6 +52,7 @@ class KChartWidget extends StatefulWidget {
   final Function(bool)? isOnDrag;
   final ChartColors chartColors;
   final ChartStyle chartStyle;
+  final VerticalTextAlignment verticalTextAlignment;
 
   KChartWidget(
     this.datas,
@@ -77,6 +78,7 @@ class KChartWidget extends StatefulWidget {
     this.flingRatio = 0.5,
     this.flingCurve = Curves.decelerate,
     this.isOnDrag,
+    this.verticalTextAlignment = VerticalTextAlignment.left,
   });
 
   @override
@@ -142,6 +144,7 @@ class _KChartWidgetState extends State<KChartWidget>
       bgColor: widget.bgColor,
       fixedLength: widget.fixedLength,
       maDayList: widget.maDayList,
+      verticalTextAlignment: widget.verticalTextAlignment,
     );
 
     return LayoutBuilder(
@@ -172,7 +175,7 @@ class _KChartWidgetState extends State<KChartWidget>
           },
           onHorizontalDragUpdate: (details) {
             if (isScale || isLongPress) return;
-            mScrollX = (details.primaryDelta! / mScaleX + mScrollX)
+            mScrollX = ((details.primaryDelta ?? 0) / mScaleX + mScrollX)
                 .clamp(0.0, ChartPainter.maxScrollX)
                 .toDouble();
             notifyChanged();
@@ -293,6 +296,7 @@ class _KChartWidgetState extends State<KChartWidget>
           KLineEntity entity = snapshot.data!.kLineEntity;
           double upDown = entity.change ?? entity.close - entity.open;
           double upDownPercent = entity.ratio ?? (upDown / entity.open) * 100;
+          final double? entityAmount = entity.amount;
           infos = [
             getDate(entity.time),
             entity.open.toStringAsFixed(widget.fixedLength),
@@ -301,7 +305,7 @@ class _KChartWidgetState extends State<KChartWidget>
             entity.close.toStringAsFixed(widget.fixedLength),
             "${upDown > 0 ? "+" : ""}${upDown.toStringAsFixed(widget.fixedLength)}",
             "${upDownPercent > 0 ? "+" : ''}${upDownPercent.toStringAsFixed(2)}%",
-            entity.amount.toInt().toString()
+            if (entityAmount != null) entityAmount.toInt().toString()
           ];
           return Container(
             margin: EdgeInsets.only(

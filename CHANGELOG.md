@@ -45,3 +45,7 @@
 * Changed the UI when gridlines are hidden.
 * Upgraded the display of real-time prices.
 * More configurations are available.
+
+## [0.4.1]
+
+* Fix a bug about NPE.
