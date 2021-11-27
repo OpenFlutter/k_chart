@@ -29,6 +29,7 @@ class ChartPainter extends BaseChartPainter {
   final ChartStyle chartStyle;
   final bool hideGrid;
   final bool showNowPrice;
+  final VerticalTextAlignment verticalTextAlignment;
 
   ChartPainter(
     this.chartStyle,
@@ -38,6 +39,7 @@ class ChartPainter extends BaseChartPainter {
     required scrollX,
     required isLongPass,
     required selectX,
+    required this.verticalTextAlignment,
     mainState,
     volHidden,
     secondaryState,
@@ -91,6 +93,7 @@ class ChartPainter extends BaseChartPainter {
       this.chartStyle,
       this.chartColors,
       this.scaleX,
+      verticalTextAlignment,
       maDayList,
     );
     if (mVolRect != null) {
@@ -173,13 +176,13 @@ class ChartPainter extends BaseChartPainter {
   }
 
   @override
-  void drawRightText(canvas) {
+  void drawVerticalText(canvas) {
     var textStyle = getTextStyle(this.chartColors.defaultTextColor);
     if (!hideGrid) {
-      mMainRenderer.drawRightText(canvas, textStyle, mGridRows);
+      mMainRenderer.drawVerticalText(canvas, textStyle, mGridRows);
     }
-    mVolRenderer?.drawRightText(canvas, textStyle, mGridRows);
-    mSecondaryRenderer?.drawRightText(canvas, textStyle, mGridRows);
+    mVolRenderer?.drawVerticalText(canvas, textStyle, mGridRows);
+    mSecondaryRenderer?.drawVerticalText(canvas, textStyle, mGridRows);
   }
 
   @override
@@ -367,11 +370,22 @@ class ChartPainter extends BaseChartPainter {
     //再画背景和文本
     TextPainter tp = getTextPainter(
         value.toStringAsFixed(fixedLength), this.chartColors.nowPriceTextColor);
-    double left = 0;
+
+    double offsetX;
+    switch (verticalTextAlignment) {
+      case VerticalTextAlignment.left:
+        offsetX = 0;
+        break;
+      case VerticalTextAlignment.right:
+        offsetX = mWidth - tp.width;
+        break;
+    }
+
     double top = y - tp.height / 2;
-    canvas.drawRect(Rect.fromLTRB(left, top, left + tp.width, top + tp.height),
+    canvas.drawRect(
+        Rect.fromLTRB(offsetX, top, offsetX + tp.width, top + tp.height),
         nowPricePaint);
-    tp.paint(canvas, Offset(0, top));
+    tp.paint(canvas, Offset(offsetX, top));
   }
 
   ///画交叉线

@@ -4,6 +4,8 @@ import '../entity/candle_entity.dart';
 import '../k_chart_widget.dart' show MainState;
 import 'base_chart_renderer.dart';
 
+enum VerticalTextAlignment { left, right }
+
 class MainRenderer extends BaseChartRenderer<CandleEntity> {
   late double mCandleWidth;
   late double mCandleLineWidth;
@@ -19,6 +21,7 @@ class MainRenderer extends BaseChartRenderer<CandleEntity> {
   final double mLineStrokeWidth = 1.0;
   double scaleX;
   late Paint mLinePaint;
+  final VerticalTextAlignment verticalTextAlignment;
 
   MainRenderer(
       Rect mainRect,
@@ -31,6 +34,7 @@ class MainRenderer extends BaseChartRenderer<CandleEntity> {
       this.chartStyle,
       this.chartColors,
       this.scaleX,
+      this.verticalTextAlignment,
       [this.maDayList = const [5, 10, 20]])
       : super(
             chartRect: mainRect,
@@ -229,7 +233,7 @@ class MainRenderer extends BaseChartRenderer<CandleEntity> {
   }
 
   @override
-  void drawRightText(canvas, textStyle, int gridRows) {
+  void drawVerticalText(canvas, textStyle, int gridRows) {
     double rowSpace = chartRect.height / gridRows;
     for (var i = 0; i <= gridRows; ++i) {
       double value = (gridRows - i) * rowSpace / scaleY + minValue;
@@ -237,13 +241,22 @@ class MainRenderer extends BaseChartRenderer<CandleEntity> {
       TextPainter tp =
           TextPainter(text: span, textDirection: TextDirection.ltr);
       tp.layout();
+
+      double offsetX;
+      switch (verticalTextAlignment) {
+        case VerticalTextAlignment.left:
+          offsetX = 0;
+          break;
+        case VerticalTextAlignment.right:
+          offsetX = chartRect.width - tp.width;
+          break;
+      }
+
       if (i == 0) {
-        tp.paint(canvas, Offset(0, topPadding));
+        tp.paint(canvas, Offset(offsetX, topPadding));
       } else {
         tp.paint(
-            canvas,
-            Offset(0,
-                rowSpace * i - tp.height + topPadding));
+            canvas, Offset(offsetX, rowSpace * i - tp.height + topPadding));
       }
     }
   }
