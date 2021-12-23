@@ -30,7 +30,7 @@ class KChartWidget extends StatefulWidget {
   final SecondaryState secondaryState;
   final Function()? onSecondaryTap;
   final bool isLine;
-  final bool isTapShowInfoDialog;//是否开启单击显示详情数据
+  final bool isTapShowInfoDialog; //是否开启单击显示详情数据
   final bool hideGrid;
   @Deprecated('Use `translations` instead.')
   final bool isChinese;
@@ -53,11 +53,13 @@ class KChartWidget extends StatefulWidget {
   final ChartColors chartColors;
   final ChartStyle chartStyle;
   final VerticalTextAlignment verticalTextAlignment;
+  final bool isTrendLine;
 
   KChartWidget(
     this.datas,
     this.chartStyle,
     this.chartColors, {
+    required this.isTrendLine,
     this.mainState = MainState.MA,
     this.secondaryState = SecondaryState.MACD,
     this.onSecondaryTap,
@@ -93,6 +95,14 @@ class _KChartWidgetState extends State<KChartWidget>
   AnimationController? _controller;
   Animation<double>? aniX;
 
+  //For TrendLine
+  List<Line> lines = [];
+  double? changeinXposition;
+  double? changeinYposition;
+  double mSelectY = 0.0;
+  bool waitingForOtherPairofCords = false;
+  bool enableCordRecord = false;
+
   double getMinScrollX() {
     return mScaleX;
   }
@@ -127,6 +137,9 @@ class _KChartWidgetState extends State<KChartWidget>
     final _painter = ChartPainter(
       widget.chartStyle,
       widget.chartColors,
+      lines: lines, //For TrendLine
+      isTrendLine: widget.isTrendLine, //For TrendLine
+      selectY: mSelectY, //For TrendLine
       datas: widget.datas,
       scaleX: mScaleX,
       scrollX: mScrollX,
@@ -154,18 +167,36 @@ class _KChartWidgetState extends State<KChartWidget>
 
         return GestureDetector(
           onTapUp: (details) {
-            if (widget.onSecondaryTap != null &&
+            if (!widget.isTrendLine &&
+                widget.onSecondaryTap != null &&
                 _painter.isInSecondaryRect(details.localPosition)) {
               widget.onSecondaryTap!();
             }
 
-
-            if (_painter.isInMainRect(details.localPosition)) {
+            if (!widget.isTrendLine &&
+                _painter.isInMainRect(details.localPosition)) {
               isOnTap = true;
-              if (mSelectX != details.globalPosition.dx && widget.isTapShowInfoDialog) {
+              if (mSelectX != details.globalPosition.dx &&
+                  widget.isTapShowInfoDialog) {
                 mSelectX = details.globalPosition.dx;
                 notifyChanged();
               }
+            }
+            if (widget.isTrendLine && !isLongPress && enableCordRecord) {
+              enableCordRecord = false;
+              Offset p1 = Offset(afzl()!, mSelectY);
+              if (!waitingForOtherPairofCords)
+                lines.add(Line(p1, Offset(-1, -1), afzalMax!, afzalScale!));
+
+              if (waitingForOtherPairofCords) {
+                var a = lines.last;
+                lines.removeLast();
+                lines.add(Line(a.p1, p1, afzalMax!, afzalScale!));
+                waitingForOtherPairofCords = false;
+              } else {
+                waitingForOtherPairofCords = true;
+              }
+              notifyChanged();
             }
           },
           onHorizontalDragDown: (details) {
@@ -200,19 +231,46 @@ class _KChartWidgetState extends State<KChartWidget>
           onLongPressStart: (details) {
             isOnTap = false;
             isLongPress = true;
-            if (mSelectX != details.globalPosition.dx) {
+            if ((mSelectX != details.globalPosition.dx ||
+                    mSelectY != details.globalPosition.dy) &&
+                !widget.isTrendLine) {
               mSelectX = details.globalPosition.dx;
+              notifyChanged();
+            }
+            //For TrendLine
+            if (widget.isTrendLine && changeinXposition == null) {
+              mSelectX = changeinXposition = details.globalPosition.dx;
+              mSelectY = changeinYposition = details.globalPosition.dy;
+              notifyChanged();
+            }
+            //For TrendLine
+            if (widget.isTrendLine && changeinXposition != null) {
+              changeinXposition = details.globalPosition.dx;
+              changeinYposition = details.globalPosition.dy;
               notifyChanged();
             }
           },
           onLongPressMoveUpdate: (details) {
-            if (mSelectX != details.globalPosition.dx) {
+            if ((mSelectX != details.globalPosition.dx ||
+                    mSelectY != details.globalPosition.dy) &&
+                !widget.isTrendLine) {
               mSelectX = details.globalPosition.dx;
+              mSelectY = details.localPosition.dy;
+              notifyChanged();
+            }
+            if (widget.isTrendLine) {
+              mSelectX =
+                  mSelectX + (details.globalPosition.dx - changeinXposition!);
+              changeinXposition = details.globalPosition.dx;
+              mSelectY =
+                  mSelectY + (details.globalPosition.dy - changeinYposition!);
+              changeinYposition = details.globalPosition.dy;
               notifyChanged();
             }
           },
           onLongPressEnd: (details) {
             isLongPress = false;
+            enableCordRecord = true;
             mInfoWindowStream?.sink.add(null);
             notifyChanged();
           },
@@ -340,8 +398,7 @@ class _KChartWidgetState extends State<KChartWidget>
     Color color = widget.chartColors.infoWindowNormalColor;
     if (info.startsWith("+"))
       color = widget.chartColors.infoWindowUpColor;
-    else if (info.startsWith("-"))
-      color = widget.chartColors.infoWindowDnColor;
+    else if (info.startsWith("-")) color = widget.chartColors.infoWindowDnColor;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,

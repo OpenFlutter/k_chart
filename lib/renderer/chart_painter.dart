@@ -12,7 +12,27 @@ import 'main_renderer.dart';
 import 'secondary_renderer.dart';
 import 'vol_renderer.dart';
 
+//For TrendLine
+class Line {
+  final Offset p1;
+  final Offset p2;
+  final double maxHeight;
+  final double scale;
+
+  Line(this.p1, this.p2, this.maxHeight, this.scale);
+}
+
+//For TrendLine
+double? afzlx;
+double? afzl() {
+  return afzlx;
+}
+
 class ChartPainter extends BaseChartPainter {
+  final List<Line> lines; //For TrendLine
+  final bool isTrendLine; //For TrendLine
+  bool isrecordingCord = false; //For TrendLine
+  final double selectY; //For TrendLine
   static get maxScrollX => BaseChartPainter.maxScrollX;
   late BaseChartRenderer mMainRenderer;
   BaseChartRenderer? mVolRenderer, mSecondaryRenderer;
@@ -34,6 +54,9 @@ class ChartPainter extends BaseChartPainter {
   ChartPainter(
     this.chartStyle,
     this.chartColors, {
+    required this.lines, //For TrendLine
+    required this.isTrendLine, //For TrendLine
+    required this.selectY, //For TrendLine
     required datas,
     required scaleX,
     required scrollX,
@@ -176,11 +199,12 @@ class ChartPainter extends BaseChartPainter {
           lastPoint, curPoint, lastX, curX, size, canvas);
     }
 
-    if (isLongPress == true || (isTapShowInfoDialog && isOnTap)) {
+    if ((isLongPress == true || (isTapShowInfoDialog && isOnTap)) &&
+        isTrendLine == false) {
       drawCrossLine(canvas, size);
       drawCrossLineText(canvas, size);
     }
-
+    if (isTrendLine == true) drawTrendLines(canvas, size);
     canvas.restore();
   }
 
@@ -275,7 +299,8 @@ class ChartPainter extends BaseChartPainter {
       tp.paint(canvas, Offset(x + w1 + w2, y - textHeight / 2));
     }
 
-    TextPainter dateTp = getTextPainter(getDate(point.time), chartColors.crossTextColor);
+    TextPainter dateTp =
+        getTextPainter(getDate(point.time), chartColors.crossTextColor);
     textWidth = dateTp.width;
     r = textHeight / 2;
     x = translateXtoX(getX(index));
@@ -323,11 +348,13 @@ class ChartPainter extends BaseChartPainter {
     if (x < mWidth / 2) {
       //画右边
       TextPainter tp = getTextPainter(
-          "── " + mMainLowMinValue.toStringAsFixed(fixedLength), chartColors.minColor);
+          "── " + mMainLowMinValue.toStringAsFixed(fixedLength),
+          chartColors.minColor);
       tp.paint(canvas, Offset(x, y - tp.height / 2));
     } else {
       TextPainter tp = getTextPainter(
-          mMainLowMinValue.toStringAsFixed(fixedLength) + " ──", chartColors.minColor);
+          mMainLowMinValue.toStringAsFixed(fixedLength) + " ──",
+          chartColors.minColor);
       tp.paint(canvas, Offset(x - tp.width, y - tp.height / 2));
     }
     x = translateXtoX(getX(mMainMaxIndex));
@@ -335,11 +362,13 @@ class ChartPainter extends BaseChartPainter {
     if (x < mWidth / 2) {
       //画右边
       TextPainter tp = getTextPainter(
-          "── " + mMainHighMaxValue.toStringAsFixed(fixedLength), chartColors.maxColor);
+          "── " + mMainHighMaxValue.toStringAsFixed(fixedLength),
+          chartColors.maxColor);
       tp.paint(canvas, Offset(x, y - tp.height / 2));
     } else {
       TextPainter tp = getTextPainter(
-          mMainHighMaxValue.toStringAsFixed(fixedLength) + " ──", chartColors.maxColor);
+          mMainHighMaxValue.toStringAsFixed(fixedLength) + " ──",
+          chartColors.maxColor);
       tp.paint(canvas, Offset(x - tp.width, y - tp.height / 2));
     }
   }
@@ -401,6 +430,62 @@ class ChartPainter extends BaseChartPainter {
         Rect.fromLTRB(offsetX, top, offsetX + tp.width, top + tp.height),
         nowPricePaint);
     tp.paint(canvas, Offset(offsetX, top));
+  }
+
+//For TrendLine
+  void drawTrendLines(Canvas canvas, Size size) {
+    var index = calculateSelectedX(selectX);
+    Paint paintY = Paint()
+      ..color = Colors.orange
+      ..strokeWidth = 1
+      ..isAntiAlias = true;
+    double x = getX(index);
+    afzlx = x;
+
+    double y = selectY;
+    // getMainY(point.close);
+
+    // k线图竖线
+    canvas.drawLine(Offset(x, mTopPadding),
+        Offset(x, size.height - mBottomPadding), paintY);
+    Paint paintX = Paint()
+      ..color = Colors.orangeAccent
+      ..strokeWidth = 1
+      ..isAntiAlias = true;
+    Paint paint = Paint()
+      ..color = Colors.orange
+      ..strokeWidth = 1.0
+      ..style = PaintingStyle.stroke
+      ..strokeCap = StrokeCap.round;
+    canvas.drawLine(Offset(-mTranslateX, y),
+        Offset(-mTranslateX + mWidth / scaleX, y), paintX);
+    if (scaleX >= 1) {
+      canvas.drawOval(
+          Rect.fromCenter(
+              center: Offset(x, y), height: 15.0 * scaleX, width: 15.0),
+          paint);
+    } else {
+      canvas.drawOval(
+          Rect.fromCenter(
+              center: Offset(x, y), height: 10.0, width: 10.0 / scaleX),
+          paint);
+    }
+    if (lines.length >= 1) {
+      lines.forEach((element) {
+        var y1 = -((element.p1.dy - 35) / element.scale) + element.maxHeight;
+        var y2 = -((element.p2.dy - 35) / element.scale) + element.maxHeight;
+        var a = (afzalMax! - y1) * afzalScale! + afzalContentRec!;
+        var b = (afzalMax! - y2) * afzalScale! + afzalContentRec!;
+        var p1 = Offset(element.p1.dx, a);
+        var p2 = Offset(element.p2.dx, b);
+        canvas.drawLine(
+            p1,
+            element.p2 == Offset(-1, -1) ? Offset(x, y) : p2,
+            Paint()
+              ..color = Colors.yellow
+              ..strokeWidth = 2);
+      });
+    }
   }
 
   ///画交叉线
