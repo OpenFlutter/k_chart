@@ -62,7 +62,7 @@ Container(
               ),
             ),
 ```
-
+use TrendLine(New): You can use Trendline by long-pressing and moving your finger after setting true to isTrendLine property.  
 use depth chart:
 ```dart
 DepthChart(_bids, _asks, chartColors) //Note: Datas must be an ordered list，
