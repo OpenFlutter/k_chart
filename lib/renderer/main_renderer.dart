@@ -6,9 +6,9 @@ import 'base_chart_renderer.dart';
 
 enum VerticalTextAlignment { left, right }
 //For TrendLine
-double? afzalMax;
-double? afzalScale;
-double? afzalContentRec;
+double? trendLineMax;
+double? trendLineScale;
+double? trendLineContentRec;
 
 class MainRenderer extends BaseChartRenderer<CandleEntity> {
   late double mCandleWidth;
@@ -283,10 +283,13 @@ class MainRenderer extends BaseChartRenderer<CandleEntity> {
   @override
   double getY(double y) {
     //For TrendLine
-    afzalMax = maxValue;
-    afzalScale = scaleY;
-    afzalContentRec = _contentRect.top;
-
+    updateTrendLineData();
     return (maxValue - y) * scaleY + _contentRect.top;
+  }
+
+  void updateTrendLineData() {
+    trendLineMax = maxValue;
+    trendLineScale = scaleY;
+    trendLineContentRec = _contentRect.top;
   }
 }

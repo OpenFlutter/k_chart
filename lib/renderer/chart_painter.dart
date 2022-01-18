@@ -470,8 +470,8 @@ class ChartPainter extends BaseChartPainter {
       lines.forEach((element) {
         var y1 = -((element.p1.dy - 35) / element.scale) + element.maxHeight;
         var y2 = -((element.p2.dy - 35) / element.scale) + element.maxHeight;
-        var a = (afzalMax! - y1) * afzalScale! + afzalContentRec!;
-        var b = (afzalMax! - y2) * afzalScale! + afzalContentRec!;
+        var a = (trendLineMax! - y1) * trendLineScale! + trendLineContentRec!;
+        var b = (trendLineMax! - y2) * trendLineScale! + trendLineContentRec!;
         var p1 = Offset(element.p1.dx, a);
         var p2 = Offset(element.p2.dx, b);
         canvas.drawLine(

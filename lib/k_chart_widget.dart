@@ -182,12 +182,12 @@ class _KChartWidgetState extends State<KChartWidget>
               enableCordRecord = false;
               Offset p1 = Offset(getTrendLineX(), mSelectY);
               if (!waitingForOtherPairofCords)
-                lines.add(TrendLine(p1, Offset(-1, -1), afzalMax!, afzalScale!));
+                lines.add(TrendLine(p1, Offset(-1, -1), trendLineMax!, trendLineScale!));
 
               if (waitingForOtherPairofCords) {
                 var a = lines.last;
                 lines.removeLast();
-                lines.add(TrendLine(a.p1, p1, afzalMax!, afzalScale!));
+                lines.add(TrendLine(a.p1, p1, trendLineMax!, trendLineScale!));
                 waitingForOtherPairofCords = false;
               } else {
                 waitingForOtherPairofCords = true;
