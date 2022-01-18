@@ -42,8 +42,6 @@ class KChartWidget extends StatefulWidget {
   //当屏幕滚动到尽头会调用，真为拉到屏幕右侧尽头，假为拉到屏幕左侧尽头
   final Function(bool)? onLoadMore;
 
-  @Deprecated('Use `chartColors` instead.')
-  final List<Color>? bgColor;
   final int fixedLength;
   final List<int> maDayList;
   final int flingTime;
@@ -73,7 +71,6 @@ class KChartWidget extends StatefulWidget {
     this.translations = kChartTranslations,
     this.timeFormat = TimeFormat.YEAR_MONTH_DAY,
     this.onLoadMore,
-    @Deprecated('Use `chartColors` instead.') this.bgColor,
     this.fixedLength = 2,
     this.maDayList = const [5, 10, 20],
     this.flingTime = 600,
@@ -96,7 +93,7 @@ class _KChartWidgetState extends State<KChartWidget>
   Animation<double>? aniX;
 
   //For TrendLine
-  List<Line> lines = [];
+  List<TrendLine> lines = [];
   double? changeinXposition;
   double? changeinYposition;
   double mSelectY = 0.0;
@@ -154,7 +151,6 @@ class _KChartWidgetState extends State<KChartWidget>
       hideGrid: widget.hideGrid,
       showNowPrice: widget.showNowPrice,
       sink: mInfoWindowStream?.sink,
-      bgColor: widget.bgColor,
       fixedLength: widget.fixedLength,
       maDayList: widget.maDayList,
       verticalTextAlignment: widget.verticalTextAlignment,
@@ -184,14 +180,14 @@ class _KChartWidgetState extends State<KChartWidget>
             }
             if (widget.isTrendLine && !isLongPress && enableCordRecord) {
               enableCordRecord = false;
-              Offset p1 = Offset(afzl()!, mSelectY);
+              Offset p1 = Offset(getTrendLineX(), mSelectY);
               if (!waitingForOtherPairofCords)
-                lines.add(Line(p1, Offset(-1, -1), afzalMax!, afzalScale!));
+                lines.add(TrendLine(p1, Offset(-1, -1), afzalMax!, afzalScale!));
 
               if (waitingForOtherPairofCords) {
                 var a = lines.last;
                 lines.removeLast();
-                lines.add(Line(a.p1, p1, afzalMax!, afzalScale!));
+                lines.add(TrendLine(a.p1, p1, afzalMax!, afzalScale!));
                 waitingForOtherPairofCords = false;
               } else {
                 waitingForOtherPairofCords = true;
@@ -365,17 +361,21 @@ class _KChartWidgetState extends State<KChartWidget>
             "${upDownPercent > 0 ? "+" : ''}${upDownPercent.toStringAsFixed(2)}%",
             if (entityAmount != null) entityAmount.toInt().toString()
           ];
+          final dialogPadding = 4.0;
+          final dialogWidth = mWidth / 3;
           return Container(
             margin: EdgeInsets.only(
-                left: snapshot.data!.isLeft ? 4 : mWidth - mWidth / 3 - 4,
+                left: snapshot.data!.isLeft
+                    ? dialogPadding
+                    : mWidth - dialogWidth - dialogPadding,
                 top: 25),
-            width: mWidth / 3,
+            width: dialogWidth,
             decoration: BoxDecoration(
                 color: widget.chartColors.selectFillColor,
                 border: Border.all(
                     color: widget.chartColors.selectBorderColor, width: 0.5)),
             child: ListView.builder(
-              padding: EdgeInsets.all(4),
+              padding: EdgeInsets.all(dialogPadding),
               itemCount: infos.length,
               itemExtent: 14.0,
               shrinkWrap: true,

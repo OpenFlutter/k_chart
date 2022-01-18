@@ -12,24 +12,23 @@ import 'main_renderer.dart';
 import 'secondary_renderer.dart';
 import 'vol_renderer.dart';
 
-//For TrendLine
-class Line {
+class TrendLine {
   final Offset p1;
   final Offset p2;
   final double maxHeight;
   final double scale;
 
-  Line(this.p1, this.p2, this.maxHeight, this.scale);
+  TrendLine(this.p1, this.p2, this.maxHeight, this.scale);
 }
 
-//For TrendLine
-double? afzlx;
-double? afzl() {
-  return afzlx;
+double? trendLineX;
+
+double getTrendLineX() {
+  return trendLineX ?? 0;
 }
 
 class ChartPainter extends BaseChartPainter {
-  final List<Line> lines; //For TrendLine
+  final List<TrendLine> lines; //For TrendLine
   final bool isTrendLine; //For TrendLine
   bool isrecordingCord = false; //For TrendLine
   final double selectY; //For TrendLine
@@ -41,7 +40,6 @@ class ChartPainter extends BaseChartPainter {
   Color? ma5Color, ma10Color, ma30Color;
   Color? volColor;
   Color? macdColor, difColor, deaColor, jColor;
-  List<Color>? bgColor;
   int fixedLength;
   List<int> maDayList;
   final ChartColors chartColors;
@@ -72,11 +70,9 @@ class ChartPainter extends BaseChartPainter {
     bool isLine = false,
     this.hideGrid = false,
     this.showNowPrice = true,
-    this.bgColor,
     this.fixedLength = 2,
     this.maDayList = const [5, 10, 20],
-  })  : assert(bgColor == null || bgColor.length >= 2),
-        super(chartStyle,
+  }) : super(chartStyle,
             datas: datas,
             scaleX: scaleX,
             scrollX: scrollX,
@@ -146,7 +142,7 @@ class ChartPainter extends BaseChartPainter {
     Gradient mBgGradient = LinearGradient(
       begin: Alignment.bottomCenter,
       end: Alignment.topCenter,
-      colors: bgColor ?? chartColors.bgColor,
+      colors: chartColors.bgColor,
     );
     Rect mainRect =
         Rect.fromLTRB(0, 0, mMainRect.width, mMainRect.height + mTopPadding);
@@ -440,7 +436,7 @@ class ChartPainter extends BaseChartPainter {
       ..strokeWidth = 1
       ..isAntiAlias = true;
     double x = getX(index);
-    afzlx = x;
+    trendLineX = x;
 
     double y = selectY;
     // getMainY(point.close);

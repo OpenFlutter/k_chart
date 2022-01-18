@@ -37,8 +37,8 @@ class KLineEntity extends KEntity {
       tempTime = tempTime! * 1000;
     }
     time = tempTime;
-    ratio = json['ratio']?.toDouble() ?? 0;
-    change = json['change']?.toDouble() ?? 0;
+    ratio = json['ratio']?.toDouble();
+    change = json['change']?.toDouble();
   }
 
   Map<String, dynamic> toJson() {

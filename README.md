@@ -21,7 +21,7 @@ Maybe this is the best k chart in Flutter.Support drag,scale,long press,fling.An
 #### Install
 ```
 dependencies:
-  k_chart: ^0.5.0
+  k_chart: ^0.6.0
 ```
 or use latest：
 ```
@@ -53,16 +53,15 @@ Container(
                 onLoadMore: (bool a) {},// Called when the data scrolls to the end. When a is true, it means the user is pulled to the end of the right side of the data. When a
                 // is false, it means the user is pulled to the end of the left side of the data.
                 maDayList: [5,10,20],// Display of MA,This parameter must be equal to DataUtil.calculate‘s maDayList
-                bgColor: [Colors.black, Colors.black],// The background color of the chart is gradient
                 translations: kChartTranslations,// Graphic language
                 volHidden: false,// hide volume
                 showNowPrice: true,// show now price
                 isOnDrag: (isDrag){},// true is on Drag.Don't load data while Draging.
-                onSecondaryTap:(){}// on secondary rect taped.
+                onSecondaryTap:(){},// on secondary rect taped.
+                isTrendLine: false // You can use Trendline by long-pressing and moving your finger after setting true to isTrendLine property. 
               ),
             ),
 ```
-use TrendLine(New): You can use Trendline by long-pressing and moving your finger after setting true to isTrendLine property.  
 use depth chart:
 ```dart
 DepthChart(_bids, _asks, chartColors) //Note: Datas must be an ordered list，

@@ -107,7 +107,7 @@ class _MyHomePageState extends State<MyHomePage> {
               chartColors,
               isLine: isLine,
               onSecondaryTap: () {
-                print('SSecondary Tap');
+                print('Secondary Tap');
               },
               isTrendLine: _isTrendLine,
               mainState: _mainState,

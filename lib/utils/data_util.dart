@@ -1,10 +1,7 @@
 import 'dart:math';
 
-import 'package:k_chart/utils/number_util.dart';
-
 import '../entity/index.dart';
 
-// ignore_for_file: non_constant_identifier_names,library_prefixes,unused_import,camel_case_types
 class DataUtil {
   static calculate(List<KLineEntity> dataList,
       [List<int> maDayList = const [5, 10, 20], int n = 20, k = 2]) {
@@ -152,11 +149,11 @@ class DataUtil {
         rsiABSEma = 0;
         rsiMaxEma = 0;
       } else {
-        double Rmax = max(0, closePrice - dataList[i - 1].close.toDouble());
-        double RAbs = (closePrice - dataList[i - 1].close.toDouble()).abs();
+        double rMax = max(0, closePrice - dataList[i - 1].close.toDouble());
+        double rAbs = (closePrice - dataList[i - 1].close.toDouble()).abs();
 
-        rsiMaxEma = (Rmax + (14 - 1) * rsiMaxEma) / 14;
-        rsiABSEma = (RAbs + (14 - 1) * rsiABSEma) / 14;
+        rsiMaxEma = (rMax + (14 - 1) * rsiMaxEma) / 14;
+        rsiABSEma = (rAbs + (14 - 1) * rsiABSEma) / 14;
         rsi = (rsiMaxEma / rsiABSEma) * 100;
       }
       if (i < 13) rsi = null;
@@ -190,7 +187,7 @@ class DataUtil {
       var rsv = (cur - low) * 100.0 / (high - low);
       rsv = rsv.isNaN ? 0 : rsv;
       final k = (2 * preK + rsv) / 3.0;
-      final d = (2 * preD + k)/ 3.0;
+      final d = (2 * preD + k) / 3.0;
       final j = 3 * k - 2 * d;
       preK = k;
       preD = d;
@@ -243,7 +240,8 @@ class DataUtil {
       final ma = amount / len;
       amount = 0.0;
       for (int n = start; n <= i; n++) {
-        amount += (ma - (dataList[n].high + dataList[n].low + dataList[n].close) / 3)
+        amount +=
+            (ma - (dataList[n].high + dataList[n].low + dataList[n].close) / 3)
                 .abs();
       }
       final md = amount / len;

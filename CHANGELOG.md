@@ -57,3 +57,9 @@
 * Add click show detailed data.
 * View display area boundary value drawing. 
 * Always show the now price.
+
+## [0.6.0]
+
+* delete `bgColor` api.('Use `chartColors.bgColor` instead.')
+* Add TradeLine.
+* Fixed about data not contain `change` or `radio`.
