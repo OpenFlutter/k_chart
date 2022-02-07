@@ -36,6 +36,7 @@ class KChartWidget extends StatefulWidget {
   final bool isChinese;
   final bool showNowPrice;
   final bool showInfoDialog;
+  final bool materialInfoDialog; // Material风格的信息弹窗
   final Map<String, ChartTranslations> translations;
   final List<String> timeFormat;
 
@@ -70,6 +71,7 @@ class KChartWidget extends StatefulWidget {
     @Deprecated('Use `translations` instead.') this.isChinese = false,
     this.showNowPrice = true,
     this.showInfoDialog = true,
+    this.materialInfoDialog = true,
     this.translations = kChartTranslations,
     this.timeFormat = TimeFormat.YEAR_MONTH_DAY,
     this.onLoadMore,
@@ -399,22 +401,21 @@ class _KChartWidgetState extends State<KChartWidget>
     if (info.startsWith("+"))
       color = widget.chartColors.infoWindowUpColor;
     else if (info.startsWith("-")) color = widget.chartColors.infoWindowDnColor;
-
-    return Material(
-      color: Colors.transparent,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Expanded(
-              child: Text("$infoName",
-                  style: TextStyle(
-                      color: widget.chartColors.infoWindowTitleColor,
-                      fontSize: 10.0))),
-          Text(info, style: TextStyle(color: color, fontSize: 10.0)),
-        ],
-      ),
+    final infoWidget = Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        Expanded(
+            child: Text("$infoName",
+                style: TextStyle(
+                    color: widget.chartColors.infoWindowTitleColor,
+                    fontSize: 10.0))),
+        Text(info, style: TextStyle(color: color, fontSize: 10.0)),
+      ],
     );
+    return widget.materialInfoDialog
+        ? Material(color: Colors.transparent, child: infoWidget)
+        : infoWidget;
   }
 
   String getDate(int? date) => dateFormat(
