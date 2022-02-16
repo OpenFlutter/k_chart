@@ -198,7 +198,6 @@ class ChartPainter extends BaseChartPainter {
     if ((isLongPress == true || (isTapShowInfoDialog && isOnTap)) &&
         isTrendLine == false) {
       drawCrossLine(canvas, size);
-      drawCrossLineText(canvas, size);
     }
     if (isTrendLine == true) drawTrendLines(canvas, size);
     canvas.restore();
