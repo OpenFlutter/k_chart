@@ -120,7 +120,6 @@ abstract class BaseChartPainter extends CustomPainter {
       drawNowPrice(canvas);
 
       if (isLongPress == true || (isTapShowInfoDialog && isOnTap)) {
-        drawCrossLine(canvas, size);
         drawCrossLineText(canvas, size);
       }
     }
