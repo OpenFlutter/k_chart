@@ -63,3 +63,9 @@
 * delete `bgColor` api.('Use `chartColors.bgColor` instead.')
 * Add TradeLine.
 * Fixed about data not contain `change` or `radio`.
+
+## [0.6.1]
+
+* Add `chartColors.lineFillInsideColor`.
+* Add `materialInfoDialog` config.
+* Fix: removes duplicate crossLine and crossLine text rendering.

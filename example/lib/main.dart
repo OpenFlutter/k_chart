@@ -227,8 +227,8 @@ class _MyHomePageState extends State<MyHomePage> {
     /*
      * 可以翻墙使用方法1加载数据，不可以翻墙使用方法2加载数据，默认使用方法1加载最新数据
      */
-    //final Future<String> future = getChatDataFromInternet(period);
-    final Future<String> future = getChatDataFromJson();
+    final Future<String> future = getChatDataFromInternet(period);
+    //final Future<String> future = getChatDataFromJson();
     future.then((String result) {
       solveChatData(result);
     }).catchError((_) {
