@@ -5,6 +5,7 @@ class ChartColors {
 
   Color kLineColor = Color(0xff4C86CD);
   Color lineFillColor = Color(0x554C86CD);
+  Color lineFillInsideColor = Color(0x00000000);
   Color ma5Color = Color(0xffC9B885);
   Color ma10Color = Color(0xff6CB0A6);
   Color ma30Color = Color(0xff9979C6);

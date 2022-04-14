@@ -114,15 +114,15 @@ class MainRenderer extends BaseChartRenderer<CandleEntity> {
   @override
   void drawChart(CandleEntity lastPoint, CandleEntity curPoint, double lastX,
       double curX, Size size, Canvas canvas) {
-    if (isLine != true) {
-      drawCandle(curPoint, canvas, curX);
-    }
-    if (isLine == true) {
+    if (isLine) {
       drawPolyline(lastPoint.close, curPoint.close, canvas, lastX, curX);
-    } else if (state == MainState.MA) {
-      drawMaLine(lastPoint, curPoint, canvas, lastX, curX);
-    } else if (state == MainState.BOLL) {
-      drawBollLine(lastPoint, curPoint, canvas, lastX, curX);
+    } else {
+      drawCandle(curPoint, canvas, curX);
+      if (state == MainState.MA) {
+        drawMaLine(lastPoint, curPoint, canvas, lastX, curX);
+      } else if (state == MainState.BOLL) {
+        drawBollLine(lastPoint, curPoint, canvas, lastX, curX);
+      }
     }
   }
 
@@ -155,7 +155,7 @@ class MainRenderer extends BaseChartRenderer<CandleEntity> {
       begin: Alignment.topCenter,
       end: Alignment.bottomCenter,
       tileMode: TileMode.clamp,
-      colors: [this.chartColors.lineFillColor, Colors.transparent],
+      colors: [this.chartColors.lineFillColor, this.chartColors.lineFillInsideColor],
     ).createShader(Rect.fromLTRB(
         chartRect.left, chartRect.top, chartRect.right, chartRect.bottom));
     mLineFillPaint..shader = mLineFillShader;

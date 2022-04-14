@@ -45,6 +45,8 @@ class _MyHomePageState extends State<MyHomePage> {
   List<DepthEntity>? _bids, _asks;
   bool isChangeUI = false;
   bool _isTrendLine = false;
+  bool _priceLeft = true;
+  VerticalTextAlignment _verticalTextAlignment = VerticalTextAlignment.left;
 
   ChartStyle chartStyle = ChartStyle();
   ChartColors chartColors = ChartColors();
@@ -121,6 +123,7 @@ class _MyHomePageState extends State<MyHomePage> {
               isChinese: isChinese,
               hideGrid: _hideGrid,
               isTapShowInfoDialog: false,
+              verticalTextAlignment: _verticalTextAlignment,
               maDayList: [1, 100, 1000],
             ),
           ),
@@ -187,6 +190,14 @@ class _MyHomePageState extends State<MyHomePage> {
             }
           });
         }),
+        button("Change PriceTextPaint", onPressed: () => setState(() {
+          _priceLeft = !_priceLeft;
+          if(_priceLeft) {
+            _verticalTextAlignment = VerticalTextAlignment.left;
+          } else {
+            _verticalTextAlignment = VerticalTextAlignment.right;
+          }
+        }) ),
       ],
     );
   }
@@ -216,8 +227,8 @@ class _MyHomePageState extends State<MyHomePage> {
     /*
      * 可以翻墙使用方法1加载数据，不可以翻墙使用方法2加载数据，默认使用方法1加载最新数据
      */
-    final Future<String> future = getChatDataFromInternet(period);
-    // final Future<String> future = getChatDataFromJson();
+    //final Future<String> future = getChatDataFromInternet(period);
+    final Future<String> future = getChatDataFromJson();
     future.then((String result) {
       solveChatData(result);
     }).catchError((_) {
