@@ -190,14 +190,15 @@ class _MyHomePageState extends State<MyHomePage> {
             }
           });
         }),
-        button("Change PriceTextPaint", onPressed: () => setState(() {
-          _priceLeft = !_priceLeft;
-          if(_priceLeft) {
-            _verticalTextAlignment = VerticalTextAlignment.left;
-          } else {
-            _verticalTextAlignment = VerticalTextAlignment.right;
-          }
-        }) ),
+        button("Change PriceTextPaint",
+            onPressed: () => setState(() {
+                  _priceLeft = !_priceLeft;
+                  if (_priceLeft) {
+                    _verticalTextAlignment = VerticalTextAlignment.left;
+                  } else {
+                    _verticalTextAlignment = VerticalTextAlignment.right;
+                  }
+                })),
       ],
     );
   }
