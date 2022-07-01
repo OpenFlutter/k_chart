@@ -6,6 +6,7 @@ import 'package:k_chart/extension/map_ext.dart';
 import 'package:k_chart/flutter_k_chart.dart';
 
 enum MainState { MA, BOLL, NONE }
+
 enum SecondaryState { MACD, KDJ, RSI, WR, CCI, NONE }
 
 class TimeFormat {
@@ -53,12 +54,14 @@ class KChartWidget extends StatefulWidget {
   final ChartStyle chartStyle;
   final VerticalTextAlignment verticalTextAlignment;
   final bool isTrendLine;
+  final double xFrontPadding;
 
   KChartWidget(
     this.datas,
     this.chartStyle,
     this.chartColors, {
     required this.isTrendLine,
+    this.xFrontPadding = 100,
     this.mainState = MainState.MA,
     this.secondaryState = SecondaryState.MACD,
     this.onSecondaryTap,
@@ -137,6 +140,7 @@ class _KChartWidgetState extends State<KChartWidget>
       widget.chartStyle,
       widget.chartColors,
       lines: lines, //For TrendLine
+      xFrontPadding: widget.xFrontPadding,
       isTrendLine: widget.isTrendLine, //For TrendLine
       selectY: mSelectY, //For TrendLine
       datas: widget.datas,
@@ -184,7 +188,8 @@ class _KChartWidgetState extends State<KChartWidget>
               enableCordRecord = false;
               Offset p1 = Offset(getTrendLineX(), mSelectY);
               if (!waitingForOtherPairofCords)
-                lines.add(TrendLine(p1, Offset(-1, -1), trendLineMax!, trendLineScale!));
+                lines.add(TrendLine(
+                    p1, Offset(-1, -1), trendLineMax!, trendLineScale!));
 
               if (waitingForOtherPairofCords) {
                 var a = lines.last;

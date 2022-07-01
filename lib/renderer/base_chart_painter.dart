@@ -45,6 +45,7 @@ abstract class BaseChartPainter extends CustomPainter {
   final ChartStyle chartStyle;
   late double mPointWidth;
   List<String> mFormats = [yyyy, '-', mm, '-', dd, ' ', HH, ':', nn]; //格式化时间
+  double xFrontPadding;
 
   BaseChartPainter(
     this.chartStyle, {
@@ -53,6 +54,7 @@ abstract class BaseChartPainter extends CustomPainter {
     required this.scrollX,
     required this.isLongPress,
     required this.selectX,
+    required this.xFrontPadding,
     this.isOnTap = false,
     this.mainState = MainState.MA,
     this.volHidden = false,
@@ -334,7 +336,7 @@ abstract class BaseChartPainter extends CustomPainter {
 
   ///获取平移的最小值
   double getMinTranslateX() {
-    var x = -mDataLen + mWidth / scaleX - mPointWidth / 2;
+    var x = -mDataLen + mWidth / scaleX - mPointWidth / 2 - xFrontPadding;
     return x >= 0 ? 0.0 : x;
   }
 

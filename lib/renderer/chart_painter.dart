@@ -60,6 +60,7 @@ class ChartPainter extends BaseChartPainter {
     required scrollX,
     required isLongPass,
     required selectX,
+    required xFrontPadding,
     isOnTap,
     isTapShowInfoDialog,
     required this.verticalTextAlignment,
@@ -83,6 +84,7 @@ class ChartPainter extends BaseChartPainter {
             mainState: mainState,
             volHidden: volHidden,
             secondaryState: secondaryState,
+            xFrontPadding: xFrontPadding,
             isLine: isLine) {
     selectPointPaint = Paint()
       ..isAntiAlias = true
