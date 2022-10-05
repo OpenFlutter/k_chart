@@ -32,12 +32,12 @@ class _DepthChartState extends State<DepthChart> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onLongPressStart: (details) {
-        pressOffset = details.globalPosition;
+        pressOffset = details.localPosition;
         isLongPress = true;
         setState(() {});
       },
       onLongPressMoveUpdate: (details) {
-        pressOffset = details.globalPosition;
+        pressOffset = details.localPosition;
         isLongPress = true;
         setState(() {});
       },
