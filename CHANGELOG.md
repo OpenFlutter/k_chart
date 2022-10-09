@@ -60,7 +60,7 @@
 
 ## [0.6.0]
 
-* delete `bgColor` api.('Use `chartColors.bgColor` instead.')
+* Delete `bgColor` api.('Use `chartColors.bgColor` instead.')
 * Add TradeLine.
 * Fixed about data not contain `change` or `radio`.
 
@@ -69,3 +69,8 @@
 * Add `chartColors.lineFillInsideColor`.
 * Add `materialInfoDialog` config.
 * Fix: removes duplicate crossLine and crossLine text rendering.
+
+## [0.7.0]
+
+* Add `xFrontPadding`. (padding in front. default 100)
+* Fix: KChart and DepthChart onPress selection when they don't fill the whole screen.

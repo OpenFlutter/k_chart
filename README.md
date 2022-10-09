@@ -21,7 +21,7 @@ Maybe this is the best k chart in Flutter.Support drag,scale,long press,fling.An
 #### Install
 ```
 dependencies:
-  k_chart: ^0.6.1
+  k_chart: ^0.7.0
 ```
 or use latest：
 ```
@@ -58,7 +58,8 @@ Container(
                 showNowPrice: true,// show now price
                 isOnDrag: (isDrag){},// true is on Drag.Don't load data while Draging.
                 onSecondaryTap:(){},// on secondary rect taped.
-                isTrendLine: false // You can use Trendline by long-pressing and moving your finger after setting true to isTrendLine property. 
+                isTrendLine: false, // You can use Trendline by long-pressing and moving your finger after setting true to isTrendLine property. 
+                xFrontPadding: 100 // padding in front
               ),
             ),
 ```
