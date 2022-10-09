@@ -3,10 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
-import 'package:k_chart/chart_style.dart';
 import 'package:k_chart/chart_translations.dart';
 import 'package:k_chart/flutter_k_chart.dart';
-import 'package:k_chart/k_chart_widget.dart';
 
 void main() => runApp(MyApp());
 
@@ -192,13 +190,13 @@ class _MyHomePageState extends State<MyHomePage> {
         }),
         button("Change PriceTextPaint",
             onPressed: () => setState(() {
-                  _priceLeft = !_priceLeft;
-                  if (_priceLeft) {
-                    _verticalTextAlignment = VerticalTextAlignment.left;
-                  } else {
-                    _verticalTextAlignment = VerticalTextAlignment.right;
-                  }
-                })),
+              _priceLeft = !_priceLeft;
+              if (_priceLeft) {
+                _verticalTextAlignment = VerticalTextAlignment.left;
+              } else {
+                _verticalTextAlignment = VerticalTextAlignment.right;
+              }
+            })),
       ],
     );
   }
