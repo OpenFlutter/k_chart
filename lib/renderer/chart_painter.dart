@@ -319,18 +319,18 @@ class ChartPainter extends BaseChartPainter {
         selectorBorderPaint);
 
     dateTp.paint(canvas, Offset(x - textWidth / 2, y));
-    //长按显示这条数据详情
+    //Long press to display the details of this data
     sink?.add(InfoWindowEntity(point, isLeft: isLeft));
   }
 
   @override
   void drawText(Canvas canvas, KLineEntity data, double x) {
-    //长按显示按中的数据
+    //Long press to display the data in the press
     if (isLongPress || (isTapShowInfoDialog && isOnTap)) {
       var index = calculateSelectedX(selectX);
       data = getItem(index);
     }
-    //松开显示最后一条数据
+    //Release to display the last data
     mMainRenderer.drawText(canvas, data, x);
     mVolRenderer?.drawText(canvas, data, x);
     mSecondaryRenderer?.drawText(canvas, data, x);
@@ -339,11 +339,11 @@ class ChartPainter extends BaseChartPainter {
   @override
   void drawMaxAndMin(Canvas canvas) {
     if (isLine == true) return;
-    //绘制最大值和最小值
+    //plot maxima and minima
     double x = translateXtoX(getX(mMainMinIndex));
     double y = getMainY(mMainLowMinValue);
     if (x < mWidth / 2) {
-      //画右边
+      //draw right
       TextPainter tp = getTextPainter(
           "── " + mMainLowMinValue.toStringAsFixed(fixedLength),
           chartColors.minColor);
@@ -357,7 +357,7 @@ class ChartPainter extends BaseChartPainter {
     x = translateXtoX(getX(mMainMaxIndex));
     y = getMainY(mMainHighMaxValue);
     if (x < mWidth / 2) {
-      //画右边
+      //draw right
       TextPainter tp = getTextPainter(
           "── " + mMainHighMaxValue.toStringAsFixed(fixedLength),
           chartColors.maxColor);
@@ -383,7 +383,7 @@ class ChartPainter extends BaseChartPainter {
     double value = datas!.last.close;
     double y = getMainY(value);
 
-    //视图展示区域边界值绘制
+    //view display area boundary value drawing
     if (y > getMainY(mMainLowMinValue)) {
       y = getMainY(mMainLowMinValue);
     }
@@ -396,21 +396,24 @@ class ChartPainter extends BaseChartPainter {
       ..color = value >= datas!.last.open
           ? this.chartColors.nowPriceUpColor
           : this.chartColors.nowPriceDnColor;
-    //先画横线
+    //first draw the horizontal line
     double startX = 0;
     final max = -mTranslateX + mWidth / scaleX;
     final space =
         this.chartStyle.nowPriceLineSpan + this.chartStyle.nowPriceLineLength;
     while (startX < max) {
       canvas.drawLine(
-          Offset(startX, y),
-          Offset(startX + this.chartStyle.nowPriceLineLength, y),
-          nowPricePaint);
+        Offset(startX, y),
+        Offset(startX + this.chartStyle.nowPriceLineLength, y),
+        nowPricePaint
+      );
       startX += space;
     }
     //再画背景和文本
     TextPainter tp = getTextPainter(
-        value.toStringAsFixed(fixedLength), this.chartColors.nowPriceTextColor);
+      value.toStringAsFixed(fixedLength),
+      this.chartColors.nowPriceTextColor,
+    );
 
     double offsetX;
     switch (verticalTextAlignment) {

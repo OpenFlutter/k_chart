@@ -1,58 +1,59 @@
 import 'package:flutter/material.dart' show Color;
 
 class ChartColors {
-  List<Color> bgColor = [Color(0xff18191d), Color(0xff18191d)];
+  List<Color> bgColor = [Color(0xffffffff), Color(0xffffffff)];
 
-  Color kLineColor = Color(0xff4C86CD);
-  Color lineFillColor = Color(0x554C86CD);
-  Color lineFillInsideColor = Color(0x00000000);
-  Color ma5Color = Color(0xffC9B885);
-  Color ma10Color = Color(0xff6CB0A6);
-  Color ma30Color = Color(0xff9979C6);
-  Color upColor = Color(0xff4DAA90);
-  Color dnColor = Color(0xffC15466);
-  Color volColor = Color(0xff4729AE);
+  Color kLineColor = Color(0xff4C86CD); ///
+  Color lineFillColor = Color(0x554C86CD); ///
+  Color lineFillInsideColor = Color(0x00000000); ///
+  Color ma5Color = Color(0xffE5B767);
+  Color ma10Color = Color(0xff1FD1AC);
+  Color ma30Color = Color(0xffB48CE3);
+  Color upColor = Color(0xFF14AD8F);
+  Color dnColor = Color(0xFFD5405D);
+  Color volColor = Color(0xff2f8fd5);
 
-  Color macdColor = Color(0xff4729AE);
-  Color difColor = Color(0xffC9B885);
-  Color deaColor = Color(0xff6CB0A6);
+  Color macdColor = Color(0xff2f8fd5);
+  Color difColor = Color(0xffE5B767);
+  Color deaColor = Color(0xff1FD1AC);
 
-  Color kColor = Color(0xffC9B885);
-  Color dColor = Color(0xff6CB0A6);
-  Color jColor = Color(0xff9979C6);
-  Color rsiColor = Color(0xffC9B885);
+  Color kColor = Color(0xffE5B767);
+  Color dColor = Color(0xff1FD1AC);
+  Color jColor = Color(0xffB48CE3);
+  Color rsiColor = Color(0xffE5B767);
 
-  Color defaultTextColor = Color(0xff60738E);
+  Color defaultTextColor = Color(0xFF909196);
 
-  Color nowPriceUpColor = Color(0xff4DAA90);
-  Color nowPriceDnColor = Color(0xffC15466);
+  Color nowPriceUpColor = Color(0xFF14AD8F);
+  Color nowPriceDnColor = Color(0xFFD5405D);
   Color nowPriceTextColor = Color(0xffffffff);
 
-  //深度颜色
-  Color depthBuyColor = Color(0xff60A893);
-  Color depthSellColor = Color(0xffC15866);
+  ///depth color
+  Color depthBuyColor = Color(0xFF14AD8F);
+  Color depthSellColor = Color(0xFFD5405D);
 
-  //选中后显示值边框颜色
-  Color selectBorderColor = Color(0xff6C7A86);
+  ///value border color after selection
+  Color selectBorderColor = Color(0xFF222223);
 
-  //选中后显示值背景的填充颜色
-  Color selectFillColor = Color(0xff0D1722);
+  ///background color when value selected
+  Color selectFillColor = Color(0xffffffff);
 
-  //分割线颜色
-  Color gridColor = Color(0xff4c5c74);
+  ///color of grid
+  Color gridColor = Color(0xFFD1D3DB);
 
-  Color infoWindowNormalColor = Color(0xffffffff);
-  Color infoWindowTitleColor = Color(0xffffffff);
-  Color infoWindowUpColor = Color(0xff00ff00);
-  Color infoWindowDnColor = Color(0xffff0000);
+  ///color of annotation content
+  Color infoWindowNormalColor = Color(0xFF222223);
+  Color infoWindowTitleColor = Color(0xFF222223); //0xFF707070
+  Color infoWindowUpColor = Color(0xFF14AD8F);
+  Color infoWindowDnColor = Color(0xFFD5405D);
 
-  Color hCrossColor = Color(0xffffffff);
-  Color vCrossColor = Color(0x1Effffff);
-  Color crossTextColor = Color(0xffffffff);
+  Color hCrossColor = Color(0xFF222223);
+  Color vCrossColor = Color(0x28424652);
+  Color crossTextColor = Color(0xFF222223);
 
-  //当前显示内最大和最小值的颜色
-  Color maxColor = Color(0xffffffff);
-  Color minColor = Color(0xffffffff);
+  ///The color of the maximum and minimum values in the current display
+  Color maxColor = Color(0xFF222223);
+  Color minColor = Color(0xFF222223);
 
   Color getMAColor(int index) {
     switch (index % 3) {
@@ -73,40 +74,31 @@ class ChartStyle {
 
   double childPadding = 12.0;
 
-  //点与点的距离
+  ///point-to-point distance
   double pointWidth = 11.0;
 
-  //蜡烛宽度
+  ///candle width
   double candleWidth = 8.5;
+  double candleLineWidth = 1.0;
 
-  //蜡烛中间线的宽度
-  double candleLineWidth = 1.5;
-
-  //vol柱子宽度
+  ///vol column width
   double volWidth = 8.5;
 
-  //macd柱子宽度
-  double macdWidth = 3.0;
+  ///macd column width
+  double macdWidth = 1.2;
 
-  //垂直交叉线宽度
+  ///vertical-horizontal cross line width
   double vCrossWidth = 8.5;
-
-  //水平交叉线宽度
   double hCrossWidth = 0.5;
 
-  //现在价格的线条长度
-  double nowPriceLineLength = 1;
-
-  //现在价格的线条间隔
-  double nowPriceLineSpan = 1;
-
-  //现在价格的线条粗细
+  ///(line length - space line - thickness) of the current price
+  double nowPriceLineLength = 4.5;
+  double nowPriceLineSpan = 3.5;
   double nowPriceLineWidth = 1;
 
   int gridRows = 4;
-
   int gridColumns = 4;
 
-  //下方時間客製化
+  ///customize the time below
   List<String>? dateTimeFormat;
 }
