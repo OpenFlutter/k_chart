@@ -74,3 +74,6 @@
 
 * Add `xFrontPadding`. (padding in front. default 100)
 * Fix: KChart and DepthChart onPress selection when they don't fill the whole screen.
+
+## [0.7.1]
+* Optimize performance on the web.
