@@ -1,14 +1,17 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:k_chart/chart_translations.dart';
 import 'package:k_chart/flutter_k_chart.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -94,53 +97,50 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      shrinkWrap: true,
-      children: <Widget>[
-        Stack(children: <Widget>[
-          Container(
-            height: 450,
-            width: double.infinity,
-            child: KChartWidget(
-              datas,
-              chartStyle,
-              chartColors,
-              isLine: isLine,
-              onSecondaryTap: () {
-                print('Secondary Tap');
-              },
-              isTrendLine: _isTrendLine,
-              mainState: _mainState,
-              volHidden: _volHidden,
-              secondaryState: _secondaryState,
-              fixedLength: 2,
-              timeFormat: TimeFormat.YEAR_MONTH_DAY,
-              translations: kChartTranslations,
-              showNowPrice: _showNowPrice,
-              //`isChinese` is Deprecated, Use `translations` instead.
-              isChinese: isChinese,
-              hideGrid: _hideGrid,
-              isTapShowInfoDialog: false,
-              verticalTextAlignment: _verticalTextAlignment,
-              maDayList: [1, 100, 1000],
-            ),
+    return ListView(shrinkWrap: true, children: <Widget>[
+      Stack(children: [
+        SizedBox(
+          height: 450,
+          width: double.infinity,
+          child: KChartWidget(
+            datas,
+            chartStyle,
+            chartColors,
+            isLine: isLine,
+            onSecondaryTap: () {
+              print('Secondary Tap');
+            },
+            isTrendLine: _isTrendLine,
+            mainState: _mainState,
+            volHidden: _volHidden,
+            secondaryState: _secondaryState,
+            fixedLength: 2,
+            timeFormat: TimeFormat.YEAR_MONTH_DAY,
+            translations: kChartTranslations,
+            showNowPrice: _showNowPrice,
+            //`isChinese` is Deprecated, Use `translations` instead.
+            isChinese: isChinese,
+            hideGrid: _hideGrid,
+            isTapShowInfoDialog: false,
+            verticalTextAlignment: _verticalTextAlignment,
+            maDayList: [1, 100, 1000],
           ),
-          if (showLoading)
-            Container(
-                width: double.infinity,
-                height: 450,
-                alignment: Alignment.center,
-                child: const CircularProgressIndicator()),
-        ]),
-        buildButtons(),
-        if (_bids != null && _asks != null)
+        ),
+        if (showLoading)
           Container(
-            height: 230,
-            width: double.infinity,
-            child: DepthChart(_bids!, _asks!, chartColors),
-          )
-      ],
-    );
+              width: double.infinity,
+              height: 450,
+              alignment: Alignment.center,
+              child: const CircularProgressIndicator()),
+      ]),
+      buildButtons(),
+      if (_bids != null && _asks != null)
+        SizedBox(
+          height: 230,
+          width: double.infinity,
+          child: DepthChart(_bids!, _asks!, chartColors),
+        )
+    ]);
   }
 
   Widget buildButtons() {
@@ -181,22 +181,22 @@ class _MyHomePageState extends State<MyHomePage> {
               chartColors.lineFillColor = Colors.red;
               chartColors.kLineColor = Colors.yellow;
             } else {
-              chartColors.selectBorderColor = Color(0xff6C7A86);
-              chartColors.selectFillColor = Color(0xff0D1722);
-              chartColors.lineFillColor = Color(0x554C86CD);
-              chartColors.kLineColor = Color(0xff4C86CD);
+              chartColors.selectBorderColor = const Color(0xff6C7A86);
+              chartColors.selectFillColor = const Color(0xff0D1722);
+              chartColors.lineFillColor = const Color(0x554C86CD);
+              chartColors.kLineColor = const Color(0xff4C86CD);
             }
           });
         }),
         button("Change PriceTextPaint",
             onPressed: () => setState(() {
-              _priceLeft = !_priceLeft;
-              if (_priceLeft) {
-                _verticalTextAlignment = VerticalTextAlignment.left;
-              } else {
-                _verticalTextAlignment = VerticalTextAlignment.right;
-              }
-            })),
+                  _priceLeft = !_priceLeft;
+                  if (_priceLeft) {
+                    _verticalTextAlignment = VerticalTextAlignment.left;
+                  } else {
+                    _verticalTextAlignment = VerticalTextAlignment.right;
+                  }
+                })),
       ],
     );
   }
