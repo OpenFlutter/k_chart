@@ -77,3 +77,6 @@
 
 ## [0.7.1]
 * Optimize performance on the web.
+
+## [0.7.2]
+* NEW: Add horizontal scaling on web.

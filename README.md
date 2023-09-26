@@ -21,13 +21,13 @@ Maybe this is the best k chart in Flutter.Support drag,scale,long press,fling.An
 #### Install
 ```
 dependencies:
-  k_chart: ^0.7.1
+  k_chart: ^0.7.2
 ```
 or use latest：
 ```
 k_chart:
     git:
-      url: https://github.com/mafanwei/k_chart
+      url: https://github.com/4xMafole/k_chart
 ```
 #### Usage
 
