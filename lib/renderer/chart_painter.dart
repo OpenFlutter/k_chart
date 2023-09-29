@@ -57,6 +57,7 @@ class ChartPainter extends BaseChartPainter {
     required this.isTrendLine, //For TrendLine
     required this.selectY, //For TrendLine
     required datas,
+    required signals,
     required scaleX,
     required scrollX,
     required isLongPass,
@@ -77,6 +78,7 @@ class ChartPainter extends BaseChartPainter {
     this.dotColor = Colors.white,
   }) : super(chartStyle,
             datas: datas,
+            signals: signals,
             scaleX: scaleX,
             scrollX: scrollX,
             isLongPress: isLongPass,
@@ -197,6 +199,7 @@ class ChartPainter extends BaseChartPainter {
       mVolRenderer?.drawChart(lastPoint, curPoint, lastX, curX, size, canvas);
       mSecondaryRenderer?.drawChart(
           lastPoint, curPoint, lastX, curX, size, canvas);
+      mMainRenderer.drawSignal(curPoint, curX, signals, canvas);
     }
 
     if ((isLongPress == true || (isTapShowInfoDialog && isOnTap)) &&

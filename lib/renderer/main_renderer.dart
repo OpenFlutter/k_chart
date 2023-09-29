@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:k_chart/entity/index.dart';
 
-import '../entity/candle_entity.dart';
 import '../k_chart_widget.dart' show MainState;
 import 'base_chart_renderer.dart';
 
@@ -281,6 +281,41 @@ class MainRenderer extends BaseChartRenderer<CandleEntity> {
     for (int i = 0; i <= columnSpace; i++) {
       canvas.drawLine(Offset(columnSpace * i, topPadding / 3),
           Offset(columnSpace * i, chartRect.bottom), gridPaint);
+    }
+  }
+
+  @override
+  void drawSignal(CandleEntity curPoint, double curX,
+      List<SignalEntity>? buysellList, Canvas canvas) {
+    if (curPoint == null) {
+      return;
+    }
+    if (buysellList == null) {
+      return;
+    }
+    if (curPoint is KLineEntity) {
+      var theTime = curPoint.time;
+      var result = buysellList.firstWhere((element) => element.time == theTime,
+          orElse: () => SignalEntity(time: -1, isBuy: false, isSell: false));
+
+      if (result == null || result.time == -1) {
+        return;
+      }
+      var isBuy = false;
+      if (result.isBuy) {
+        isBuy = true;
+      } else if (result.isSell) {
+        isBuy = false;
+      }
+      double r = mCandleWidth / 2;
+      var buyColor = this.chartColors.upColor.withOpacity(0.4);
+      var sellColor = this.chartColors.dnColor.withOpacity(0.4);
+      chartPaint.color = isBuy ? buyColor : sellColor;
+
+      canvas.drawRect(
+          Rect.fromLTRB(
+              curX - r, _contentRect.top, curX + r, _contentRect.bottom),
+          chartPaint);
     }
   }
 

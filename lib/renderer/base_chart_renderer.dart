@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:k_chart/entity/signal_entity.dart';
 
 export '../chart_style.dart';
 
@@ -54,6 +55,9 @@ abstract class BaseChartRenderer<T> {
 
   void drawChart(T lastPoint, T curPoint, double lastX, double curX, Size size,
       Canvas canvas);
+
+  void drawSignal(
+      T curPoint, double curX, List<SignalEntity>? signals, Canvas canvas) {}
 
   void drawLine(double? lastPrice, double? curPrice, Canvas canvas,
       double lastX, double curX, Color color) {

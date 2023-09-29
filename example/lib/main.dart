@@ -35,6 +35,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   List<KLineEntity>? datas;
+  List<SignalEntity>? signals = [];
   bool showLoading = true;
   MainState _mainState = MainState.MA;
   bool _volHidden = false;
@@ -55,7 +56,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    getData('1day');
+    getData('1min');
     rootBundle.loadString('assets/depth.json').then((result) {
       final parseJson = json.decode(result);
       final tick = parseJson['tick'] as Map<String, dynamic>;
@@ -104,6 +105,7 @@ class _MyHomePageState extends State<MyHomePage> {
           width: double.infinity,
           child: KChartWidget(
             datas,
+            signals,
             chartStyle,
             chartColors,
             isLine: isLine,
@@ -267,6 +269,19 @@ class _MyHomePageState extends State<MyHomePage> {
         .toList()
         .cast<KLineEntity>();
     DataUtil.calculate(datas!);
+    var theData = datas;
+
+    if (theData != null && theData.length > 10) {
+      var theTime = theData[theData.length - 2].time;
+      if (theTime != null) {
+        signals?.add(SignalEntity(time: theTime, isBuy: true, isSell: false));
+      }
+
+      theTime = theData[theData.length - 8].time;
+      if (theTime != null) {
+        signals?.add(SignalEntity(time: theTime, isBuy: false, isSell: true));
+      }
+    }
     showLoading = false;
     setState(() {});
   }

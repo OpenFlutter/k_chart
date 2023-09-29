@@ -27,6 +27,7 @@ class TimeFormat {
 
 class KChartWidget extends StatefulWidget {
   final List<KLineEntity>? datas;
+  final List<SignalEntity>? signals;
   final MainState mainState;
   final bool volHidden;
   final SecondaryState secondaryState;
@@ -60,6 +61,7 @@ class KChartWidget extends StatefulWidget {
 
   KChartWidget(
     this.datas,
+    this.signals,
     this.chartStyle,
     this.chartColors, {
     required this.isTrendLine,
@@ -147,6 +149,7 @@ class _KChartWidgetState extends State<KChartWidget>
       isTrendLine: widget.isTrendLine, //For TrendLine
       selectY: mSelectY, //For TrendLine
       datas: widget.datas,
+      signals: widget.signals,
       scaleX: mScaleX,
       scrollX: mScrollX,
       selectX: mSelectX,
