@@ -48,6 +48,7 @@ class ChartPainter extends BaseChartPainter {
   final bool hideGrid;
   final bool showNowPrice;
   final VerticalTextAlignment verticalTextAlignment;
+  Color dotColor;
 
   ChartPainter(
     this.chartStyle,
@@ -56,6 +57,7 @@ class ChartPainter extends BaseChartPainter {
     required this.isTrendLine, //For TrendLine
     required this.selectY, //For TrendLine
     required datas,
+    required signals,
     required scaleX,
     required scrollX,
     required isLongPass,
@@ -73,8 +75,10 @@ class ChartPainter extends BaseChartPainter {
     this.showNowPrice = true,
     this.fixedLength = 2,
     this.maDayList = const [5, 10, 20],
+    this.dotColor = Colors.white,
   }) : super(chartStyle,
             datas: datas,
+            signals: signals,
             scaleX: scaleX,
             scrollX: scrollX,
             isLongPress: isLongPass,
@@ -195,6 +199,7 @@ class ChartPainter extends BaseChartPainter {
       mVolRenderer?.drawChart(lastPoint, curPoint, lastX, curX, size, canvas);
       mSecondaryRenderer?.drawChart(
           lastPoint, curPoint, lastX, curX, size, canvas);
+      mMainRenderer.drawSignal(curPoint, curX, signals, canvas);
     }
 
     if ((isLongPress == true || (isTapShowInfoDialog && isOnTap)) &&
@@ -471,6 +476,11 @@ class ChartPainter extends BaseChartPainter {
           nowPricePaint);
       startX += space;
     }
+
+    if (isLine) {
+      drawNowPriceDot(y, canvas);
+    }
+
     //再画背景和文本
     TextPainter tp = getTextPainter(
         value.toStringAsFixed(fixedLength), this.chartColors.nowPriceTextColor);
@@ -490,6 +500,28 @@ class ChartPainter extends BaseChartPainter {
         Rect.fromLTRB(offsetX, top, offsetX + tp.width, top + tp.height),
         nowPricePaint);
     tp.paint(canvas, Offset(offsetX, top));
+  }
+
+  // For current price dot
+  void drawNowPriceDot(double y, Canvas canvas) {
+    // Define the gradient for the flashing effect
+    Gradient pointGradient = RadialGradient(colors: [
+      dotColor,
+      Colors.transparent,
+    ]);
+
+    // Calculate the adjusted x position
+    double adjustedX = translateXtoX(
+        getX(datas!.length - 1)); // Use the last data point as the X position
+
+    // Set the shader for the paint
+    nowPricePaint.shader = pointGradient.createShader(
+        Rect.fromCircle(center: Offset(adjustedX, y), radius: 14.0 * scaleX));
+
+    // Draw the circle
+    canvas.drawCircle(Offset(adjustedX, y), 14.0 * scaleX, nowPricePaint);
+    canvas.drawCircle(Offset(adjustedX, y), 2.0 * scaleX,
+        nowPricePaint..color = Colors.white);
   }
 
 //For TrendLine
